@@ -27,7 +27,6 @@
             --riel: #e67e22;
             --usd: #2ecc71;
             --rp: #3498db;
-            --jastip: #a855f7;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -43,27 +42,43 @@
         ::-webkit-scrollbar-track { background: var(--bg-secondary); }
         ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
 
+        /* ===== LOGIN ===== */
         #loginScreen {
-            min-height: 100vh; min-height: 100dvh;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px; background: var(--bg-primary);
-            position: relative; overflow: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
         }
         #loginScreen::before {
-            content: ''; position: absolute; top: -40%; left: -40%; width: 180%; height: 180%;
+            content: '';
+            position: absolute;
+            top: -40%; left: -40%; width: 180%; height: 180%;
             background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
                         radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
             animation: ambientLogin 15s ease-in-out infinite alternate;
         }
-        @keyframes ambientLogin { 0%{transform:translate(0,0)} 100%{transform:translate(-3%,-2%)} }
-
+        @keyframes ambientLogin {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(-3%,-2%); }
+        }
         .login-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 24px; padding: 40px 32px;
-            width: 100%; max-width: 400px; position: relative; z-index: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
         }
         .login-logo {
-            width: 64px; height: 64px; border-radius: 18px;
+            width: 64px; height: 64px;
+            border-radius: 18px;
             background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 20px;
@@ -71,11 +86,13 @@
         .gold-shimmer {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
             background-size: 200% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
             animation: shimmer 4s linear infinite;
         }
-        @keyframes shimmer { 0%{background-position:0% center} 100%{background-position:200% center} }
+        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
+        /* ===== GLOBAL CONTROLS ===== */
         .input-field {
             background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px;
             padding: 12px 16px; color: var(--text-primary); font-family: 'DM Sans', sans-serif;
@@ -108,20 +125,17 @@
             font-family: 'DM Sans', sans-serif; font-size: 12px;
         }
         .btn-danger-sm:hover { background: rgba(231,76,60,0.2); border-color: var(--danger); }
-        .btn-jastip {
-            background: rgba(168,85,247,0.12); color: var(--jastip); border: 1px solid rgba(168,85,247,0.3);
-            border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px;
-        }
-        .btn-jastip:hover { background: rgba(168,85,247,0.2); border-color: var(--jastip); }
 
+        /* ===== DASHBOARD ===== */
         #dashboardScreen { display: none; }
+
         .card {
             background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 16px; transition: border-color 0.3s;
         }
         .card:hover { border-color: rgba(201,168,76,0.25); }
 
+        /* Tab nav horizontal scroll */
         .tab-nav {
             display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch;
             scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px;
@@ -136,14 +150,20 @@
         .tab-btn:hover { color: var(--text-primary); background: rgba(201,168,76,0.05); }
         .tab-btn.active { background: rgba(201,168,76,0.12); color: var(--gold); border-color: rgba(201,168,76,0.3); }
 
+        /* Stat grid */
         .stat-grid { display: grid; gap: 12px; }
         .stat-grid.g4 { grid-template-columns: repeat(4, 1fr); }
         .stat-grid.g3 { grid-template-columns: repeat(3, 1fr); }
         .stat-grid.g2 { grid-template-columns: repeat(2, 1fr); }
         @media (max-width: 900px) { .stat-grid.g4 { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) { .stat-grid.g4, .stat-grid.g3 { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 380px) { .stat-grid.g4, .stat-grid.g3, .stat-grid.g2 { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) {
+            .stat-grid.g4, .stat-grid.g3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 380px) {
+            .stat-grid.g4, .stat-grid.g3, .stat-grid.g2 { grid-template-columns: 1fr; }
+        }
 
+        /* Table */
         .table-wrap { overflow-x: auto; border-radius: 16px; -webkit-overflow-scrolling: touch; }
         .dtable { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
         .dtable thead th {
@@ -162,7 +182,6 @@
         .badge-ok { background: rgba(46,204,113,0.12); color: var(--success); }
         .badge-low { background: rgba(241,196,15,0.12); color: #f1c40f; }
         .badge-out { background: rgba(231,76,60,0.12); color: var(--danger); }
-        .badge-jastip { background: rgba(168,85,247,0.12); color: var(--jastip); }
 
         .stock-bar { width: 60px; height: 5px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 6px; }
         .stock-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
@@ -170,6 +189,7 @@
         .profit-pos { color: var(--success); }
         .profit-neg { color: var(--danger); }
 
+        /* Currency pills */
         .curr-pill {
             padding: 12px 10px; border-radius: 12px; cursor: pointer; font-weight: 700;
             font-size: 13px; border: 2px solid var(--border); background: var(--bg-input);
@@ -181,6 +201,7 @@
         .curr-pill.sel-usd { border-color: var(--usd); color: var(--usd); background: rgba(46,204,113,0.08); }
         .curr-pill.sel-rp { border-color: var(--rp); color: var(--rp); background: rgba(52,152,219,0.08); }
 
+        /* Modal */
         .modal-bg {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 100;
@@ -192,8 +213,9 @@
             max-width: 480px; width: 100%; max-height: 88vh; overflow-y: auto;
             padding: 28px; animation: mSlide 0.25s ease;
         }
-        @keyframes mSlide { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes mSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Toast */
         .toast-box { position: fixed; top: 16px; right: 16px; z-index: 300; display: flex; flex-direction: column; gap: 8px; }
         .toast {
             padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
@@ -204,27 +226,28 @@
         .toast-ok { background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: var(--success); }
         .toast-err { background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); color: var(--danger); }
         .toast-inf { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
-        @keyframes tIn { from{opacity:0;transform:translateX(80px)} to{opacity:1;transform:translateX(0)} }
-        @keyframes tOut { from{opacity:1} to{opacity:0;transform:translateY(-8px)} }
+        @keyframes tIn { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes tOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-8px); } }
 
+        /* Header */
         .app-header {
             background: var(--bg-secondary); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 50; backdrop-filter: blur(16px);
         }
+
+        /* Section tabs */
         .tab-section { display: none; }
         .tab-section.active { display: block; }
+
+        /* Preview box */
         .preview-box {
             background: var(--bg-secondary); border-radius: 14px; padding: 16px;
             border: 1px solid var(--border);
         }
+
+        /* Chart container */
         .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
-
-        .kiriman-item {
-            background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px;
-            padding: 14px; margin-bottom: 10px; transition: border-color 0.3s;
-        }
-        .kiriman-item:hover { border-color: rgba(168,85,247,0.3); }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -233,29 +256,45 @@
 </head>
 <body>
 
+<!-- Toast Container -->
 <div class="toast-box" id="toastBox"></div>
 
-<!-- ========================== LOGIN ========================== -->
+<!-- ========================== LOGIN SCREEN ========================== -->
 <div id="loginScreen">
     <div class="login-card">
-        <div class="login-logo"><i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:26px;"></i></div>
+        <div class="login-logo">
+            <i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:26px;"></i>
+        </div>
         <h1 class="font-display gold-shimmer" style="font-size:28px;font-weight:900;text-align:center;letter-spacing:3px;margin-bottom:4px;">VJ PARFUM</h1>
         <p style="text-align:center;color:var(--text-muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;">Dashboard Penjualan</p>
+
         <div style="display:flex;flex-direction:column;gap:16px;">
             <div>
                 <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Username</label>
-                <div style="position:relative;"><i class="fas fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i><input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:40px;" autocomplete="username"></div>
+                <div style="position:relative;">
+                    <i class="fas fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
+                    <input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:40px;" autocomplete="username">
+                </div>
             </div>
             <div>
                 <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Password</label>
-                <div style="position:relative;"><i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i><input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:40px;" autocomplete="current-password"><button onclick="togglePassVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" id="passToggleBtn"><i class="fas fa-eye"></i></button></div>
+                <div style="position:relative;">
+                    <i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
+                    <input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:40px;" autocomplete="current-password">
+                    <button onclick="togglePassVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" id="passToggleBtn">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
             </div>
             <div id="loginError" style="display:none;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:10px;padding:10px 14px;color:var(--danger);font-size:13px;text-align:center;"></div>
-            <button class="btn-gold" onclick="doLogin()" style="margin-top:8px;"><i class="fas fa-right-to-bracket" style="margin-right:8px;"></i>Masuk</button>
+            <button class="btn-gold" onclick="doLogin()" style="margin-top:8px;">
+                <i class="fas fa-right-to-bracket" style="margin-right:8px;"></i>Masuk
+            </button>
         </div>
+
         <div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--border);text-align:center;">
             <p style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Belum punya akun?</p>
-            <button class="btn-outline" onclick="showRegister()" style="width:100%;">Buat Akun Baru</button>
+            <button class="btn-outline" onclick="showRegister()" id="regToggleBtn" style="width:100%;">Buat Akun Baru</button>
         </div>
     </div>
 </div>
@@ -263,24 +302,45 @@
 <!-- ========================== REGISTER MODAL ========================== -->
 <div class="modal-bg" id="registerModal">
     <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:20px;font-weight:700;">Buat Akun Baru</h3><button onclick="closeModal('registerModal')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 class="font-display" style="font-size:20px;font-weight:700;">Buat Akun Baru</h3>
+            <button onclick="closeModal('registerModal')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button>
+        </div>
         <div style="display:flex;flex-direction:column;gap:14px;">
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Username</label><input type="text" class="input-field" id="regUser" placeholder="Pilih username"></div>
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Password</label><input type="password" class="input-field" id="regPass" placeholder="Pilih password"></div>
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Konfirmasi Password</label><input type="password" class="input-field" id="regPass2" placeholder="Ulangi password"></div>
+            <div>
+                <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Username</label>
+                <input type="text" class="input-field" id="regUser" placeholder="Pilih username">
+            </div>
+            <div>
+                <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Password</label>
+                <input type="password" class="input-field" id="regPass" placeholder="Pilih password">
+            </div>
+            <div>
+                <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Konfirmasi Password</label>
+                <input type="password" class="input-field" id="regPass2" placeholder="Ulangi password">
+            </div>
             <div id="regError" style="display:none;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:10px;padding:10px;color:var(--danger);font-size:13px;text-align:center;"></div>
-            <button class="btn-gold" onclick="doRegister()"><i class="fas fa-user-plus" style="margin-right:8px;"></i>Buat Akun</button>
+            <button class="btn-gold" onclick="doRegister()">
+                <i class="fas fa-user-plus" style="margin-right:8px;"></i>Buat Akun
+            </button>
         </div>
     </div>
 </div>
 
-<!-- ========================== DASHBOARD ========================== -->
+<!-- ========================== DASHBOARD SCREEN ========================== -->
 <div id="dashboardScreen">
+
+    <!-- Header -->
     <header class="app-header">
         <div style="max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
             <div style="display:flex;align-items:center;gap:12px;">
-                <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:15px;"></i></div>
-                <div style="min-width:0;"><h1 class="font-display gold-shimmer" style="font-size:18px;font-weight:900;letter-spacing:2px;">VJ PARFUM</h1><p style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Dashboard</p></div>
+                <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:15px;"></i>
+                </div>
+                <div style="min-width:0;">
+                    <h1 class="font-display gold-shimmer" style="font-size:18px;font-weight:900;letter-spacing:2px;">VJ PARFUM</h1>
+                    <p style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Dashboard</p>
+                </div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
                 <span style="font-size:12px;color:var(--text-secondary);" id="headerUser"></span>
@@ -290,11 +350,12 @@
     </header>
 
     <main style="max-width:1400px;margin:0 auto;padding:16px 20px 40px;">
+
+        <!-- Tab Navigation - horizontal scroll -->
         <nav class="tab-nav" style="margin-bottom:20px;" role="tablist">
             <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')"><i class="fas fa-chart-pie" style="margin-right:5px;"></i>Ringkasan</button>
             <button class="tab-btn" data-tab="products" onclick="switchTab('products')"><i class="fas fa-flask" style="margin-right:5px;"></i>Produk</button>
-            <button class="tab-btn" data-tab="costs" onclick="switchTab('costs')"><i class="fas fa-calculator" style="margin-right:5px;"></i>Total Modal</button>
-            <button class="tab-btn" data-tab="jastip" onclick="switchTab('jastip')"><i class="fas fa-truck" style="margin-right:5px;"></i>Jastip Kirim</button>
+            <button class="tab-btn" data-tab="costs" onclick="switchTab('costs')"><i class="fas fa-calculator" style="margin-right:5px;"></i>Catatan Modal</button>
             <button class="tab-btn" data-tab="sales" onclick="switchTab('sales')"><i class="fas fa-receipt" style="margin-right:5px;"></i>Penjualan</button>
             <button class="tab-btn" data-tab="history" onclick="switchTab('history')"><i class="fas fa-clock-rotate-left" style="margin-right:5px;"></i>Riwayat</button>
             <button class="tab-btn" data-tab="finance" onclick="switchTab('finance')"><i class="fas fa-coins" style="margin-right:5px;"></i>Keuangan</button>
@@ -303,16 +364,41 @@
         <!-- ===== OVERVIEW ===== -->
         <section class="tab-section active" id="tab-overview">
             <div class="stat-grid g4" style="margin-bottom:20px;">
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Stok</div><div style="font-size:28px;font-weight:800;" id="sStok">0</div><div style="font-size:11px;color:var(--text-muted);">botol tersisa</div></div>
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Terjual</div><div style="font-size:28px;font-weight:800;" id="sSold">0</div><div style="font-size:11px;color:var(--text-muted);">botol terjual</div></div>
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Penjualan</div><div style="font-size:20px;font-weight:800;" id="sRevenue">Rp 0</div><div style="font-size:10px;color:var(--text-muted);" id="sRevDet"></div></div>
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Untung</div><div style="font-size:20px;font-weight:800;" id="sProfit">Rp 0</div><div style="font-size:10px;color:var(--text-muted);" id="sProfDet"></div></div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Stok</div>
+                    <div style="font-size:28px;font-weight:800;" id="sStok">0</div>
+                    <div style="font-size:11px;color:var(--text-muted);">botol tersisa</div>
+                </div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Terjual</div>
+                    <div style="font-size:28px;font-weight:800;" id="sSold">0</div>
+                    <div style="font-size:11px;color:var(--text-muted);">botol terjual</div>
+                </div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Penjualan</div>
+                    <div style="font-size:20px;font-weight:800;" id="sRevenue">Rp 0</div>
+                    <div style="font-size:10px;color:var(--text-muted);" id="sRevDet"></div>
+                </div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Untung</div>
+                    <div style="font-size:20px;font-weight:800;" id="sProfit">Rp 0</div>
+                    <div style="font-size:10px;color:var(--text-muted);" id="sProfDet"></div>
+                </div>
             </div>
             <div class="chart-row" style="margin-bottom:20px;">
-                <div class="card" style="padding:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Stok per Varian</h3><div style="position:relative;height:260px;"><canvas id="cStock"></canvas></div></div>
-                <div class="card" style="padding:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Penjualan per Varian</h3><div style="position:relative;height:260px;"><canvas id="cSales"></canvas></div></div>
+                <div class="card" style="padding:18px;">
+                    <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Stok per Varian</h3>
+                    <div style="position:relative;height:260px;"><canvas id="cStock"></canvas></div>
+                </div>
+                <div class="card" style="padding:18px;">
+                    <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Penjualan per Varian</h3>
+                    <div style="position:relative;height:260px;"><canvas id="cSales"></canvas></div>
+                </div>
             </div>
-            <div class="card" style="padding:16px;display:none;" id="lowStockCard"><h3 style="font-size:12px;color:var(--danger);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;"><i class="fas fa-triangle-exclamation" style="margin-right:6px;"></i>Stok Menipis</h3><div id="lowStockList" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
+            <div class="card" style="padding:16px;display:none;" id="lowStockCard">
+                <h3 style="font-size:12px;color:var(--danger);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;"><i class="fas fa-triangle-exclamation" style="margin-right:6px;"></i>Stok Menipis</h3>
+                <div id="lowStockList" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+            </div>
         </section>
 
         <!-- ===== PRODUCTS ===== -->
@@ -321,37 +407,39 @@
                 <h2 class="font-display" style="font-size:20px;font-weight:700;">Daftar Produk</h2>
                 <input type="text" class="input-field" placeholder="Cari varian..." id="srcProd" oninput="renderProducts()" style="width:200px;">
             </div>
-            <div class="card table-wrap"><table class="dtable"><thead><tr><th>No</th><th>Varian</th><th>Stok</th><th>Terjual</th><th>Aksi</th></tr></thead><tbody id="tProd"></tbody></table></div>
+            <div class="card table-wrap">
+                <table class="dtable">
+                    <thead><tr><th>No</th><th>Varian</th><th>Stok</th><th>Terjual</th><th>Aksi</th></tr></thead>
+                    <tbody id="tProd"></tbody>
+                </table>
+            </div>
         </section>
 
-        <!-- ===== TOTAL MODAL ===== -->
+        <!-- ===== CATATAN MODAL ===== -->
         <section class="tab-section" id="tab-costs">
             <div style="margin-bottom:16px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;">Total Modal per Botol</h2>
-                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Isi total modal per botol (modal barang + jastip digabung). Untung per botol otomatis dihitung.</p>
+                <h2 class="font-display" style="font-size:20px;font-weight:700;">Catatan Modal</h2>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat total modal keseluruhan per varian. Untung = Total Penjualan − Total Modal.</p>
             </div>
             <div class="card" style="padding:16px;margin-bottom:16px;border-color:rgba(201,168,76,0.3);">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="fas fa-tag" style="color:var(--gold);"></i><span style="font-weight:700;color:var(--gold-light);font-size:14px;">Harga Jual per Botol</span></div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                    <i class="fas fa-tag" style="color:var(--gold);"></i>
+                    <span style="font-weight:700;color:var(--gold-light);font-size:14px;">Harga Jual per Botol</span>
+                </div>
                 <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:6px;">
-                    <span style="color:var(--riel);font-weight:700;">45.000 Riel</span><span style="color:var(--text-muted);">/</span>
-                    <span style="color:var(--usd);font-weight:700;">$11.25</span><span style="color:var(--text-muted);">/</span>
+                    <span style="color:var(--riel);font-weight:700;">45.000 Riel</span>
+                    <span style="color:var(--text-muted);">/</span>
+                    <span style="color:var(--usd);font-weight:700;">$11.25</span>
+                    <span style="color:var(--text-muted);">/</span>
                     <span style="color:var(--rp);font-weight:700;">Rp 200.000</span>
                 </div>
             </div>
-            <div class="card table-wrap"><table class="dtable" style="min-width:700px;"><thead><tr><th>No</th><th>Varian</th><th>Total Modal / Botol</th><th>Tgl Modal</th><th>Harga Jual / Botol</th><th>Untung / Botol</th><th>Aksi</th></tr></thead><tbody id="tCost"></tbody></table></div>
-        </section>
-
-        <!-- ===== JASTIP KIRIM ===== -->
-        <section class="tab-section" id="tab-jastip">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <div>
-                    <h2 class="font-display" style="font-size:20px;font-weight:700;">Jastip Kirim</h2>
-                    <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat setiap kali jastip bawa parfum. Stok otomatis bertambah.</p>
-                </div>
-                <button class="btn-jastip" onclick="openAddKirim()"><i class="fas fa-plus" style="margin-right:5px;"></i>Tambah Kiriman</button>
+            <div class="card table-wrap">
+                <table class="dtable" style="min-width:780px;">
+                    <thead><tr><th>No</th><th>Varian</th><th>Total Modal</th><th>Tanggal</th><th>Total Penjualan</th><th>Untung</th><th>Aksi</th></tr></thead>
+                    <tbody id="tCost"></tbody>
+                </table>
             </div>
-            <div id="kirimList"></div>
-            <div style="margin-top:14px;font-size:12px;color:var(--text-muted);" id="kirimSum"></div>
         </section>
 
         <!-- ===== SALES ===== -->
@@ -359,9 +447,18 @@
             <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;">Catat Penjualan</h2>
             <div class="card" style="padding:24px;max-width:580px;">
                 <div style="display:flex;flex-direction:column;gap:16px;">
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Pilih Varian</label><select class="input-field" id="saleVar" onchange="onSaleVarChange()"><option value="">-- Pilih Varian --</option></select></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Stok Tersedia</label><input type="text" class="input-field" id="saleStkInfo" readonly style="color:var(--gold);"></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Beli</label><input type="number" class="input-field" id="saleQty" min="1" value="1" oninput="calcPreview()"></div>
+                    <div>
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Pilih Varian</label>
+                        <select class="input-field" id="saleVar" onchange="onSaleVarChange()"><option value="">-- Pilih Varian --</option></select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Stok Tersedia</label>
+                        <input type="text" class="input-field" id="saleStkInfo" readonly style="color:var(--gold);">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Beli</label>
+                        <input type="number" class="input-field" id="saleQty" min="1" value="1" oninput="calcPreview()">
+                    </div>
                     <div>
                         <label style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:block;">Mata Uang Pembayaran</label>
                         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
@@ -371,10 +468,17 @@
                         </div>
                     </div>
                     <div style="background:var(--bg-secondary);border-radius:12px;padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-                        <span style="font-size:12px;color:var(--text-secondary);">Harga per Botol</span><span style="font-size:16px;font-weight:800;" id="salePriceDisp">45.000 Riel</span>
+                        <span style="font-size:12px;color:var(--text-secondary);">Harga per Botol</span>
+                        <span style="font-size:16px;font-weight:800;" id="salePriceDisp">45.000 Riel</span>
                     </div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Pembeli (opsional)</label><input type="text" class="input-field" id="saleBuyer" placeholder="Nama pembeli..."></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Catatan (opsional)</label><input type="text" class="input-field" id="saleNote" placeholder="Catatan..."></div>
+                    <div>
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Pembeli (opsional)</label>
+                        <input type="text" class="input-field" id="saleBuyer" placeholder="Nama pembeli...">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Catatan (opsional)</label>
+                        <input type="text" class="input-field" id="saleNote" placeholder="Catatan...">
+                    </div>
                     <div class="preview-box">
                         <h4 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pratinjau Penjualan</h4>
                         <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13px;">
@@ -382,7 +486,6 @@
                             <span style="color:var(--text-secondary);">Jumlah:</span><span style="text-align:right;font-weight:600;" id="pvQty">1 botol</span>
                             <span style="color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">Total Bayar:</span><span style="text-align:right;font-weight:800;font-size:15px;border-top:1px solid var(--border);padding-top:8px;" id="pvTotal">45.000 Riel</span>
                             <span style="color:var(--text-secondary);">Setara Rupiah:</span><span style="text-align:right;font-weight:600;color:var(--rp);" id="pvTotalRp">Rp 200.000</span>
-                            <span style="color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">Untung Bersih:</span><span style="text-align:right;font-weight:800;font-size:15px;border-top:1px solid var(--border);padding-top:8px;" id="pvProfit">Rp 0</span>
                         </div>
                     </div>
                     <button class="btn-gold" onclick="recordSale()"><i class="fas fa-check" style="margin-right:8px;"></i>Simpan Penjualan</button>
@@ -394,9 +497,17 @@
         <section class="tab-section" id="tab-history">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
                 <h2 class="font-display" style="font-size:20px;font-weight:700;">Riwayat Penjualan</h2>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;"><input type="text" class="input-field" placeholder="Cari..." id="srcHist" oninput="renderHistory()" style="width:150px;"><select class="input-field" id="filVar" onchange="renderHistory()" style="width:160px;"><option value="">Semua Varian</option></select></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <input type="text" class="input-field" placeholder="Cari..." id="srcHist" oninput="renderHistory()" style="width:150px;">
+                    <select class="input-field" id="filVar" onchange="renderHistory()" style="width:160px;"><option value="">Semua Varian</option></select>
+                </div>
             </div>
-            <div class="card table-wrap"><table class="dtable" style="min-width:700px;"><thead><tr><th>Tanggal</th><th>Varian</th><th>Qty</th><th>Bayar</th><th>Total (Rp)</th><th>Untung (Rp)</th><th>Pembeli</th><th>Aksi</th></tr></thead><tbody id="tHist"></tbody></table></div>
+            <div class="card table-wrap">
+                <table class="dtable" style="min-width:650px;">
+                    <thead><tr><th>Tanggal</th><th>Varian</th><th>Qty</th><th>Bayar</th><th>Total (Rp)</th><th>Pembeli</th><th>Aksi</th></tr></thead>
+                    <tbody id="tHist"></tbody>
+                </table>
+            </div>
             <div style="margin-top:10px;font-size:12px;color:var(--text-muted);" id="histSum"></div>
         </section>
 
@@ -404,33 +515,69 @@
         <section class="tab-section" id="tab-finance">
             <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;">Laporan Keuangan</h2>
             <div class="stat-grid g3" style="margin-bottom:18px;">
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Modal</div><div style="font-size:20px;font-weight:800;" id="fModal">Rp 0</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">modal semua terjual</div></div>
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Penjualan</div><div style="font-size:20px;font-weight:800;" id="fPenjualan">Rp 0</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">pendapatan kotor</div></div>
-                <div class="card" style="padding:18px;"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Untung</div><div style="font-size:20px;font-weight:800;" id="fUntung">Rp 0</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">keuntungan bersih</div></div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Modal</div>
+                    <div style="font-size:20px;font-weight:800;" id="fModal">Rp 0</div>
+                    <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">seluruh modal</div>
+                </div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Penjualan</div>
+                    <div style="font-size:20px;font-weight:800;" id="fPenjualan">Rp 0</div>
+                    <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">pendapatan kotor</div>
+                </div>
+                <div class="card" style="padding:18px;">
+                    <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Untung</div>
+                    <div style="font-size:20px;font-weight:800;" id="fUntung">Rp 0</div>
+                    <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">keuntungan bersih</div>
+                </div>
             </div>
             <div class="card" style="padding:16px;margin-bottom:18px;">
                 <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pendapatan per Mata Uang</h3>
                 <div class="stat-grid g3">
-                    <div style="text-align:center;padding:12px;background:rgba(230,126,34,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--riel);margin-bottom:4px;">RIEL</div><div style="font-size:18px;font-weight:800;color:var(--riel);" id="fRiel">0</div></div>
-                    <div style="text-align:center;padding:12px;background:rgba(46,204,113,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--usd);margin-bottom:4px;">USD</div><div style="font-size:18px;font-weight:800;color:var(--usd);" id="fUsd">$0</div></div>
-                    <div style="text-align:center;padding:12px;background:rgba(52,152,219,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--rp);margin-bottom:4px;">RUPIAH</div><div style="font-size:18px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div></div>
+                    <div style="text-align:center;padding:12px;background:rgba(230,126,34,0.06);border-radius:12px;">
+                        <div style="font-size:11px;color:var(--riel);margin-bottom:4px;">RIEL</div>
+                        <div style="font-size:18px;font-weight:800;color:var(--riel);" id="fRiel">0</div>
+                    </div>
+                    <div style="text-align:center;padding:12px;background:rgba(46,204,113,0.06);border-radius:12px;">
+                        <div style="font-size:11px;color:var(--usd);margin-bottom:4px;">USD</div>
+                        <div style="font-size:18px;font-weight:800;color:var(--usd);" id="fUsd">$0</div>
+                    </div>
+                    <div style="text-align:center;padding:12px;background:rgba(52,152,219,0.06);border-radius:12px;">
+                        <div style="font-size:11px;color:var(--rp);margin-bottom:4px;">RUPIAH</div>
+                        <div style="font-size:18px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div>
+                    </div>
                 </div>
             </div>
-            <div class="card table-wrap" style="margin-bottom:18px;"><table class="dtable" style="min-width:800px;"><thead><tr><th>Varian</th><th>Total Modal/Botol</th><th>Harga Jual/Botol</th><th>Untung/Botol</th><th>Terjual</th><th>Total Modal</th><th>Total Penjualan</th><th>Total Untung</th></tr></thead><tbody id="tFin"></tbody></table></div>
-            <div class="card" style="padding:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Untung per Varian</h3><div style="position:relative;height:320px;"><canvas id="cProfit"></canvas></div></div>
+            <div class="card table-wrap" style="margin-bottom:18px;">
+                <table class="dtable" style="min-width:780px;">
+                    <thead><tr><th>Varian</th><th>Total Modal</th><th>Tanggal</th><th>Total Penjualan</th><th>Untung</th><th>Terjual</th><th>Stok</th></tr></thead>
+                    <tbody id="tFin"></tbody>
+                </table>
+            </div>
+            <div class="card" style="padding:18px;">
+                <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Untung per Varian</h3>
+                <div style="position:relative;height:320px;"><canvas id="cProfit"></canvas></div>
+            </div>
+            <!-- Export/Import/Reset -->
             <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;">
                 <button class="btn-outline" onclick="exportData()"><i class="fas fa-download" style="margin-right:4px;"></i>Ekspor Data</button>
                 <button class="btn-outline" onclick="openImport()"><i class="fas fa-upload" style="margin-right:4px;"></i>Impor Data</button>
                 <button class="btn-danger-sm" style="padding:8px 16px;font-size:13px;" onclick="confirmReset()"><i class="fas fa-rotate-left" style="margin-right:4px;"></i>Reset Semua</button>
             </div>
         </section>
+
     </main>
 </div>
 
-<!-- ===== MODAL: EDIT PRODUK ===== -->
+<!-- ===== MODALS ===== -->
+
+<!-- Edit Product -->
 <div class="modal-bg" id="mEditProd">
     <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Produk</h3><button onclick="closeModal('mEditProd')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Produk</h3>
+            <button onclick="closeModal('mEditProd')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button>
+        </div>
         <input type="hidden" id="epIdx">
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="epName"></div>
@@ -440,20 +587,23 @@
     </div>
 </div>
 
-<!-- ===== MODAL: EDIT TOTAL MODAL ===== -->
+<!-- Edit Total Modal -->
 <div class="modal-bg" id="mEditCost">
     <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Total Modal</h3><button onclick="closeModal('mEditCost')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Total Modal</h3>
+            <button onclick="closeModal('mEditCost')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button>
+        </div>
         <input type="hidden" id="ecIdx">
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div style="font-size:15px;font-weight:700;color:var(--gold);" id="ecName"></div>
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Total Modal per Botol (Rp)</label><input type="number" class="input-field" id="ecModal" min="0" placeholder="Contoh: 95000" oninput="updateCostPreview()"></div>
+            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Total Modal Keseluruhan (Rp)</label><input type="number" class="input-field" id="ecModal" min="0" placeholder="Contoh: 500000" oninput="updateCostPreview()"></div>
             <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Tanggal Modal</label><input type="date" class="input-field" id="ecDate"></div>
             <div class="preview-box">
                 <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;">
-                    <span style="color:var(--text-secondary);">Harga Jual/Botol</span><span style="text-align:right;font-weight:600;color:var(--gold-light);">Rp 200.000</span>
-                    <span style="color:var(--text-secondary);">Total Modal/Botol</span><span style="text-align:right;font-weight:600;" id="ecBiaya">Rp 0</span>
-                    <span style="color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">Untung/Botol</span><span style="text-align:right;font-weight:800;font-size:15px;border-top:1px solid var(--border);padding-top:8px;" id="ecUntung">Rp 200.000</span>
+                    <span style="color:var(--text-secondary);">Total Penjualan:</span><span style="text-align:right;font-weight:600;color:var(--gold-light);" id="ecPenjualan">Rp 0</span>
+                    <span style="color:var(--text-secondary);">Total Modal:</span><span style="text-align:right;font-weight:600;" id="ecBiaya">Rp 0</span>
+                    <span style="color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">Untung:</span><span style="text-align:right;font-weight:700;font-size:15px;border-top:1px solid var(--border);padding-top:8px;" id="ecUntung">Rp 0</span>
                 </div>
             </div>
             <button class="btn-gold" onclick="saveCostEdit()"><i class="fas fa-save" style="margin-right:6px;"></i>Simpan</button>
@@ -461,36 +611,28 @@
     </div>
 </div>
 
-<!-- ===== MODAL: TAMBAH KIRIMAN JASTIP ===== -->
-<div class="modal-bg" id="mAddKirim">
-    <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Tambah Kiriman Jastip</h3><button onclick="closeModal('mAddKirim')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Tanggal Kiriman</label><input type="date" class="input-field" id="kirimDate"></div>
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Catatan Kiriman</label><input type="text" class="input-field" id="kirimNote" placeholder="Contoh: Kiriman bulan Juli ke-1"></div>
-            <div>
-                <label style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:block;">Jumlah per Varian</label>
-                <div id="kirimItems" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;padding-right:4px;"></div>
-            </div>
-            <button class="btn-gold" onclick="saveKirim()" style="background:linear-gradient(135deg,#7c3aed,#a855f7);"><i class="fas fa-truck" style="margin-right:6px;"></i>Simpan Kiriman</button>
+<!-- Reset Confirm -->
+<div class="modal-bg" id="mReset">
+    <div class="modal-box" style="text-align:center;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+            <i class="fas fa-triangle-exclamation" style="color:var(--danger);font-size:22px;"></i>
+        </div>
+        <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Reset Semua Data?</h3>
+        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">Stok, penjualan, dan pengaturan akan dikembalikan ke awal.</p>
+        <div style="display:flex;gap:10px;justify-content:center;">
+            <button class="btn-outline" onclick="closeModal('mReset')">Batal</button>
+            <button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" onclick="resetAll()"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Reset</button>
         </div>
     </div>
 </div>
 
-<!-- ===== MODAL: RESET ===== -->
-<div class="modal-bg" id="mReset">
-    <div class="modal-box" style="text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-triangle-exclamation" style="color:var(--danger);font-size:22px;"></i></div>
-        <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Reset Semua Data?</h3>
-        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">Stok, penjualan, dan pengaturan akan dikembalikan ke awal.</p>
-        <div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline" onclick="closeModal('mReset')">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" onclick="resetAll()"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Reset</button></div>
-    </div>
-</div>
-
-<!-- ===== MODAL: IMPORT ===== -->
+<!-- Import -->
 <div class="modal-bg" id="mImport">
     <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Impor Data</h3><button onclick="closeModal('mImport')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 class="font-display" style="font-size:18px;font-weight:700;">Impor Data</h3>
+            <button onclick="closeModal('mImport')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button>
+        </div>
         <div style="margin-bottom:14px;"><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Paste JSON</label><textarea class="input-field" id="impJson" rows="6" placeholder="Paste data JSON..."></textarea></div>
         <button class="btn-gold" onclick="doImport()"><i class="fas fa-upload" style="margin-right:6px;"></i>Impor</button>
     </div>
@@ -498,7 +640,7 @@
 
 <script>
 // ============================================================
-// KONSTANTA
+// KONSTANTA & DATA AWAL
 // ============================================================
 const PRICE_RIEL = 45000;
 const PRICE_USD = 11.25;
@@ -529,284 +671,526 @@ const DEFAULT_PRODUCTS = [
 
 let products = [];
 let history = [];
-let jastipLog = [];
 let selectedCurr = 'riel';
 let chartStock = null, chartSales = null, chartProfit = null;
 
 // ============================================================
-// AUTH
+// AUTENTIKASI
 // ============================================================
-function getAccounts(){try{return JSON.parse(localStorage.getItem('vj_accounts')||'{}')}catch(e){return{}}}
-function saveAccounts(a){localStorage.setItem('vj_accounts',JSON.stringify(a))}
-function getSession(){return localStorage.getItem('vj_session')}
-function setSession(u){localStorage.setItem('vj_session',u)}
-function clearSession(){localStorage.removeItem('vj_session')}
-function initAccounts(){let a=getAccounts();if(!Object.keys(a).length){a.admin='admin123';saveAccounts(a)}}
-
-function doLogin(){
-    const u=document.getElementById('loginUser').value.trim().toLowerCase(),p=document.getElementById('loginPass').value,e=document.getElementById('loginError');
-    if(!u||!p){e.style.display='block';e.textContent='Username dan password harus diisi!';return}
-    const a=getAccounts();if(!a[u]||a[u]!==p){e.style.display='block';e.textContent='Username atau password salah!';return}
-    e.style.display='none';setSession(u);showDashboard();
+function getAccounts() {
+    try { return JSON.parse(localStorage.getItem('vj_accounts') || '{}'); }
+    catch(e) { return {}; }
 }
-function doLogout(){clearSession();document.getElementById('dashboardScreen').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('loginUser').value='';document.getElementById('loginPass').value=''}
-function showRegister(){document.getElementById('registerModal').classList.add('show');document.getElementById('regUser').value='';document.getElementById('regPass').value='';document.getElementById('regPass2').value='';document.getElementById('regError').style.display='none'}
-function doRegister(){
-    const u=document.getElementById('regUser').value.trim().toLowerCase(),p=document.getElementById('regPass').value,p2=document.getElementById('regPass2').value,e=document.getElementById('regError');
-    if(!u||!p){e.style.display='block';e.textContent='Isi semua field!';return}
-    if(u.length<3){e.style.display='block';e.textContent='Username minimal 3 karakter!';return}
-    if(p.length<4){e.style.display='block';e.textContent='Password minimal 4 karakter!';return}
-    if(p!==p2){e.style.display='block';e.textContent='Konfirmasi password tidak cocok!';return}
-    const a=getAccounts();if(a[u]){e.style.display='block';e.textContent='Username sudah dipakai!';return}
-    a[u]=p;saveAccounts(a);closeModal('registerModal');toast('Akun berhasil dibuat! Silakan login.','ok');
+function saveAccounts(acc) { localStorage.setItem('vj_accounts', JSON.stringify(acc)); }
+function getSession() { return localStorage.getItem('vj_session'); }
+function setSession(u) { localStorage.setItem('vj_session', u); }
+function clearSession() { localStorage.removeItem('vj_session'); }
+
+function initAccounts() {
+    let acc = getAccounts();
+    if (Object.keys(acc).length === 0) {
+        acc['admin'] = 'admin123';
+        saveAccounts(acc);
+    }
 }
-function togglePassVis(){const i=document.getElementById('loginPass'),ic=document.getElementById('passToggleBtn').querySelector('i');if(i.type==='password'){i.type='text';ic.className='fas fa-eye-slash'}else{i.type='password';ic.className='fas fa-eye'}}
-function showDashboard(){document.getElementById('loginScreen').style.display='none';document.getElementById('dashboardScreen').style.display='block';document.getElementById('headerUser').textContent='Halo, '+(getSession()||'User');loadData();renderAll()}
+
+function doLogin() {
+    const user = document.getElementById('loginUser').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPass').value;
+    const errEl = document.getElementById('loginError');
+    if (!user || !pass) { errEl.style.display = 'block'; errEl.textContent = 'Username dan password harus diisi!'; return; }
+    const acc = getAccounts();
+    if (!acc[user] || acc[user] !== pass) { errEl.style.display = 'block'; errEl.textContent = 'Username atau password salah!'; return; }
+    errEl.style.display = 'none'; setSession(user); showDashboard();
+}
+
+function doLogout() {
+    clearSession();
+    document.getElementById('dashboardScreen').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+}
+
+function showRegister() {
+    document.getElementById('registerModal').classList.add('show');
+    document.getElementById('regUser').value = '';
+    document.getElementById('regPass').value = '';
+    document.getElementById('regPass2').value = '';
+    document.getElementById('regError').style.display = 'none';
+}
+
+function doRegister() {
+    const u = document.getElementById('regUser').value.trim().toLowerCase();
+    const p = document.getElementById('regPass').value;
+    const p2 = document.getElementById('regPass2').value;
+    const errEl = document.getElementById('regError');
+    if (!u || !p) { errEl.style.display = 'block'; errEl.textContent = 'Username dan password harus diisi!'; return; }
+    if (u.length < 3) { errEl.style.display = 'block'; errEl.textContent = 'Username minimal 3 karakter!'; return; }
+    if (p.length < 4) { errEl.style.display = 'block'; errEl.textContent = 'Password minimal 4 karakter!'; return; }
+    if (p !== p2) { errEl.style.display = 'block'; errEl.textContent = 'Konfirmasi password tidak cocok!'; return; }
+    const acc = getAccounts();
+    if (acc[u]) { errEl.style.display = 'block'; errEl.textContent = 'Username sudah dipakai!'; return; }
+    acc[u] = p; saveAccounts(acc); closeModal('registerModal'); toast('Akun berhasil dibuat! Silakan login.', 'ok');
+}
+
+function togglePassVis() {
+    const inp = document.getElementById('loginPass');
+    const ico = document.getElementById('passToggleBtn').querySelector('i');
+    if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash'; }
+    else { inp.type = 'password'; ico.className = 'fas fa-eye'; }
+}
 
 // ============================================================
-// DATA
+// TAMPILKAN DASHBOARD
 // ============================================================
-function loadData(){
-    try{
-        const d=JSON.parse(localStorage.getItem('vj_data'));
-        if(d&&d.products){
-            products=d.products;history=d.history||[];jastipLog=d.jastipLog||[];
+function showDashboard() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboardScreen').style.display = 'block';
+    const user = getSession() || 'User';
+    document.getElementById('headerUser').textContent = 'Halo, ' + user;
+    loadData(); renderAll();
+}
+
+// ============================================================
+// DATA PERSISTENCE
+// ============================================================
+function loadData() {
+    try {
+        const d = JSON.parse(localStorage.getItem('vj_data'));
+        if (d && d.products) {
+            products = d.products; history = d.history || [];
             // Migrasi data lama: gabung modal+jastip jadi total modal
-            let migrated=false;
-            products.forEach(p=>{
-                if(p.jastip!==undefined){p.modal=(p.modal||0)+(p.jastip||0);delete p.jastip;migrated=true}
-                if(p.modalDate===undefined){p.modalDate='';migrated=true}
+            let migrated = false;
+            products.forEach(function(p) {
+                if (p.jastip !== undefined) {
+                    p.modal = (p.modal || 0) + (p.jastip || 0);
+                    delete p.jastip;
+                    migrated = true;
+                }
+                if (p.modalDate === undefined) {
+                    p.modalDate = '';
+                    migrated = true;
+                }
             });
-            if(migrated)saveData();
-        }else{products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));history=[];jastipLog=[]}
-    }catch(e){products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));history=[];jastipLog=[]}
+            if (migrated) saveData();
+        } else {
+            products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS)); history = [];
+        }
+    } catch(e) {
+        products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS)); history = [];
+    }
 }
-function saveData(){localStorage.setItem('vj_data',JSON.stringify({products,history,jastipLog}))}
+function saveData() { localStorage.setItem('vj_data', JSON.stringify({ products: products, history: history })); }
 
 // ============================================================
-// FORMAT
+// FORMAT ANGKA
 // ============================================================
-function fRp(n){return'Rp '+Math.round(n).toLocaleString('id-ID')}
-function fRiel(n){return Math.round(n).toLocaleString('id-ID')+' Riel'}
-function fUsd(n){return'$'+n.toFixed(2)}
-function formatCurr(rp,c){if(c==='riel')return fRiel(rp/PRICE_RP*PRICE_RIEL);if(c==='usd')return fUsd(rp/PRICE_RP*PRICE_USD);return fRp(rp)}
-function fmtDate(d){if(!d)return'-';const dt=new Date(d);return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})}
-function fmtDateFull(d){if(!d)return'-';const dt=new Date(d);return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})}
+function fRp(n) { return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
+function fRiel(n) { return Math.round(n).toLocaleString('id-ID') + ' Riel'; }
+function fUsd(n) { return '$' + n.toFixed(2); }
+function formatCurr(amountRp, curr) {
+    if (curr === 'riel') return fRiel(amountRp / PRICE_RP * PRICE_RIEL);
+    if (curr === 'usd') return fUsd(amountRp / PRICE_RP * PRICE_USD);
+    return fRp(amountRp);
+}
+function fDate(d) {
+    if (!d) return '-';
+    var dt = new Date(d);
+    return dt.toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'});
+}
+
+// Hitung total penjualan per varian
+function totPenjualan(p) { return PRICE_RP * p.sold; }
+// Hitung untung per varian = total penjualan - total modal
+function untungVar(p) { return totPenjualan(p) - p.modal; }
 
 // ============================================================
-// RENDER ALL
+// RENDER SEMUA
 // ============================================================
-function renderAll(){renderStats();renderProducts();renderCosts();renderSaleSelect();renderHistory();renderFinance();renderLowStock();renderCharts();renderKirim()}
+function renderAll() {
+    renderStats(); renderProducts(); renderCosts(); renderSaleSelect();
+    renderHistory(); renderFinance(); renderLowStock(); renderCharts();
+}
 
 // ============================================================
 // STATS
 // ============================================================
-function renderStats(){
-    const ts=products.reduce((s,p)=>s+p.stock,0),td=products.reduce((s,p)=>s+p.sold,0);
-    const trRp=history.reduce((s,h)=>s+h.totalRp,0),tpRp=history.reduce((s,h)=>s+h.profitRp,0);
-    document.getElementById('sStok').textContent=ts;document.getElementById('sSold').textContent=td;
-    document.getElementById('sRevenue').textContent=fRp(trRp);document.getElementById('sProfit').textContent=fRp(tpRp);
-    const rR=history.filter(h=>h.currency==='riel').reduce((s,h)=>s+h.totalRp/PRICE_RP*PRICE_RIEL,0);
-    const rU=history.filter(h=>h.currency==='usd').reduce((s,h)=>s+h.totalRp/PRICE_RP*PRICE_USD,0);
-    const rP=history.filter(h=>h.currency==='rp').reduce((s,h)=>s+h.totalRp,0);
-    let det=[];if(rR>0)det.push(fRiel(rR));if(rU>0)det.push(fUsd(rU));if(rP>0)det.push(fRp(rP));
-    document.getElementById('sRevDet').textContent=det.join(' + ');
+function renderStats() {
+    const ts = products.reduce(function(s,p){return s+p.stock},0);
+    const td = products.reduce(function(s,p){return s+p.sold},0);
+    const trRp = history.reduce(function(s,h){return s+h.totalRp},0);
+    const tpRp = products.reduce(function(s,p){return s+untungVar(p)},0);
+    const trRiel = history.filter(function(h){return h.currency==='riel'}).reduce(function(s,h){return s+h.totalRp/PRICE_RP*PRICE_RIEL},0);
+    const trUsd = history.filter(function(h){return h.currency==='usd'}).reduce(function(s,h){return s+h.totalRp/PRICE_RP*PRICE_USD},0);
+    const trRpOnly = history.filter(function(h){return h.currency==='rp'}).reduce(function(s,h){return s+h.totalRp},0);
+
+    document.getElementById('sStok').textContent = ts;
+    document.getElementById('sSold').textContent = td;
+    document.getElementById('sRevenue').textContent = fRp(trRp);
+    document.getElementById('sRevDet').textContent = trRiel > 0 ? fRiel(trRiel) + ' + ' + fUsd(trUsd) + ' + ' + fRp(trRpOnly) : '';
+    document.getElementById('sProfit').textContent = fRp(tpRp);
 }
-function renderLowStock(){
-    const lo=products.filter(p=>p.stock<=2),c=document.getElementById('lowStockCard'),l=document.getElementById('lowStockList');
-    if(!lo.length){c.style.display='none';return}c.style.display='block';
-    l.innerHTML=lo.map(p=>{const cls=p.stock===0?'badge-out':'badge-low';const t=p.stock===0?'HABIS':'Sisa '+p.stock;return`<span class="badge ${cls}">${p.name} — ${t}</span>`}).join('');
+
+function renderLowStock() {
+    const low = products.filter(function(p){return p.stock <= 2});
+    const card = document.getElementById('lowStockCard');
+    const list = document.getElementById('lowStockList');
+    if (low.length === 0) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+    list.innerHTML = low.map(function(p) {
+        const cls = p.stock === 0 ? 'badge-out' : 'badge-low';
+        const txt = p.stock === 0 ? 'HABIS' : 'Sisa ' + p.stock;
+        return '<span class="badge ' + cls + '">' + p.name + ' — ' + txt + '</span>';
+    }).join('');
 }
 
 // ============================================================
 // PRODUK
 // ============================================================
-function renderProducts(){
-    const src=(document.getElementById('srcProd')?.value||'').toLowerCase(),tb=document.getElementById('tProd');let h='';
-    products.forEach((p,i)=>{
-        if(src&&!p.name.toLowerCase().includes(src))return;
-        const pct=Math.max(0,p.stock/5*100),bc=p.stock===0?'#e74c3c':p.stock<=2?'#f1c40f':'#2ecc71';
-        const cls=p.stock===0?'badge-out':p.stock<=2?'badge-low':'badge-ok';const txt=p.stock===0?'HABIS':p.stock+' botol';
-        h+=`<tr><td style="color:var(--text-muted)">${i+1}</td><td><span style="font-weight:600">${p.name}</span><div class="stock-bar"><div class="stock-fill" style="width:${pct}%;background:${bc}"></div></div></td><td><span class="badge ${cls}">${txt}</span></td><td>${p.sold}</td><td><button class="btn-outline" style="font-size:11px;padding:4px 10px" onclick="openEditProd(${i})"><i class="fas fa-pen" style="margin-right:3px"></i>Edit</button></td></tr>`;
+function renderProducts() {
+    const src = (document.getElementById('srcProd')?.value || '').toLowerCase();
+    const tbody = document.getElementById('tProd');
+    let h = '';
+    products.forEach(function(p, i) {
+        if (src && !p.name.toLowerCase().includes(src)) return;
+        const pct = Math.max(0, p.stock / 5 * 100);
+        const bc = p.stock === 0 ? '#e74c3c' : p.stock <= 2 ? '#f1c40f' : '#2ecc71';
+        const cls = p.stock === 0 ? 'badge-out' : p.stock <= 2 ? 'badge-low' : 'badge-ok';
+        const txt = p.stock === 0 ? 'HABIS' : p.stock + ' botol';
+        h += '<tr><td style="color:var(--text-muted)">' + (i+1) + '</td><td><span style="font-weight:600">' + p.name + '</span><div class="stock-bar"><div class="stock-fill" style="width:' + pct + '%;background:' + bc + '"></div></div></td><td><span class="badge ' + cls + '">' + txt + '</span></td><td>' + p.sold + '</td><td><button class="btn-outline" style="font-size:11px;padding:4px 10px" onclick="openEditProd(' + i + ')"><i class="fas fa-pen" style="margin-right:3px"></i>Edit</button></td></tr>';
     });
-    tb.innerHTML=h||'<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:28px">Tidak ditemukan</td></tr>';
+    tbody.innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:28px">Tidak ditemukan</td></tr>';
 }
-function openEditProd(i){document.getElementById('epIdx').value=i;document.getElementById('epName').value=products[i].name;document.getElementById('epStock').value=products[i].stock;openModal('mEditProd')}
-function saveProdEdit(){const i=+document.getElementById('epIdx').value,n=document.getElementById('epName').value.trim(),s=Math.max(0,+document.getElementById('epStock').value||0);if(!n){toast('Nama tidak boleh kosong','err');return}products[i].name=n;products[i].stock=s;saveData();closeModal('mEditProd');renderAll();toast(n+' diperbarui','ok')}
+
+function openEditProd(i) {
+    document.getElementById('epIdx').value = i;
+    document.getElementById('epName').value = products[i].name;
+    document.getElementById('epStock').value = products[i].stock;
+    openModal('mEditProd');
+}
+
+function saveProdEdit() {
+    const i = parseInt(document.getElementById('epIdx').value);
+    const n = document.getElementById('epName').value.trim();
+    const s = Math.max(0, parseInt(document.getElementById('epStock').value) || 0);
+    if (!n) { toast('Nama tidak boleh kosong', 'err'); return; }
+    products[i].name = n; products[i].stock = s;
+    saveData(); closeModal('mEditProd'); renderAll();
+    toast(n + ' diperbarui', 'ok');
+}
 
 // ============================================================
-// TOTAL MODAL
+// CATATAN MODAL
 // ============================================================
-function renderCosts(){
-    const tb=document.getElementById('tCost');let h='';
-    products.forEach((p,i)=>{
-        const unt=PRICE_RP-p.modal,cls=unt>=0?'profit-pos':'profit-neg';
-        h+=`<tr><td style="color:var(--text-muted)">${i+1}</td><td style="font-weight:600">${p.name}</td><td style="font-weight:600">${fRp(p.modal)}</td><td style="font-size:11px;color:var(--text-muted)">${fmtDate(p.modalDate)}</td><td style="color:var(--gold-light);font-weight:600">${fRp(PRICE_RP)}</td><td class="${cls}" style="font-weight:700">${fRp(unt)}</td><td><button class="btn-outline" style="font-size:11px;padding:4px 10px" onclick="openEditCost(${i})"><i class="fas fa-pen" style="margin-right:3px"></i>Edit</button></td></tr>`;
+function renderCosts() {
+    const tbody = document.getElementById('tCost');
+    let h = '';
+    products.forEach(function(p, i) {
+        const tp = totPenjualan(p);
+        const un = untungVar(p);
+        const cls = un >= 0 ? 'profit-pos' : 'profit-neg';
+        h += '<tr><td style="color:var(--text-muted)">' + (i+1) + '</td><td style="font-weight:600">' + p.name + '</td><td style="font-weight:600">' + fRp(p.modal) + '</td><td style="font-size:11px;color:var(--text-muted)">' + fDate(p.modalDate) + '</td><td style="color:var(--gold-light);font-weight:600">' + fRp(tp) + '</td><td class="' + cls + '" style="font-weight:700">' + fRp(un) + '</td><td><button class="btn-outline" style="font-size:11px;padding:4px 10px" onclick="openEditCost(' + i + ')"><i class="fas fa-pen" style="margin-right:3px"></i>Edit</button></td></tr>';
     });
-    tb.innerHTML=h;
+    tbody.innerHTML = h;
 }
-function openEditCost(i){document.getElementById('ecIdx').value=i;document.getElementById('ecName').textContent=products[i].name;document.getElementById('ecModal').value=products[i].modal||'';document.getElementById('ecDate').value=products[i].modalDate||'';updateCostPreview();openModal('mEditCost')}
-function updateCostPreview(){const m=+document.getElementById('ecModal').value||0,u=PRICE_RP-m;document.getElementById('ecBiaya').textContent=fRp(m);const el=document.getElementById('ecUntung');el.textContent=fRp(u);el.className=u>=0?'profit-pos':'profit-neg';el.style.textAlign='right';el.style.fontWeight='800';el.style.fontSize='15px'}
-function saveCostEdit(){const i=+document.getElementById('ecIdx').value;products[i].modal=Math.max(0,+document.getElementById('ecModal').value||0);products[i].modalDate=document.getElementById('ecDate').value;saveData();closeModal('mEditCost');renderAll();toast(products[i].name+' modal diperbarui','ok')}
 
-// ============================================================
-// JASTIP KIRIM
-// ============================================================
-function renderKirim(){
-    const box=document.getElementById('kirimList'),sum=document.getElementById('kirimSum');
-    if(!jastipLog.length){box.innerHTML='<div class="card" style="padding:30px;text-align:center;color:var(--text-muted)"><i class="fas fa-truck" style="font-size:24px;margin-bottom:8px;display:block;color:var(--jastip);opacity:.4"></i>Belum ada catatan kiriman jastip</div>';sum.textContent='';return}
-    let h='';let totalBotol=0;
-    jastipLog.forEach((k,ki)=>{
-        let items=k.items.map(it=>`<span class="badge badge-jastip">${it.variant}: +${it.qty} botol</span>`).join(' ');
-        const tot=k.items.reduce((s,it)=>s+it.qty,0);totalBotol+=tot;
-        h+=`<div class="kiriman-item"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:6px"><div><div style="font-weight:700;color:var(--jastip);font-size:14px"><i class="fas fa-truck" style="margin-right:6px"></i>${fmtDateFull(k.date)}</div>${k.note?'<div style="font-size:12px;color:var(--text-muted);margin-top:2px">'+k.note+'</div>':''}</div><div style="display:flex;align-items:center;gap:8px"><span class="badge badge-jastip">${tot} botol</span><button class="btn-danger-sm" onclick="delKirim(${ki})"><i class="fas fa-trash"></i></button></div></div><div style="display:flex;flex-wrap:wrap;gap:5px">${items}</div></div>`;
-    });
-    box.innerHTML=h;sum.textContent=jastipLog.length+' kiriman tercatat — Total: '+totalBotol+' botol masuk';
+function openEditCost(i) {
+    document.getElementById('ecIdx').value = i;
+    document.getElementById('ecName').textContent = products[i].name;
+    document.getElementById('ecModal').value = products[i].modal || '';
+    document.getElementById('ecDate').value = products[i].modalDate || '';
+    updateCostPreview();
+    openModal('mEditCost');
 }
-function openAddKirim(){
-    document.getElementById('kirimDate').value=new Date().toISOString().slice(0,10);
-    document.getElementById('kirimNote').value='';
-    const box=document.getElementById('kirimItems');
-    box.innerHTML=products.map((p,i)=>`<div style="display:flex;align-items:center;gap:8px"><span style="flex:1;font-size:13px;font-weight:600">${p.name}</span><input type="number" class="input-field kj-qty" data-idx="${i}" min="0" value="0" style="width:80px;text-align:center;padding:8px" placeholder="0"></div>`).join('');
-    openModal('mAddKirim');
+
+function updateCostPreview() {
+    const m = parseInt(document.getElementById('ecModal').value) || 0;
+    const i = parseInt(document.getElementById('ecIdx').value);
+    const p = products[i];
+    const tp = totPenjualan(p);
+    const un = tp - m;
+    document.getElementById('ecPenjualan').textContent = fRp(tp);
+    document.getElementById('ecBiaya').textContent = fRp(m);
+    const el = document.getElementById('ecUntung');
+    el.textContent = fRp(un);
+    el.className = un >= 0 ? 'profit-pos' : 'profit-neg';
+    el.style.textAlign = 'right'; el.style.fontWeight = '700'; el.style.fontSize = '15px';
+    el.style.borderTop = '1px solid var(--border)'; el.style.paddingTop = '8px';
 }
-function saveKirim(){
-    const date=document.getElementById('kirimDate').value,note=document.getElementById('kirimNote').value.trim();
-    if(!date){toast('Pilih tanggal kiriman!','err');return}
-    const items=[];let hasItem=false;
-    document.querySelectorAll('.kj-qty').forEach(inp=>{
-        const idx=+inp.dataset.idx,qty=+inp.value||0;
-        if(qty>0){items.push({variant:products[idx].name,qty});products[idx].stock+=qty;hasItem=true}
-    });
-    if(!hasItem){toast('Isi minimal 1 varian dengan jumlah!','err');return}
-    jastipLog.unshift({date,items,note});
-    saveData();closeModal('mAddKirim');renderAll();toast('Kiriman jastip dicatat, stok bertambah!','ok');
-}
-function delKirim(i){
-    const k=jastipLog[i];
-    k.items.forEach(it=>{const p=products.find(x=>x.name===it.variant);if(p)p.stock=Math.max(0,p.stock-it.qty)});
-    jastipLog.splice(i,1);saveData();renderAll();toast('Kiriman dihapus, stok dikembalikan','inf');
+
+function saveCostEdit() {
+    const i = parseInt(document.getElementById('ecIdx').value);
+    products[i].modal = Math.max(0, parseInt(document.getElementById('ecModal').value) || 0);
+    products[i].modalDate = document.getElementById('ecDate').value;
+    saveData(); closeModal('mEditCost'); renderAll();
+    toast(products[i].name + ' modal diperbarui', 'ok');
 }
 
 // ============================================================
 // PENJUALAN
 // ============================================================
-function renderSaleSelect(){
-    const s=document.getElementById('saleVar'),f=document.getElementById('filVar');
-    let o='<option value="">-- Pilih Varian --</option>',fl='<option value="">Semua Varian</option>';
-    products.forEach((p,i)=>{const d=p.stock===0?'disabled':'',inf=p.stock===0?' (HABIS)':' (Sisa: '+p.stock+')';o+=`<option value="${i}" ${d}>${p.name}${inf}</option>`;fl+=`<option value="${p.name}">${p.name}</option>`});
-    s.innerHTML=o;f.innerHTML=fl;
+function renderSaleSelect() {
+    const s = document.getElementById('saleVar');
+    const f = document.getElementById('filVar');
+    let o = '<option value="">-- Pilih Varian --</option>';
+    let fl = '<option value="">Semua Varian</option>';
+    products.forEach(function(p, i) {
+        const d = p.stock === 0 ? 'disabled' : '';
+        const inf = p.stock === 0 ? ' (HABIS)' : ' (Sisa: ' + p.stock + ')';
+        o += '<option value="' + i + '" ' + d + '>' + p.name + inf + '</option>';
+        fl += '<option value="' + p.name + '">' + p.name + '</option>';
+    });
+    s.innerHTML = o; f.innerHTML = fl;
 }
-function onSaleVarChange(){
-    const idx=document.getElementById('saleVar').value;
-    if(idx===''){document.getElementById('saleStkInfo').value='';calcPreview();return}
-    const p=products[+idx];document.getElementById('saleStkInfo').value=p.stock+' botol tersisa';
-    document.getElementById('saleQty').max=p.stock;if(+document.getElementById('saleQty').value>p.stock)document.getElementById('saleQty').value=p.stock;calcPreview();
+
+function onSaleVarChange() {
+    const idx = document.getElementById('saleVar').value;
+    if (idx === '') { document.getElementById('saleStkInfo').value = ''; calcPreview(); return; }
+    const p = products[parseInt(idx)];
+    document.getElementById('saleStkInfo').value = p.stock + ' botol tersisa';
+    document.getElementById('saleQty').max = p.stock;
+    if (parseInt(document.getElementById('saleQty').value) > p.stock) document.getElementById('saleQty').value = p.stock;
+    calcPreview();
 }
-function pickCurr(c){selectedCurr=c;document.getElementById('cRiel').className='curr-pill'+(c==='riel'?' sel-riel':'');document.getElementById('cUsd').className='curr-pill'+(c==='usd'?' sel-usd':'');document.getElementById('cRp').className='curr-pill'+(c==='rp'?' sel-rp':'');calcPreview()}
-function calcPreview(){
-    const idx=document.getElementById('saleVar').value,qty=Math.max(0,+document.getElementById('saleQty').value||0);
-    document.getElementById('salePriceDisp').textContent=formatCurr(PRICE_RP,selectedCurr);
-    document.getElementById('pvPrice').textContent=formatCurr(PRICE_RP,selectedCurr);
-    document.getElementById('pvQty').textContent=qty+' botol';
-    if(idx===''){document.getElementById('pvTotal').textContent=formatCurr(0,selectedCurr);document.getElementById('pvTotalRp').textContent=fRp(0);document.getElementById('pvProfit').textContent=fRp(0);return}
-    const p=products[+idx],tRp=PRICE_RP*qty,prRp=(PRICE_RP-p.modal)*qty;
-    document.getElementById('pvTotal').textContent=formatCurr(tRp,selectedCurr);
-    document.getElementById('pvTotalRp').textContent=fRp(tRp);
-    const pe=document.getElementById('pvProfit');pe.textContent=fRp(prRp);pe.className=prRp>=0?'profit-pos':'profit-neg';pe.style.textAlign='right';pe.style.fontWeight='800';pe.style.fontSize='15px';
+
+function pickCurr(c) {
+    selectedCurr = c;
+    document.getElementById('cRiel').className = 'curr-pill' + (c === 'riel' ? ' sel-riel' : '');
+    document.getElementById('cUsd').className = 'curr-pill' + (c === 'usd' ? ' sel-usd' : '');
+    document.getElementById('cRp').className = 'curr-pill' + (c === 'rp' ? ' sel-rp' : '');
+    calcPreview();
 }
-function recordSale(){
-    const idx=document.getElementById('saleVar').value,qty=+document.getElementById('saleQty').value||0,buyer=document.getElementById('saleBuyer').value.trim(),note=document.getElementById('saleNote').value.trim();
-    if(idx===''){toast('Pilih varian dulu!','err');return}if(qty<=0){toast('Jumlah harus lebih dari 0!','err');return}
-    const p=products[+idx];if(qty>p.stock){toast('Stok '+p.name+' tidak cukup! Sisa '+p.stock,'err');return}
-    const tRp=PRICE_RP*qty,prRp=(PRICE_RP-p.modal)*qty;
-    p.stock-=qty;p.sold+=qty;
-    let tOrig;if(selectedCurr==='riel')tOrig=fRiel(PRICE_RIEL*qty);else if(selectedCurr==='usd')tOrig=fUsd(PRICE_USD*qty);else tOrig=fRp(PRICE_RP*qty);
-    history.unshift({date:new Date().toISOString(),variant:p.name,qty,currency:selectedCurr,totalOrig:tOrig,totalRp:tRp,profitRp:prRp,buyer,note});
-    saveData();renderAll();
-    document.getElementById('saleVar').value='';document.getElementById('saleQty').value=1;document.getElementById('saleBuyer').value='';document.getElementById('saleNote').value='';document.getElementById('saleStkInfo').value='';calcPreview();
-    toast('Penjualan '+p.name+' ('+qty+' botol) dicatat!','ok');
+
+function calcPreview() {
+    const idx = document.getElementById('saleVar').value;
+    const qty = Math.max(0, parseInt(document.getElementById('saleQty').value) || 0);
+    document.getElementById('salePriceDisp').textContent = formatCurr(PRICE_RP, selectedCurr);
+    document.getElementById('pvPrice').textContent = formatCurr(PRICE_RP, selectedCurr);
+    document.getElementById('pvQty').textContent = qty + ' botol';
+    if (idx === '') {
+        document.getElementById('pvTotal').textContent = formatCurr(0, selectedCurr);
+        document.getElementById('pvTotalRp').textContent = fRp(0);
+        return;
+    }
+    const p = products[parseInt(idx)];
+    const tRp = PRICE_RP * qty;
+    document.getElementById('pvTotal').textContent = formatCurr(tRp, selectedCurr);
+    document.getElementById('pvTotalRp').textContent = fRp(tRp);
+}
+
+function recordSale() {
+    const idx = document.getElementById('saleVar').value;
+    const qty = parseInt(document.getElementById('saleQty').value) || 0;
+    const buyer = document.getElementById('saleBuyer').value.trim();
+    const note = document.getElementById('saleNote').value.trim();
+    if (idx === '') { toast('Pilih varian dulu!', 'err'); return; }
+    if (qty <= 0) { toast('Jumlah harus lebih dari 0!', 'err'); return; }
+    const p = products[parseInt(idx)];
+    if (qty > p.stock) { toast('Stok ' + p.name + ' tidak cukup! Sisa ' + p.stock, 'err'); return; }
+    const tRp = PRICE_RP * qty;
+    p.stock -= qty; p.sold += qty;
+    var tOrig;
+    if (selectedCurr === 'riel') tOrig = fRiel(PRICE_RIEL * qty);
+    else if (selectedCurr === 'usd') tOrig = fUsd(PRICE_USD * qty);
+    else tOrig = fRp(PRICE_RP * qty);
+    history.unshift({date: new Date().toISOString(), variant: p.name, qty: qty, currency: selectedCurr, totalOrig: tOrig, totalRp: tRp, buyer: buyer, note: note});
+    saveData(); renderAll();
+    document.getElementById('saleVar').value = '';
+    document.getElementById('saleQty').value = 1;
+    document.getElementById('saleBuyer').value = '';
+    document.getElementById('saleNote').value = '';
+    document.getElementById('saleStkInfo').value = '';
+    calcPreview();
+    toast('Penjualan ' + p.name + ' (' + qty + ' botol) dicatat!', 'ok');
 }
 
 // ============================================================
 // RIWAYAT
 // ============================================================
-function renderHistory(){
-    const src=(document.getElementById('srcHist')?.value||'').toLowerCase(),fil=document.getElementById('filVar')?.value||'';
-    let fl=history.filter(h=>{const ms=!src||h.variant.toLowerCase().includes(src)||(h.buyer&&h.buyer.toLowerCase().includes(src));const mf=!fil||h.variant===fil;return ms&&mf});
-    const tb=document.getElementById('tHist');let h='';
-    fl.forEach(s=>{
-        const d=new Date(s.date),ds=d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}),ts=d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-        const cls=s.profitRp>=0?'profit-pos':'profit-neg';
-        let cb='';if(s.currency==='riel')cb='<span class="badge" style="background:rgba(230,126,34,.08);color:var(--riel)">Riel</span>';else if(s.currency==='usd')cb='<span class="badge" style="background:rgba(46,204,113,.08);color:var(--usd)">USD</span>';else cb='<span class="badge" style="background:rgba(52,152,219,.08);color:var(--rp)">Rp</span>';
-        const ri=history.indexOf(s);
-        h+=`<tr><td><div style="font-size:11px">${ds}</div><div style="font-size:9px;color:var(--text-muted)">${ts}</div></td><td style="font-weight:600">${s.variant}</td><td>${s.qty}</td><td>${cb} <span style="font-size:11px">${s.totalOrig}</span></td><td style="font-weight:600">${fRp(s.totalRp)}</td><td class="${cls}" style="font-weight:700">${fRp(s.profitRp)}</td><td style="color:var(--text-secondary);font-size:11px">${s.buyer||'-'}</td><td><button class="btn-danger-sm" onclick="delSale(${ri})"><i class="fas fa-trash"></i></button></td></tr>`;
+function renderHistory() {
+    const src = (document.getElementById('srcHist')?.value || '').toLowerCase();
+    const fil = document.getElementById('filVar')?.value || '';
+    var fl = history.filter(function(h) {
+        const ms = !src || h.variant.toLowerCase().includes(src) || (h.buyer && h.buyer.toLowerCase().includes(src));
+        const mf = !fil || h.variant === fil;
+        return ms && mf;
     });
-    tb.innerHTML=h||'<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:28px">Belum ada riwayat</td></tr>';
-    const tR=fl.reduce((s,h)=>s+h.totalRp,0),tP=fl.reduce((s,h)=>s+h.profitRp,0);
-    document.getElementById('histSum').textContent=fl.length+' transaksi | Total: '+fRp(tR)+' | Untung: '+fRp(tP);
+    const tbody = document.getElementById('tHist');
+    let h = '';
+    fl.forEach(function(s) {
+        const d = new Date(s.date);
+        const ds = d.toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'});
+        const ts = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'});
+        var cb = '';
+        if (s.currency === 'riel') cb = '<span class="badge" style="background:rgba(230,126,34,.08);color:var(--riel)">Riel</span>';
+        else if (s.currency === 'usd') cb = '<span class="badge" style="background:rgba(46,204,113,.08);color:var(--usd)">USD</span>';
+        else cb = '<span class="badge" style="background:rgba(52,152,219,.08);color:var(--rp)">Rp</span>';
+        const ri = history.indexOf(s);
+        h += '<tr><td><div style="font-size:11px">' + ds + '</div><div style="font-size:9px;color:var(--text-muted)">' + ts + '</div></td><td style="font-weight:600">' + s.variant + '</td><td>' + s.qty + '</td><td>' + cb + ' <span style="font-size:11px">' + s.totalOrig + '</span></td><td style="font-weight:600">' + fRp(s.totalRp) + '</td><td style="color:var(--text-secondary);font-size:11px">' + (s.buyer || '-') + '</td><td><button class="btn-danger-sm" onclick="delSale(' + ri + ')"><i class="fas fa-trash"></i></button></td></tr>';
+    });
+    tbody.innerHTML = h || '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:28px">Belum ada riwayat</td></tr>';
+    const tR = fl.reduce(function(s,h2){return s+h2.totalRp},0);
+    document.getElementById('histSum').textContent = fl.length + ' transaksi | Total: ' + fRp(tR);
 }
-function delSale(i){const s=history[i],p=products.find(x=>x.name===s.variant);if(p){p.stock+=s.qty;p.sold=Math.max(0,p.sold-s.qty)}history.splice(i,1);saveData();renderAll();toast('Transaksi dihapus, stok dikembalikan','inf')}
+
+function delSale(i) {
+    const s = history[i];
+    const p = products.find(function(x){return x.name === s.variant});
+    if (p) { p.stock += s.qty; p.sold = Math.max(0, p.sold - s.qty); }
+    history.splice(i, 1); saveData(); renderAll();
+    toast('Transaksi dihapus, stok dikembalikan', 'inf');
+}
 
 // ============================================================
 // KEUANGAN
 // ============================================================
-function renderFinance(){
-    let tMo=0,tPe=0,tUn=0,rR=0,rU=0,rP=0;
-    H&&history.forEach(h=>{if(h.currency==='riel')rR+=h.totalRp/PRICE_RP*PRICE_RIEL;else if(h.currency==='usd')rU+=h.totalRp/PRICE_RP*PRICE_USD;else rP+=h.totalRp});
-    const tb=document.getElementById('tFin');let h='';
-    products.forEach(p=>{
-        const uPB=PRICE_RP-p.modal,cls=uPB>=0?'profit-pos':'profit-neg';
-        const tM=p.modal*p.sold,tP=PRICE_RP*p.sold,tU=uPB*p.sold;
-        tMo+=tM;tPe+=tP;tUn+=tU;
-        h+=`<tr><td style="font-weight:600">${p.name}</td><td>${fRp(p.modal)}</td><td style="color:var(--gold-light);font-weight:600">${fRp(PRICE_RP)}</td><td class="${cls}" style="font-weight:700">${fRp(uPB)}</td><td>${p.sold}</td><td>${fRp(tM)}</td><td>${fRp(tP)}</td><td class="${cls}" style="font-weight:800">${fRp(tU)}</td></tr>`;
+function renderFinance() {
+    var tMo = 0, tPe = 0, tUn = 0, rR = 0, rU = 0, rP = 0;
+    history.forEach(function(h) {
+        if (h.currency === 'riel') rR += h.totalRp / PRICE_RP * PRICE_RIEL;
+        else if (h.currency === 'usd') rU += h.totalRp / PRICE_RP * PRICE_USD;
+        else rP += h.totalRp;
     });
-    tb.innerHTML=h;
-    document.getElementById('fModal').textContent=fRp(tMo);document.getElementById('fPenjualan').textContent=fRp(tPe);document.getElementById('fUntung').textContent=fRp(tUn);
-    document.getElementById('fRiel').textContent=fRiel(rR);document.getElementById('fUsd').textContent=fUsd(rU);document.getElementById('fRp').textContent=fRp(rP);
+    const tbody = document.getElementById('tFin');
+    let h = '';
+    products.forEach(function(p) {
+        const tp = totPenjualan(p);
+        const un = untungVar(p);
+        const cls = un >= 0 ? 'profit-pos' : 'profit-neg';
+        tMo += p.modal; tPe += tp; tUn += un;
+        h += '<tr><td style="font-weight:600">' + p.name + '</td><td>' + fRp(p.modal) + '</td><td style="font-size:11px;color:var(--text-muted)">' + fDate(p.modalDate) + '</td><td style="color:var(--gold-light);font-weight:600">' + fRp(tp) + '</td><td class="' + cls + '" style="font-weight:700">' + fRp(un) + '</td><td>' + p.sold + '</td><td>' + p.stock + '</td></tr>';
+    });
+    tbody.innerHTML = h;
+    document.getElementById('fModal').textContent = fRp(tMo);
+    document.getElementById('fPenjualan').textContent = fRp(tPe);
+    document.getElementById('fUntung').textContent = fRp(tUn);
+    document.getElementById('fRiel').textContent = fRiel(rR);
+    document.getElementById('fUsd').textContent = fUsd(rU);
+    document.getElementById('fRp').textContent = fRp(rP);
 }
 
 // ============================================================
 // CHARTS
 // ============================================================
-function renderCharts(){rC1();rC2();rC3()}
-function cCols(n){const hs=[35,10,350,25,45,15,340,30,5,55,20,355,40,50,0,38,8,48,18,352];const c=[];for(let i=0;i<n;i++)c.push(`hsla(${hs[i%hs.length]},55%,55%,.8)`);return c}
-const cTip={backgroundColor:'#181818',titleColor:'#c9a84c',bodyColor:'#f0ece2',borderColor:'#2a2724',borderWidth:1};
-function rC1(){const ctx=document.getElementById('cStock').getContext('2d');if(chartStock)chartStock.destroy();const lb=products.map(p=>p.name),d=products.map(p=>p.stock),c=products.map(p=>p.stock===0?'rgba(231,76,60,.8)':p.stock<=2?'rgba(241,196,15,.8)':'rgba(201,168,76,.8)');chartStock=new Chart(ctx,{type:'bar',data:{labels:lb,datasets:[{data:d,backgroundColor:c,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:cTip},scales:{x:{ticks:{color:'#5a5650',font:{size:8},maxRotation:55},grid:{color:'rgba(42,39,36,.25)'}},y:{beginAtZero:true,max:5,ticks:{color:'#5a5650',stepSize:1},grid:{color:'rgba(42,39,36,.25)'}}}}})}
-function rC2(){const ctx=document.getElementById('cSales').getContext('2d');if(chartSales)chartSales.destroy();const lb=products.map(p=>p.name),d=products.map(p=>p.sold),hd=d.some(v=>v>0);chartSales=new Chart(ctx,{type:'doughnut',data:{labels:lb,datasets:[{data:hd?d:[1],backgroundColor:hd?cCols(products.length):['rgba(42,39,36,.4)'],borderColor:'rgba(10,10,10,.5)',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{color:'#8a8578',font:{size:8},padding:5,usePointStyle:true,pointStyleWidth:7}},tooltip:cTip}}})}
-function rC3(){const ctx=document.getElementById('cProfit').getContext('2d');if(chartProfit)chartProfit.destroy();const lb=products.map(p=>p.name),d=products.map(p=>(PRICE_RP-p.modal)*p.sold),c=d.map(v=>v>=0?'rgba(46,204,113,.8)':'rgba(231,76,60,.8)');chartProfit=new Chart(ctx,{type:'bar',data:{labels:lb,datasets:[{data:d,backgroundColor:c,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{...cTip,callbacks:{label:c=>fRp(c.raw)}}},scales:{x:{ticks:{color:'#5a5650',callback:v=>fRp(v)},grid:{color:'rgba(42,39,36,.25)'}},y:{ticks:{color:'#8a8578',font:{size:10}},grid:{color:'rgba(42,39,36,.15)'}}}}})}
+function renderCharts() { rC1(); rC2(); rC3(); }
+
+function cCols(n) {
+    var hs = [35,10,350,25,45,15,340,30,5,55,20,355,40,50,0,38,8,48,18,352];
+    var c = [];
+    for (var i = 0; i < n; i++) c.push('hsla(' + hs[i % hs.length] + ',55%,55%,.8)');
+    return c;
+}
+
+var cTip = {backgroundColor:'#181818',titleColor:'#c9a84c',bodyColor:'#f0ece2',borderColor:'#2a2724',borderWidth:1};
+
+function rC1() {
+    const ctx = document.getElementById('cStock').getContext('2d');
+    if (chartStock) chartStock.destroy();
+    const lb = products.map(function(p){return p.name});
+    const d = products.map(function(p){return p.stock});
+    const c = products.map(function(p){return p.stock===0?'rgba(231,76,60,.8)':p.stock<=2?'rgba(241,196,15,.8)':'rgba(201,168,76,.8)'});
+    chartStock = new Chart(ctx, {type:'bar',data:{labels:lb,datasets:[{data:d,backgroundColor:c,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:cTip},scales:{x:{ticks:{color:'#5a5650',font:{size:8},maxRotation:55},grid:{color:'rgba(42,39,36,.25)'}},y:{beginAtZero:true,max:5,ticks:{color:'#5a5650',stepSize:1},grid:{color:'rgba(42,39,36,.25)'}}}}});
+}
+
+function rC2() {
+    const ctx = document.getElementById('cSales').getContext('2d');
+    if (chartSales) chartSales.destroy();
+    const lb = products.map(function(p){return p.name});
+    const d = products.map(function(p){return p.sold});
+    const hd = d.some(function(v){return v>0});
+    chartSales = new Chart(ctx, {type:'doughnut',data:{labels:lb,datasets:[{data:hd?d:[1],backgroundColor:hd?cCols(products.length):['rgba(42,39,36,.4)'],borderColor:'rgba(10,10,10,.5)',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{color:'#8a8578',font:{size:8},padding:5,usePointStyle:true,pointStyleWidth:7}},tooltip:cTip}}});
+}
+
+function rC3() {
+    const ctx = document.getElementById('cProfit').getContext('2d');
+    if (chartProfit) chartProfit.destroy();
+    const lb = products.map(function(p){return p.name});
+    const d = products.map(function(p){return untungVar(p)});
+    const c = d.map(function(v){return v>=0?'rgba(46,204,113,.8)':'rgba(231,76,60,.8)'});
+    chartProfit = new Chart(ctx, {type:'bar',data:{labels:lb,datasets:[{data:d,backgroundColor:c,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:Object.assign({},cTip,{callbacks:{label:function(c2){return fRp(c2.raw)}}})},scales:{x:{ticks:{color:'#5a5650',callback:function(v){return fRp(v)}},grid:{color:'rgba(42,39,36,.25)'}},y:{ticks:{color:'#908a7e',font:{size:10}},grid:{color:'rgba(42,39,36,.15)'}}}}});
+}
 
 // ============================================================
 // TAB
 // ============================================================
-function switchTab(n){document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));const sec=document.getElementById('tab-'+n);if(sec)sec.classList.add('active');const btn=document.querySelector(`.tab-btn[data-tab="${n}"]`);if(btn){btn.classList.add('active');btn.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})}if(n==='overview'||n==='finance')setTimeout(renderCharts,60)}
+function switchTab(n) {
+    document.querySelectorAll('.tab-section').forEach(function(s){s.classList.remove('active')});
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    var sec = document.getElementById('tab-' + n);
+    if (sec) sec.classList.add('active');
+    var btn = document.querySelector('.tab-btn[data-tab="' + n + '"]');
+    if (btn) { btn.classList.add('active'); btn.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}); }
+    if (n === 'overview' || n === 'finance') setTimeout(renderCharts, 60);
+}
 
 // ============================================================
-// MODAL
+// MODAL HELPERS
 // ============================================================
-function openModal(id){document.getElementById(id).classList.add('show')}
-function closeModal(id){document.getElementById(id).classList.remove('show')}
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
 // ============================================================
 // TOAST
 // ============================================================
-function toast(m,t){const b=document.getElementById('toastBox'),el=document.createElement('div');const cls=t==='ok'?'toast-ok':t==='err'?'toast-err':'toast-inf';const ico=t==='ok'?'fa-check-circle':t==='err'?'fa-circle-exclamation':'fa-circle-info';el.className='toast '+cls;el.innerHTML=`<i class="fas ${ico}"></i> ${m}`;b.appendChild(el);setTimeout(()=>{if(el.parentNode)el.remove()},3000)}
+function toast(m, t) {
+    var b = document.getElementById('toastBox');
+    var el = document.createElement('div');
+    var cls = t === 'ok' ? 'toast-ok' : t === 'err' ? 'toast-err' : 'toast-inf';
+    var ico = t === 'ok' ? 'fa-check-circle' : t === 'err' ? 'fa-circle-exclamation' : 'fa-circle-info';
+    el.className = 'toast ' + cls;
+    el.innerHTML = '<i class="fas ' + ico + '"></i> ' + m;
+    b.appendChild(el);
+    setTimeout(function(){ if (el.parentNode) el.remove(); }, 3000);
+}
 
 // ============================================================
 // EKSPOR / IMPOR / RESET
 // ============================================================
-function exportData(){const d={products,history,jastipLog,exportDate:new Date().toISOString()};const j=JSON.stringify(d,null,2);const bl=new Blob([j],{type:'application/json'});const u=URL.createObjectURL(bl);const a=document.createElement('a');a.href=u;a.download='vj_parfum_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(u);toast('Data berhasil diekspor','ok')}
-function openImport(){document.getElementById('impJson').value='';openModal('mImport')}
-function doImport(){const j=document.getElementById('impJson').value.trim();if(!j){toast('Paste JSON dulu!','err');return}try{const d=JSON.parse(j);if(d.products&&Array.isArray(d.products)){products=d.products;history=d.history||[];jastipLog=d.jastipLog||[];saveData();closeModal('mImport');renderAll();toast('Data berhasil diimpor!','ok')}else toast('Format tidak valid','err')}catch(e){toast('Gagal membaca JSON','er')}}
-function confirmReset(){openModal('mReset')}
-function resetAll(){products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));history=[];jastipLog=[];saveData();closeModal('mReset');renderAll();toast('Semua data direset','inf')}
+function exportData() {
+    var d = {products:products,history:history,exportDate:new Date().toISOString()};
+    var j = JSON.stringify(d, null, 2);
+    var bl = new Blob([j], {type:'application/json'});
+    var u = URL.createObjectURL(bl);
+    var a = document.createElement('a');
+    a.href = u; a.download = 'vj_parfum_' + new Date().toISOString().slice(0,10) + '.json';
+    a.click(); URL.revokeObjectURL(u); toast('Data berhasil diekspor', 'ok');
+}
+
+function openImport() { document.getElementById('impJson').value = ''; openModal('mImport'); }
+
+function doImport() {
+    var j = document.getElementById('impJson').value.trim();
+    if (!j) { toast('Paste JSON dulu!', 'err'); return; }
+    try {
+        var d = JSON.parse(j);
+        if (d.products && Array.isArray(d.products)) {
+            products = d.products; history = d.history || [];
+            saveData(); closeModal('mImport'); renderAll();
+            toast('Data berhasil diimpor!', 'ok');
+        } else toast('Format tidak valid', 'err');
+    } catch(e) { toast('Gagal membaca JSON', 'err'); }
+}
+
+function confirmReset() { openModal('mReset'); }
+
+function resetAll() {
+    products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS)); history = [];
+    saveData(); closeModal('mReset'); renderAll(); toast('Semua data direset', 'inf');
+}
 
 // ============================================================
 // INIT
 // ============================================================
-function init(){initAccounts();const s=getSession();if(s){const a=getAccounts();if(a[s]){showDashboard();return}}document.getElementById('loginPage')?void 0:void 0}
-document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
-document.getElementById('loginUser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus()});
+function init() {
+    initAccounts();
+    var s = getSession();
+    if (s) { var a = getAccounts(); if (a[s]) { showDashboard(); return; } }
+}
+
+document.getElementById('loginPass').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+document.getElementById('loginUser').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('loginPass').focus(); });
+
 init();
 </script>
 </body>
