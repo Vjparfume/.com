@@ -1,1 +1,1554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VJ PARFUM - Dashboard Penjualan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --bg-card-hover: #222222;
+            --gold: #c9a84c;
+            --gold-light: #e4c76b;
+            --gold-dark: #9a7b2e;
+            --text-primary: #f0ece2;
+            --text-secondary: #8a8578;
+            --text-muted: #5a5650;
+            --border: #2a2724;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --info: #3498db;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.02) 0%, transparent 70%);
+            z-index: -1;
+            animation: ambientShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambientShift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-2%, -1%) rotate(1deg); }
+        }
+
+        .font-display { font-family: 'Playfair Display', serif; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+        /* Card styling */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(201,168,76,0.3);
+            box-shadow: 0 0 30px rgba(201,168,76,0.05);
+        }
+
+        /* Stat cards */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .stat-card:hover::before { opacity: 1; }
+
+        /* Gold shimmer text */
+        .gold-shimmer {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Button styles */
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: #0a0a0a;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+        }
+        .btn-gold:active { transform: translateY(0); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold-dark);
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+        }
+        .btn-outline:hover {
+            background: rgba(201,168,76,0.1);
+            border-color: var(--gold);
+        }
+
+        .btn-danger {
+            background: rgba(231,76,60,0.15);
+            color: var(--danger);
+            border: 1px solid rgba(231,76,60,0.3);
+            border-radius: 8px;
+            padding: 6px 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+        }
+        .btn-danger:hover {
+            background: rgba(231,76,60,0.25);
+            border-color: var(--danger);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        /* Input styling */
+        .input-field {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            width: 100%;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+        }
+        .input-field::placeholder { color: var(--text-muted); }
+
+        /* Select styling */
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c9a84c' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .data-table thead th {
+            background: var(--bg-secondary);
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        .data-table thead th:first-child { border-radius: 10px 0 0 0; }
+        .data-table thead th:last-child { border-radius: 0 10px 0 0; }
+        .data-table tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(42,39,36,0.5);
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .data-table tbody tr {
+            transition: background 0.2s ease;
+        }
+        .data-table tbody tr:hover {
+            background: rgba(201,168,76,0.04);
+        }
+
+        /* Stock bar */
+        .stock-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .stock-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Toast notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 280px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .toast-success {
+            background: rgba(46,204,113,0.15);
+            border: 1px solid rgba(46,204,113,0.3);
+            color: var(--success);
+        }
+        .toast-error {
+            background: rgba(231,76,60,0.15);
+            border: 1px solid rgba(231,76,60,0.3);
+            color: var(--danger);
+        }
+        .toast-info {
+            background: rgba(201,168,76,0.15);
+            border: 1px solid rgba(201,168,76,0.3);
+            color: var(--gold-light);
+        }
+
+        @keyframes toastIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .badge-stock-ok { background: rgba(46,204,113,0.15); color: var(--success); }
+        .badge-stock-low { background: rgba(241,196,15,0.15); color: #f1c40f; }
+        .badge-stock-out { background: rgba(231,76,60,0.15); color: var(--danger); }
+
+        /* Tab navigation */
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'DM Sans', sans-serif;
+        }
+        .tab-btn:hover { color: var(--text-primary); background: rgba(201,168,76,0.05); }
+        .tab-btn.active {
+            background: rgba(201,168,76,0.1);
+            color: var(--gold);
+            border-color: rgba(201,168,76,0.3);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: -1;
+        }
+
+        /* Profit indicator */
+        .profit-positive { color: var(--success); }
+        .profit-negative { color: var(--danger); }
+
+        /* Responsive table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+        }
+
+        /* Pulse animation for low stock */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .pulse { animation: pulse 2s ease-in-out infinite; }
+
+        /* Nav link indicator */
+        .nav-indicator {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .tab-btn.active .nav-indicator { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .stat-grid { grid-template-columns: 1fr 1fr !important; }
+            .data-table { font-size: 12px; }
+            .data-table thead th, .data-table tbody td { padding: 8px 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .stat-grid { grid-template-columns: 1fr !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Header -->
+<header style="background: var(--bg-secondary); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(20px);">
+    <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--gold-dark), var(--gold-light)); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-spray-can-sparkles" style="color: #0a0a0a; font-size: 18px;"></i>
+            </div>
+            <div>
+                <h1 class="font-display gold-shimmer" style="font-size: 22px; font-weight: 900; letter-spacing: 2px;">VJ PARFUM</h1>
+                <p style="font-size: 11px; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase;">Dashboard Penjualan</p>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="btn-outline btn-sm" onclick="exportData()" title="Ekspor Data">
+                <i class="fas fa-download" style="margin-right: 4px;"></i> Ekspor
+            </button>
+            <button class="btn-outline btn-sm" onclick="importDataPrompt()" title="Impor Data">
+                <i class="fas fa-upload" style="margin-right: 4px;"></i> Impor
+            </button>
+            <button class="btn-danger btn-sm" onclick="confirmReset()" title="Reset Semua Data">
+                <i class="fas fa-rotate-left" style="margin-right: 4px;"></i> Reset
+            </button>
+        </div>
+    </div>
+</header>
+
+<main style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+
+    <!-- Tab Navigation -->
+    <nav style="display: flex; gap: 6px; margin-bottom: 28px; flex-wrap: wrap;" role="tablist">
+        <button class="tab-btn active" onclick="switchTab('overview')" data-tab="overview" role="tab" aria-selected="true">
+            <i class="fas fa-chart-pie" style="margin-right: 6px;"></i>Ringkasan
+        </button>
+        <button class="tab-btn" onclick="switchTab('products')" data-tab="products" role="tab" aria-selected="false">
+            <i class="fas fa-flask" style="margin-right: 6px;"></i>Produk & Stok
+        </button>
+        <button class="tab-btn" onclick="switchTab('sales')" data-tab="sales" role="tab" aria-selected="false">
+            <i class="fas fa-receipt" style="margin-right: 6px;"></i>Catat Penjualan
+        </button>
+        <button class="tab-btn" onclick="switchTab('history')" data-tab="history" role="tab" aria-selected="false">
+            <i class="fas fa-clock-rotate-left" style="margin-right: 6px;"></i>Riwayat
+        </button>
+        <button class="tab-btn" onclick="switchTab('finance')" data-tab="finance" role="tab" aria-selected="false">
+            <i class="fas fa-coins" style="margin-right: 6px;"></i>Keuangan
+        </button>
+    </nav>
+
+    <!-- OVERVIEW TAB -->
+    <section id="tab-overview">
+        <!-- Stat Cards -->
+        <div class="stat-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px;">
+            <div class="card stat-card" style="padding: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Total Stok</span>
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(201,168,76,0.1); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-boxes-stacked" style="color: var(--gold); font-size: 14px;"></i>
+                    </div>
+                </div>
+                <div style="font-size: 32px; font-weight: 700;" id="statTotalStock">0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">botol tersisa</div>
+            </div>
+            <div class="card stat-card" style="padding: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Total Terjual</span>
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(52,152,219,0.1); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-cart-shopping" style="color: var(--info); font-size: 14px;"></i>
+                    </div>
+                </div>
+                <div style="font-size: 32px; font-weight: 700;" id="statTotalSold">0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">botol terjual</div>
+            </div>
+            <div class="card stat-card" style="padding: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Total Pendapatan</span>
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(46,204,113,0.1); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-money-bill-wave" style="color: var(--success); font-size: 14px;"></i>
+                    </div>
+                </div>
+                <div style="font-size: 28px; font-weight: 700;" id="statTotalRevenue">Rp 0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">dari penjualan</div>
+            </div>
+            <div class="card stat-card" style="padding: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Total Untung</span>
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(201,168,76,0.1); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-hand-holding-dollar" style="color: var(--gold-light); font-size: 14px;"></i>
+                    </div>
+                </div>
+                <div style="font-size: 28px; font-weight: 700;" id="statTotalProfit">Rp 0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">keuntungan bersih</div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;">
+            <div class="card" style="padding: 24px;">
+                <h3 style="font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Stok per Varian</h3>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="chartStock"></canvas>
+                </div>
+            </div>
+            <div class="card" style="padding: 24px;">
+                <h3 style="font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Penjualan per Varian</h3>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="chartSales"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low stock alert -->
+        <div class="card" style="padding: 20px;" id="lowStockAlert">
+            <h3 style="font-size: 14px; color: var(--danger); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+                <i class="fas fa-triangle-exclamation" style="margin-right: 6px;"></i>Stok Menipis
+            </h3>
+            <div id="lowStockList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS TAB -->
+    <section id="tab-products" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <h2 class="font-display" style="font-size: 24px; font-weight: 700;">Daftar Produk</h2>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" class="input-field" placeholder="Cari varian..." id="searchProduct" oninput="renderProducts()" style="width: 220px;">
+            </div>
+        </div>
+        <div class="card table-wrapper">
+            <table class="data-table" id="productTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Varian</th>
+                        <th>Stok</th>
+                        <th>Modal</th>
+                        <th>Jastip</th>
+                        <th>Harga Jual</th>
+                        <th>Untung/Botol</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SALES TAB -->
+    <section id="tab-sales" style="display: none;">
+        <h2 class="font-display" style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">Catat Penjualan</h2>
+        <div class="card" style="padding: 28px; max-width: 600px;">
+            <div style="display: flex; flex-direction: column; gap: 18px;">
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Pilih Varian</label>
+                    <select class="input-field" id="saleVariant" onchange="onSaleVariantChange()">
+                        <option value="">-- Pilih Varian --</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Stok Tersedia</label>
+                    <input type="text" class="input-field" id="saleStockInfo" readonly style="color: var(--gold);">
+                </div>
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Jumlah Beli</label>
+                    <input type="number" class="input-field" id="saleQty" min="1" value="1" oninput="calcSalePreview()">
+                </div>
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Nama Pembeli (opsional)</label>
+                    <input type="text" class="input-field" id="saleBuyer" placeholder="Nama pembeli...">
+                </div>
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Catatan (opsional)</label>
+                    <input type="text" class="input-field" id="saleNote" placeholder="Catatan tambahan...">
+                </div>
+
+                <!-- Preview -->
+                <div style="background: var(--bg-secondary); border-radius: 12px; padding: 18px; border: 1px solid var(--border);">
+                    <h4 style="font-size: 13px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Pratinjau Penjualan</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+                        <div style="color: var(--text-secondary);">Harga Jual:</div>
+                        <div style="text-align: right; font-weight: 600;" id="previewPrice">Rp 0</div>
+                        <div style="color: var(--text-secondary);">Total Pendapatan:</div>
+                        <div style="text-align: right; font-weight: 600; color: var(--success);" id="previewRevenue">Rp 0</div>
+                        <div style="color: var(--text-secondary);">Total Untung:</div>
+                        <div style="text-align: right; font-weight: 600; color: var(--gold-light);" id="previewProfit">Rp 0</div>
+                    </div>
+                </div>
+
+                <button class="btn-gold" style="width: 100%; padding: 14px; font-size: 16px;" onclick="recordSale()">
+                    <i class="fas fa-check" style="margin-right: 8px;"></i>Simpan Penjualan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HISTORY TAB -->
+    <section id="tab-history" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <h2 class="font-display" style="font-size: 24px; font-weight: 700;">Riwayat Penjualan</h2>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" class="input-field" placeholder="Cari..." id="searchHistory" oninput="renderHistory()" style="width: 200px;">
+                <select class="input-field" id="filterVariant" onchange="renderHistory()" style="width: 180px;">
+                    <option value="">Semua Varian</option>
+                </select>
+            </div>
+        </div>
+        <div class="card table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Varian</th>
+                        <th>Qty</th>
+                        <th>Harga Jual</th>
+                        <th>Total</th>
+                        <th>Untung</th>
+                        <th>Pembeli</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
+        </div>
+        <div style="margin-top: 12px; font-size: 13px; color: var(--text-muted);" id="historySummary"></div>
+    </section>
+
+    <!-- FINANCE TAB -->
+    <section id="tab-finance" style="display: none;">
+        <h2 class="font-display" style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">Laporan Keuangan</h2>
+
+        <div class="stat-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;">
+            <div class="card" style="padding: 24px;">
+                <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Modal</div>
+                <div style="font-size: 24px; font-weight: 700;" id="finTotalModal">Rp 0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">modal semua varian</div>
+            </div>
+            <div class="card" style="padding: 24px;">
+                <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Jastip</div>
+                <div style="font-size: 24px; font-weight: 700;" id="finTotalJastip">Rp 0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">biaya jastip semua varian</div>
+            </div>
+            <div class="card" style="padding: 24px;">
+                <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Margin Rata-rata</div>
+                <div style="font-size: 24px; font-weight: 700;" id="finAvgMargin">0%</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">margin keuntungan</div>
+            </div>
+        </div>
+
+        <div class="card table-wrapper" style="margin-bottom: 28px;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Varian</th>
+                        <th>Modal/Botol</th>
+                        <th>Jastip/Botol</th>
+                        <th>Harga Jual</th>
+                        <th>Untung/Botol</th>
+                        <th>Terjual</th>
+                        <th>Total Untung</th>
+                    </tr>
+                </thead>
+                <tbody id="financeTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="card" style="padding: 24px;">
+            <h3 style="font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Untung per Varian</h3>
+            <div style="position: relative; height: 350px;">
+                <canvas id="chartProfit"></canvas>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Edit Product Modal -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-content" style="padding: 28px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+            <h3 class="font-display" style="font-size: 20px; font-weight: 700;">Edit Produk</h3>
+            <button onclick="closeEditModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px;">
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+        <input type="hidden" id="editIndex">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+                <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Nama Varian</label>
+                <input type="text" class="input-field" id="editName">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Stok (botol)</label>
+                    <input type="number" class="input-field" id="editStock" min="0">
+                </div>
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Modal / Botol (Rp)</label>
+                    <input type="number" class="input-field" id="editModal" min="0">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Jastip / Botol (Rp)</label>
+                    <input type="number" class="input-field" id="editJastip" min="0">
+                </div>
+                <div>
+                    <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Harga Jual / Botol (Rp)</label>
+                    <input type="number" class="input-field" id="editPrice" min="0">
+                </div>
+            </div>
+            <button class="btn-gold" style="width: 100%; padding: 14px; font-size: 15px;" onclick="saveEdit()">
+                <i class="fas fa-save" style="margin-right: 6px;"></i>Simpan Perubahan
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Reset Confirm Modal -->
+<div class="modal-overlay" id="resetModal">
+    <div class="modal-content" style="padding: 28px; text-align: center;">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(231,76,60,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+            <i class="fas fa-triangle-exclamation" style="color: var(--danger); font-size: 24px;"></i>
+        </div>
+        <h3 class="font-display" style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Reset Semua Data?</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">Semua data penjualan dan pengaturan stok akan dikembalikan ke awal. Tindakan ini tidak bisa dibatalkan.</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn-outline" onclick="closeResetModal()">Batal</button>
+            <button class="btn-danger" style="padding: 10px 24px; font-size: 14px;" onclick="resetAllData()">
+                <i class="fas fa-trash" style="margin-right: 6px;"></i>Ya, Reset
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal-overlay" id="importModal">
+    <div class="modal-content" style="padding: 28px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+            <h3 class="font-display" style="font-size: 20px; font-weight: 700;">Impor Data</h3>
+            <button onclick="closeImportModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px;">
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block;">Paste JSON Data</label>
+            <textarea class="input-field" id="importJsonInput" rows="8" placeholder='Paste data JSON yang sudah diekspor...'></textarea>
+        </div>
+        <button class="btn-gold" style="width: 100%; padding: 14px;" onclick="importData()">
+            <i class="fas fa-upload" style="margin-right: 6px;"></i>Impor Data
+        </button>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // DATA AWAL - 20 Varian Parfum, masing-masing 5 botol
+    // ============================================
+    const DEFAULT_PRODUCTS = [
+        { name: "SCANDALOUS", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "BLACK OPIUM", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "AVRIL LAVIGNE", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "SOFT", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "PINK CHIFFON", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "ROMANTIC WISH", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "OLLA RAMLAN", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "DIOR SAUVAGE", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "DUNHL BLUE", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "BVLGARI AQUA", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "GREY JAY ROSE", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "SOTB", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "SELENA GOMES", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "LOVELY", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "MOONT BLANK LEGEND", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "YSL LIBRE", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "PINK FANTASY", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "BLUE EMOTION", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "BACARAT", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 },
+        { name: "DRAKAR", stock: 5, modal: 0, jastip: 0, price: 0, sold: 0 }
+    ];
+
+    // State
+    let products = [];
+    let salesHistory = [];
+    let stockChart = null;
+    let salesChart = null;
+    let profitChart = null;
+
+    // ============================================
+    // INISIALISASI
+    // ============================================
+    function init() {
+        loadData();
+        renderAll();
+        createParticles();
+    }
+
+    // Memuat data dari localStorage atau gunakan default
+    function loadData() {
+        const saved = localStorage.getItem('vj_parfum_data');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                products = data.products || JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+                salesHistory = data.salesHistory || [];
+            } catch(e) {
+                products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+                salesHistory = [];
+            }
+        } else {
+            products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+            salesHistory = [];
+        }
+    }
+
+    // Simpan data ke localStorage
+    function saveData() {
+        localStorage.setItem('vj_parfum_data', JSON.stringify({
+            products: products,
+            salesHistory: salesHistory
+        }));
+    }
+
+    // ============================================
+    // FORMAT ANGKA KE RUPIAH
+    // ============================================
+    function formatRupiah(num) {
+        if (num === 0 || num === null || num === undefined) return 'Rp 0';
+        return 'Rp ' + Math.round(num).toLocaleString('id-ID');
+    }
+
+    // ============================================
+    // RENDER SEMUA
+    // ============================================
+    function renderAll() {
+        renderStats();
+        renderProducts();
+        renderSaleSelect();
+        renderHistory();
+        renderFinance();
+        renderLowStock();
+        renderCharts();
+    }
+
+    // ============================================
+    // STATISTIK RINGKASAN
+    // ============================================
+    function renderStats() {
+        const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
+        const totalSold = products.reduce((sum, p) => sum + p.sold, 0);
+        const totalRevenue = salesHistory.reduce((sum, s) => sum + s.total, 0);
+        const totalProfit = salesHistory.reduce((sum, s) => sum + s.profit, 0);
+
+        document.getElementById('statTotalStock').textContent = totalStock;
+        document.getElementById('statTotalSold').textContent = totalSold;
+        document.getElementById('statTotalRevenue').textContent = formatRupiah(totalRevenue);
+        document.getElementById('statTotalProfit').textContent = formatRupiah(totalProfit);
+    }
+
+    // ============================================
+    // LOW STOCK ALERT
+    // ============================================
+    function renderLowStock() {
+        const lowItems = products.filter(p => p.stock <= 2);
+        const container = document.getElementById('lowStockList');
+        const alertBox = document.getElementById('lowStockAlert');
+
+        if (lowItems.length === 0) {
+            alertBox.style.display = 'none';
+            return;
+        }
+        alertBox.style.display = 'block';
+        container.innerHTML = lowItems.map(p => {
+            let badgeClass = p.stock === 0 ? 'badge-stock-out' : 'badge-stock-low';
+            let text = p.stock === 0 ? 'HABIS' : `Sisa ${p.stock}`;
+            return `<span class="badge ${badgeClass}">${p.name} — ${text}</span>`;
+        }).join('');
+    }
+
+    // ============================================
+    // TABEL PRODUK
+    // ============================================
+    function renderProducts() {
+        const search = (document.getElementById('searchProduct')?.value || '').toLowerCase();
+        const tbody = document.getElementById('productTableBody');
+        let html = '';
+
+        products.forEach((p, i) => {
+            if (search && !p.name.toLowerCase().includes(search)) return;
+
+            const untungPerBotol = p.price - p.modal - p.jastip;
+            const maxStock = 5;
+            const stockPct = Math.max(0, (p.stock / maxStock) * 100);
+            let barColor = '#2ecc71';
+            let badgeClass = 'badge-stock-ok';
+            let badgeText = `${p.stock} botol`;
+
+            if (p.stock <= 2 && p.stock > 0) {
+                barColor = '#f1c40f';
+                badgeClass = 'badge-stock-low';
+            } else if (p.stock === 0) {
+                barColor = '#e74c3c';
+                badgeClass = 'badge-stock-out';
+                badgeText = 'HABIS';
+            }
+
+            html += `
+                <tr>
+                    <td style="color: var(--text-muted);">${i + 1}</td>
+                    <td>
+                        <div style="font-weight: 600;">${p.name}</div>
+                        <div class="stock-bar" style="margin-top: 6px; width: 80px;">
+                            <div class="stock-bar-fill" style="width: ${stockPct}%; background: ${barColor};"></div>
+                        </div>
+                    </td>
+                    <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+                    <td>${formatRupiah(p.modal)}</td>
+                    <td>${formatRupiah(p.jastip)}</td>
+                    <td style="font-weight: 600; color: var(--gold-light);">${formatRupiah(p.price)}</td>
+                    <td class="${untungPerBotol >= 0 ? 'profit-positive' : 'profit-negative'}" style="font-weight: 600;">
+                        ${formatRupiah(untungPerBotol)}
+                    </td>
+                    <td>
+                        <button class="btn-outline btn-sm" onclick="openEditModal(${i})" style="font-size: 12px;">
+                            <i class="fas fa-pen" style="margin-right: 3px;"></i>Edit
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html || '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">Tidak ada produk ditemukan</td></tr>';
+    }
+
+    // ============================================
+    // EDIT PRODUK
+    // ============================================
+    function openEditModal(index) {
+        const p = products[index];
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editName').value = p.name;
+        document.getElementById('editStock').value = p.stock;
+        document.getElementById('editModal').value = p.modal;
+        document.getElementById('editJastip').value = p.jastip;
+        document.getElementById('editPrice').value = p.price;
+        document.getElementById('editModal').classList.add('active');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.remove('active');
+    }
+
+    function saveEdit() {
+        const index = parseInt(document.getElementById('editIndex').value);
+        const name = document.getElementById('editName').value.trim();
+        const stock = parseInt(document.getElementById('editStock').value) || 0;
+        const modal = parseInt(document.getElementById('editModal').value) || 0;
+        const jastip = parseInt(document.getElementById('editJastip').value) || 0;
+        const price = parseInt(document.getElementById('editPrice').value) || 0;
+
+        if (!name) {
+            showToast('Nama varian tidak boleh kosong', 'error');
+            return;
+        }
+
+        products[index].name = name;
+        products[index].stock = Math.max(0, stock);
+        products[index].modal = Math.max(0, modal);
+        products[index].jastip = Math.max(0, jastip);
+        products[index].price = Math.max(0, price);
+
+        saveData();
+        closeEditModal();
+        renderAll();
+        showToast(`${name} berhasil diperbarui`, 'success');
+    }
+
+    // ============================================
+    // CATAT PENJUALAN
+    // ============================================
+    function renderSaleSelect() {
+        const sel = document.getElementById('saleVariant');
+        const filterSel = document.getElementById('filterVariant');
+        let opts = '<option value="">-- Pilih Varian --</option>';
+        let filterOpts = '<option value="">Semua Varian</option>';
+
+        products.forEach((p, i) => {
+            const disabled = p.stock === 0 ? 'disabled' : '';
+            const stockInfo = p.stock === 0 ? ' (HABIS)' : ` (Sisa: ${p.stock})`;
+            opts += `<option value="${i}" ${disabled}>${p.name}${stockInfo}</option>`;
+            filterOpts += `<option value="${p.name}">${p.name}</option>`;
+        });
+
+        sel.innerHTML = opts;
+        filterSel.innerHTML = filterOpts;
+    }
+
+    function onSaleVariantChange() {
+        const idx = document.getElementById('saleVariant').value;
+        if (idx === '') {
+            document.getElementById('saleStockInfo').value = '';
+            calcSalePreview();
+            return;
+        }
+        const p = products[parseInt(idx)];
+        document.getElementById('saleStockInfo').value = `${p.stock} botol tersisa`;
+        document.getElementById('saleQty').max = p.stock;
+        if (parseInt(document.getElementById('saleQty').value) > p.stock) {
+            document.getElementById('saleQty').value = p.stock;
+        }
+        calcSalePreview();
+    }
+
+    function calcSalePreview() {
+        const idx = document.getElementById('saleVariant').value;
+        const qty = parseInt(document.getElementById('saleQty').value) || 0;
+
+        if (idx === '') {
+            document.getElementById('previewPrice').textContent = 'Rp 0';
+            document.getElementById('previewRevenue').textContent = 'Rp 0';
+            document.getElementById('previewProfit').textContent = 'Rp 0';
+            return;
+        }
+
+        const p = products[parseInt(idx)];
+        const revenue = p.price * qty;
+        const profit = (p.price - p.modal - p.jastip) * qty;
+
+        document.getElementById('previewPrice').textContent = formatRupiah(p.price);
+        document.getElementById('previewRevenue').textContent = formatRupiah(revenue);
+        document.getElementById('previewProfit').textContent = formatRupiah(profit);
+    }
+
+    function recordSale() {
+        const idx = document.getElementById('saleVariant').value;
+        const qty = parseInt(document.getElementById('saleQty').value) || 0;
+        const buyer = document.getElementById('saleBuyer').value.trim();
+        const note = document.getElementById('saleNote').value.trim();
+
+        if (idx === '') {
+            showToast('Pilih varian terlebih dahulu', 'error');
+            return;
+        }
+
+        const p = products[parseInt(idx)];
+
+        if (qty <= 0) {
+            showToast('Jumlah beli harus lebih dari 0', 'error');
+            return;
+        }
+
+        if (qty > p.stock) {
+            showToast(`Stok ${p.name} tidak cukup! Sisa ${p.stock} botol`, 'error');
+            return;
+        }
+
+        const total = p.price * qty;
+        const profit = (p.price - p.modal - p.jastip) * qty;
+
+        // Kurangi stok, tambah terjual
+        p.stock -= qty;
+        p.sold += qty;
+
+        // Catat di riwayat
+        salesHistory.unshift({
+            date: new Date().toISOString(),
+            variant: p.name,
+            qty: qty,
+            pricePerBottle: p.price,
+            modalPerBottle: p.modal,
+            jastipPerBottle: p.jastip,
+            total: total,
+            profit: profit,
+            buyer: buyer,
+            note: note
+        });
+
+        saveData();
+        renderAll();
+
+        // Reset form
+        document.getElementById('saleVariant').value = '';
+        document.getElementById('saleQty').value = 1;
+        document.getElementById('saleBuyer').value = '';
+        document.getElementById('saleNote').value = '';
+        document.getElementById('saleStockInfo').value = '';
+        calcSalePreview();
+
+        showToast(`Penjualan ${p.name} (${qty} botol) dicatat!`, 'success');
+    }
+
+    // ============================================
+    // RIWAYAT PENJUALAN
+    // ============================================
+    function renderHistory() {
+        const search = (document.getElementById('searchHistory')?.value || '').toLowerCase();
+        const filter = document.getElementById('filterVariant')?.value || '';
+        const tbody = document.getElementById('historyTableBody');
+        const summary = document.getElementById('historySummary');
+
+        let filtered = salesHistory.filter(s => {
+            const matchSearch = !search || s.variant.toLowerCase().includes(search) || (s.buyer && s.buyer.toLowerCase().includes(search));
+            const matchFilter = !filter || s.variant === filter;
+            return matchSearch && matchFilter;
+        });
+
+        let html = '';
+        filtered.forEach((s, i) => {
+            const date = new Date(s.date);
+            const dateStr = date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+            const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+            html += `
+                <tr>
+                    <td>
+                        <div style="font-size: 13px;">${dateStr}</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">${timeStr}</div>
+                    </td>
+                    <td style="font-weight: 600;">${s.variant}</td>
+                    <td>${s.qty}</td>
+                    <td>${formatRupiah(s.pricePerBottle)}</td>
+                    <td style="font-weight: 600;">${formatRupiah(s.total)}</td>
+                    <td class="${s.profit >= 0 ? 'profit-positive' : 'profit-negative'}" style="font-weight: 600;">${formatRupiah(s.profit)}</td>
+                    <td style="color: var(--text-secondary);">${s.buyer || '-'}</td>
+                    <td>
+                        <button class="btn-danger" style="padding: 4px 10px; font-size: 11px;" onclick="deleteSale(${i})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html || '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">Belum ada riwayat penjualan</td></tr>';
+
+        const totalFiltered = filtered.reduce((sum, s) => sum + s.total, 0);
+        const profitFiltered = filtered.reduce((sum, s) => sum + s.profit, 0);
+        summary.innerHTML = `Menampilkan ${filtered.length} transaksi | Total: ${formatRupiah(totalFiltered)} | Untung: ${formatRupiah(profitFiltered)}`;
+    }
+
+    function deleteSale(index) {
+        const sale = salesHistory[index];
+        // Kembalikan stok dan sold
+        const prod = products.find(p => p.name === sale.variant);
+        if (prod) {
+            prod.stock += sale.qty;
+            prod.sold -= sale.qty;
+            if (prod.sold < 0) prod.sold = 0;
+        }
+
+        salesHistory.splice(index, 1);
+        saveData();
+        renderAll();
+        showToast('Transaksi dihapus dan stok dikembalikan', 'info');
+    }
+
+    // ============================================
+    // KEUANGAN
+    // ============================================
+    function renderFinance() {
+        const tbody = document.getElementById('financeTableBody');
+        let totalModalAll = 0;
+        let totalJastipAll = 0;
+        let totalProfitAll = 0;
+        let countWithSales = 0;
+
+        let html = '';
+        products.forEach(p => {
+            const untungPerBotol = p.price - p.modal - p.jastip;
+            const totalUntung = untungPerBotol * p.sold;
+            const totalModalVariant = p.modal * (p.stock + p.sold);
+            const totalJastipVariant = p.jastip * (p.stock + p.sold);
+
+            totalModalAll += totalModalVariant;
+            totalJastipAll += totalJastipVariant;
+            totalProfitAll += totalUntung;
+            if (p.sold > 0) countWithSales++;
+
+            html += `
+                <tr>
+                    <td style="font-weight: 600;">${p.name}</td>
+                    <td>${formatRupiah(p.modal)}</td>
+                    <td>${formatRupiah(p.jastip)}</td>
+                    <td style="color: var(--gold-light); font-weight: 600;">${formatRupiah(p.price)}</td>
+                    <td class="${untungPerBotol >= 0 ? 'profit-positive' : 'profit-negative'}" style="font-weight: 600;">${formatRupiah(untungPerBotol)}</td>
+                    <td>${p.sold}</td>
+                    <td class="${totalUntung >= 0 ? 'profit-positive' : 'profit-negative'}" style="font-weight: 700;">${formatRupiah(totalUntung)}</td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+
+        document.getElementById('finTotalModal').textContent = formatRupiah(totalModalAll);
+        document.getElementById('finTotalJastip').textContent = formatRupiah(totalJastipAll);
+
+        // Hitung margin rata-rata
+        const totalRevenue = salesHistory.reduce((sum, s) => sum + s.total, 0);
+        const avgMargin = totalRevenue > 0 ? ((totalProfitAll / totalRevenue) * 100).toFixed(1) : 0;
+        document.getElementById('finAvgMargin').textContent = avgMargin + '%';
+    }
+
+    // ============================================
+    // CHART / GRAFIK
+    // ============================================
+    function renderCharts() {
+        renderStockChart();
+        renderSalesChart();
+        renderProfitChart();
+    }
+
+    function renderStockChart() {
+        const ctx = document.getElementById('chartStock').getContext('2d');
+        if (stockChart) stockChart.destroy();
+
+        const labels = products.map(p => p.name);
+        const data = products.map(p => p.stock);
+        const colors = products.map(p => {
+            if (p.stock === 0) return 'rgba(231,76,60,0.8)';
+            if (p.stock <= 2) return 'rgba(241,196,15,0.8)';
+            return 'rgba(201,168,76,0.8)';
+        });
+
+        stockChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Stok',
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: colors.map(c => c.replace('0.8', '1')),
+                    borderWidth: 1,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece2',
+                        borderColor: '#2a2724',
+                        borderWidth: 1,
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#5a5650', font: { size: 9 }, maxRotation: 60 },
+                        grid: { color: 'rgba(42,39,36,0.3)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: { color: '#5a5650', stepSize: 1 },
+                        grid: { color: 'rgba(42,39,36,0.3)' }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderSalesChart() {
+        const ctx = document.getElementById('chartSales').getContext('2d');
+        if (salesChart) salesChart.destroy();
+
+        const labels = products.map(p => p.name);
+        const data = products.map(p => p.sold);
+
+        salesChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data.some(d => d > 0) ? data : [1],
+                    backgroundColor: data.some(d => d > 0)
+                        ? generateChartColors(products.length)
+                        : ['rgba(42,39,36,0.5)'],
+                    borderColor: 'rgba(10,10,10,0.5)',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#8a8578',
+                            font: { size: 10 },
+                            padding: 8,
+                            usePointStyle: true,
+                            pointStyleWidth: 8
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece2',
+                        borderColor: '#2a2724',
+                        borderWidth: 1,
+                    }
+                }
+            }
+        });
+    }
+
+    function renderProfitChart() {
+        const ctx = document.getElementById('chartProfit').getContext('2d');
+        if (profitChart) profitChart.destroy();
+
+        const labels = products.map(p => p.name);
+        const data = products.map(p => (p.price - p.modal - p.jastip) * p.sold);
+        const colors = data.map(d => d >= 0 ? 'rgba(46,204,113,0.8)' : 'rgba(231,76,60,0.8)');
+
+        profitChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Untung',
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: colors.map(c => c.replace('0.8', '1')),
+                    borderWidth: 1,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece2',
+                        borderColor: '#2a2724',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return formatRupiah(context.raw);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#5a5650',
+                            callback: function(value) { return formatRupiah(value); }
+                        },
+                        grid: { color: 'rgba(42,39,36,0.3)' }
+                    },
+                    y: {
+                        ticks: { color: '#8a8578', font: { size: 11 } },
+                        grid: { color: 'rgba(42,39,36,0.2)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Generate warna chart
+    function generateChartColors(count) {
+        const baseHues = [35, 10, 350, 25, 45, 15, 340, 30, 5, 55, 20, 355, 40, 50, 0, 38, 8, 48, 18, 352];
+        const colors = [];
+        for (let i = 0; i < count; i++) {
+            const hue = baseHues[i % baseHues.length];
+            colors.push(`hsla(${hue}, 60%, 55%, 0.8)`);
+        }
+        return colors;
+    }
+
+    // ============================================
+    // TAB SWITCHING
+    // ============================================
+    function switchTab(tabName) {
+        // Sembunyikan semua tab
+        document.querySelectorAll('main > section').forEach(sec => {
+            sec.style.display = 'none';
+        });
+
+        // Tampilkan tab terpilih
+        const target = document.getElementById('tab-' + tabName);
+        if (target) target.style.display = 'block';
+
+        // Update tombol aktif
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            }
+        });
+
+        // Render ulang chart jika masuk tab terkait
+        if (tabName === 'overview' || tabName === 'finance') {
+            setTimeout(renderCharts, 100);
+        }
+    }
+
+    // ============================================
+    // TOAST NOTIFICATION
+    // ============================================
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-circle-exclamation',
+            info: 'fas fa-circle-info'
+        };
+
+        toast.innerHTML = `<i class="${icons[type] || icons.info}"></i> ${message}`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 3000);
+    }
+
+    // ============================================
+    // EKSPOR / IMPOR DATA
+    // ============================================
+    function exportData() {
+        const data = {
+            products: products,
+            salesHistory: salesHistory,
+            exportDate: new Date().toISOString()
+        };
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `vj_parfum_data_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Data berhasil diekspor', 'success');
+    }
+
+    function importDataPrompt() {
+        document.getElementById('importModal').classList.add('active');
+        document.getElementById('importJsonInput').value = '';
+    }
+
+    function closeImportModal() {
+        document.getElementById('importModal').classList.remove('active');
+    }
+
+    function importData() {
+        const jsonStr = document.getElementById('importJsonInput').value.trim();
+        if (!jsonStr) {
+            showToast('Paste data JSON terlebih dahulu', 'error');
+            return;
+        }
+        try {
+            const data = JSON.parse(jsonStr);
+            if (data.products && Array.isArray(data.products)) {
+                products = data.products;
+                salesHistory = data.salesHistory || [];
+                saveData();
+                renderAll();
+                closeImportModal();
+                showToast('Data berhasil diimpor!', 'success');
+            } else {
+                showToast('Format data tidak valid', 'error');
+            }
+        } catch(e) {
+            showToast('Gagal membaca data JSON. Pastikan format benar.', 'error');
+        }
+    }
+
+    // ============================================
+    // RESET DATA
+    // ============================================
+    function confirmReset() {
+        document.getElementById('resetModal').classList.add('active');
+    }
+
+    function closeResetModal() {
+        document.getElementById('resetModal').classList.remove('active');
+    }
+
+    function resetAllData() {
+        products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+        salesHistory = [];
+        saveData();
+        closeResetModal();
+        renderAll();
+        showToast('Semua data telah direset', 'info');
+    }
+
+    // ============================================
+    // PARTIKEL AMBIEN (DEKORATIF)
+    // ============================================
+    function createParticles() {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.top = Math.random() * 100 + 'vh';
+            particle.style.width = (Math.random() * 2 + 1) + 'px';
+            particle.style.height = particle.style.width;
+
+            const duration = Math.random() * 15 + 10;
+            const delay = Math.random() * 10;
+            particle.style.animation = `particleFloat ${duration}s ${delay}s ease-in-out infinite`;
+
+            document.body.appendChild(particle);
+        }
+
+        // Tambahkan keyframe partikel
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes particleFloat {
+                0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+                20% { opacity: 0.3; }
+                50% { opacity: 0.15; transform: translateY(-80px) translateX(20px); }
+                80% { opacity: 0.25; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // ============================================
+    // JALANKAN!
+    // ============================================
+    init();
+</script>
+
+</body>
+</html>
