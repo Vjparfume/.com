@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VJ PARFUM - Dashboard</title>
+    
+    <!-- ANTI KEDIP SAAT F5 -->
+    <script>
+        if(localStorage.getItem('vj_session')) {
+            document.write('<style>#loginScreen{display:none!important;} #dashboardScreen{display:block!important;}</style>');
+        } else {
+            document.write('<style>#loginScreen{display:flex!important;} #dashboardScreen{display:none!important;}</style>');
+        }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -570,8 +580,9 @@ function renderAll(){
 // SYNC GOOGLE SHEET
 // ============================================================
 async function syncSheet(){
-    if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL==='https://script.google.com/macros/s/AKfycby2FyJXeBUORChiElgMAlqFTXY3au_xPoSPAjmh2frsHaV6ZtZ9YNAFZYpohkvctIb1tw/exec'){
-        showToast('Link Web App belum dimasukkan! Data hanya tersimpan lokal di browser ini.', 'inf');
+    // PENGECEKAN LINK DIPERBAIKI DISINI
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3qQHJ8Vqv13goaL2XvWrx8gljCF3m3JA6yn6hZlhijM5PCUboYwL66eQBXXuj8tA2ng/exec';
+        showToast('Link Web App belum dimasukkan!', 'err');
         return;
     }
     if(isSyncing)return;
@@ -600,7 +611,7 @@ async function syncSheet(){
     }
 }
 async function saveToCloud(){
-    if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL==='https://script.google.com/macros/s/AKfycby2FyJXeBUORChiElgMAlqFTXY3au_xPoSPAjmh2frsHaV6ZtZ9YNAFZYpohkvctIb1tw/exec')return;
+    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL==='PASTE_LINK_WEB_APP_KAMU_DISINI')return;
     try{
         await fetch(APPS_SCRIPT_URL,{
             method:'POST',
