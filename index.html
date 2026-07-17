@@ -19,227 +19,64 @@
 
     <style>
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-card: #181818;
-            --bg-input: #1e1e1e;
-            --gold: #c9a84c;
-            --gold-light: #e4c76b;
-            --gold-dark: #9a7b2e;
-            --text-primary: #f0ece2;
-            --text-secondary: #8a8578;
-            --text-muted: #5a5650;
-            --border: #2a2724;
-            --danger: #e74c3c;
-            --success: #2ecc71;
-            --info: #3498db;
-            --riel: #e67e22;
-            --usd: #2ecc71;
-            --rp: #3498db;
+            --bg-primary: #0a0a0a; --bg-secondary: #111111; --bg-card: #181818; --bg-input: #1e1e1e;
+            --gold: #c9a84c; --gold-light: #e4c76b; --gold-dark: #9a7b2e;
+            --text-primary: #f0ece2; --text-secondary: #8a8578; --text-muted: #5a5650; --border: #2a2724;
+            --danger: #e74c3c; --success: #2ecc71; --info: #3498db; --riel: #e67e22; --usd: #2ecc71; --rp: #3498db;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            min-height: 100dvh;
-            overflow-x: hidden;
-        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; min-height: 100dvh; overflow-x: hidden; }
         .font-display { font-family: 'Playfair Display', serif; }
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
-
-        #loginScreen {
-            min-height: 100vh; min-height: 100dvh;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px; background: var(--bg-primary);
-            position: relative; overflow: hidden;
-        }
-        #loginScreen::before {
-            content: ''; position: absolute;
-            top: -40%; left: -40%; width: 180%; height: 180%;
-            background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
-                        radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
-            animation: ambientLogin 15s ease-in-out infinite alternate;
-        }
+        ::-webkit-scrollbar { width: 5px; height: 5px; } ::-webkit-scrollbar-track { background: var(--bg-secondary); } ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+        #loginScreen { min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--bg-primary); position: relative; overflow: hidden; }
+        #loginScreen::before { content: ''; position: absolute; top: -40%; left: -40%; width: 180%; height: 180%; background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.05) 0%, transparent 50%); animation: ambientLogin 15s ease-in-out infinite alternate; }
         @keyframes ambientLogin { 0% { transform: translate(0,0); } 100% { transform: translate(-3%,-2%); } }
-        .login-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 24px; padding: 40px 32px;
-            width: 100%; max-width: 400px; position: relative; z-index: 1;
-        }
-        .login-logo {
-            width: 80px; height: 80px; border-radius: 20px;
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px; overflow: hidden;
-        }
+        .login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 40px 32px; width: 100%; max-width: 400px; position: relative; z-index: 1; }
+        .login-logo { width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, var(--gold-dark), var(--gold-light)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; overflow: hidden; }
         .login-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
-        .gold-shimmer {
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
-            background-size: 200% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            animation: shimmer 4s linear infinite;
-        }
+        .gold-shimmer { background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark)); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 4s linear infinite; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-
-        .input-field {
-            background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px;
-            padding: 12px 16px; color: var(--text-primary); font-family: 'DM Sans', sans-serif;
-            font-size: 15px; width: 100%; transition: border-color 0.3s; outline: none;
-        }
-        .input-field:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
-        .input-field::placeholder { color: var(--text-muted); }
-        select.input-field {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c9a84c' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px;
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #0a0a0a; font-weight: 700; border: none; border-radius: 12px;
-            padding: 14px 24px; cursor: pointer; transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif; font-size: 15px; width: 100%;
-        }
-        .btn-gold:hover { background: linear-gradient(135deg, var(--gold), var(--gold-light)); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.3); }
-        .btn-gold:active { transform: translateY(0); }
-        .btn-outline {
-            background: transparent; color: var(--gold); border: 1px solid var(--gold-dark);
-            border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 13px;
-        }
+        .input-field { background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 15px; width: 100%; transition: border-color 0.3s; outline: none; }
+        .input-field:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); } .input-field::placeholder { color: var(--text-muted); }
+        select.input-field { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c9a84c' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+        .btn-gold { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #0a0a0a; font-weight: 700; border: none; border-radius: 12px; padding: 14px 24px; cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif; font-size: 15px; width: 100%; }
+        .btn-gold:hover { background: linear-gradient(135deg, var(--gold), var(--gold-light)); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.3); } .btn-gold:active { transform: translateY(0); }
+        .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold-dark); border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 13px; }
         .btn-outline:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
-        .btn-danger-sm {
-            background: rgba(231,76,60,0.12); color: var(--danger); border: 1px solid rgba(231,76,60,0.25);
-            border-radius: 8px; padding: 5px 12px; cursor: pointer; transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif; font-size: 12px;
-        }
+        .btn-danger-sm { background: rgba(231,76,60,0.12); color: var(--danger); border: 1px solid rgba(231,76,60,0.25); border-radius: 8px; padding: 5px 12px; cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif; font-size: 12px; }
         .btn-danger-sm:hover { background: rgba(231,76,60,0.2); border-color: var(--danger); }
-        .btn-success-sm {
-            background: rgba(46,204,113,0.12); color: var(--success); border: 1px solid rgba(46,204,113,0.25);
-            border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px;
-        }
+        .btn-success-sm { background: rgba(46,204,113,0.12); color: var(--success); border: 1px solid rgba(46,204,113,0.25); border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; }
         .btn-success-sm:hover { background: rgba(46,204,113,0.2); border-color: var(--success); }
-
         #dashboardScreen { display: none; }
-        .card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; transition: border-color 0.3s;
-        }
-        .card:hover { border-color: rgba(201,168,76,0.25); }
-        .tab-nav {
-            display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px;
-        }
-        .tab-nav::-webkit-scrollbar { display: none; }
-        .tab-btn {
-            padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 13px;
-            cursor: pointer; transition: all 0.3s; border: 1px solid transparent;
-            background: transparent; color: var(--text-secondary); font-family: 'DM Sans', sans-serif;
-            white-space: nowrap; flex-shrink: 0;
-        }
-        .tab-btn:hover { color: var(--text-primary); background: rgba(201,168,76,0.05); }
-        .tab-btn.active { background: rgba(201,168,76,0.12); color: var(--gold); border-color: rgba(201,168,76,0.3); }
-
-        .stat-grid { display: grid; gap: 12px; }
-        .stat-grid.g4 { grid-template-columns: repeat(4, 1fr); }
-        .stat-grid.g3 { grid-template-columns: repeat(3, 1fr); }
-        .stat-grid.g2 { grid-template-columns: repeat(2, 1fr); }
-        @media (max-width: 900px) { .stat-grid.g4 { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) { .stat-grid.g4, .stat-grid.g3 { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 380px) { .stat-grid.g4, .stat-grid.g3, .stat-grid.g2 { grid-template-columns: 1fr; } }
-
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; transition: border-color 0.3s; } .card:hover { border-color: rgba(201,168,76,0.25); }
+        .tab-nav { display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px; } .tab-nav::-webkit-scrollbar { display: none; }
+        .tab-btn { padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent; background: transparent; color: var(--text-secondary); font-family: 'DM Sans', sans-serif; white-space: nowrap; flex-shrink: 0; }
+        .tab-btn:hover { color: var(--text-primary); background: rgba(201,168,76,0.05); } .tab-btn.active { background: rgba(201,168,76,0.12); color: var(--gold); border-color: rgba(201,168,76,0.3); }
+        .stat-grid { display: grid; gap: 12px; } .stat-grid.g4 { grid-template-columns: repeat(4, 1fr); } .stat-grid.g3 { grid-template-columns: repeat(3, 1fr); } .stat-grid.g2 { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: 900px) { .stat-grid.g4 { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 600px) { .stat-grid.g4, .stat-grid.g3 { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 380px) { .stat-grid.g4, .stat-grid.g3, .stat-grid.g2 { grid-template-columns: 1fr; } }
         .table-wrap { overflow-x: auto; border-radius: 16px; -webkit-overflow-scrolling: touch; }
         .dtable { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
-        .dtable thead th {
-            background: var(--bg-secondary); color: var(--gold); font-weight: 700;
-            font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
-            padding: 12px 14px; text-align: left; border-bottom: 2px solid var(--border);
-            position: sticky; top: 0; z-index: 5;
-        }
-        .dtable tbody td {
-            padding: 11px 14px; border-bottom: 1px solid rgba(42,39,36,0.4); font-size: 13px; vertical-align: middle;
-        }
-        .dtable tbody tr { transition: background 0.2s; }
-        .dtable tbody tr:hover { background: rgba(201,168,76,0.04); }
-
-        .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .badge-ok { background: rgba(46,204,113,0.12); color: var(--success); }
-        .badge-low { background: rgba(241,196,15,0.12); color: #f1c40f; }
-        .badge-out { background: rgba(231,76,60,0.12); color: var(--danger); }
-
-        .curr-pill {
-            padding: 12px 10px; border-radius: 12px; cursor: pointer; font-weight: 700;
-            font-size: 13px; border: 2px solid var(--border); background: var(--bg-input);
-            color: var(--text-secondary); transition: all 0.3s; text-align: center;
-            font-family: 'DM Sans', sans-serif;
-        }
-        .curr-pill:hover { border-color: rgba(201,168,76,0.3); }
-        .curr-pill.sel-riel { border-color: var(--riel); color: var(--riel); background: rgba(230,126,34,0.08); }
-        .curr-pill.sel-usd { border-color: var(--usd); color: var(--usd); background: rgba(46,204,113,0.08); }
-        .curr-pill.sel-rp { border-color: var(--rp); color: var(--rp); background: rgba(52,152,219,0.08); }
-
-        .modal-bg {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 100;
-            display: none; align-items: center; justify-content: center; padding: 16px;
-        }
-        .modal-bg.show { display: flex; }
-        .modal-box {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
-            max-width: 480px; width: 100%; max-height: 88vh; overflow-y: auto;
-            padding: 28px; animation: mSlide 0.25s ease;
-        }
+        .dtable thead th { background: var(--bg-secondary); color: var(--gold); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 12px 14px; text-align: left; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 5; }
+        .dtable tbody td { padding: 11px 14px; border-bottom: 1px solid rgba(42,39,36,0.4); font-size: 13px; vertical-align: middle; } .dtable tbody tr { transition: background 0.2s; } .dtable tbody tr:hover { background: rgba(201,168,76,0.04); }
+        .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; } .badge-ok { background: rgba(46,204,113,0.12); color: var(--success); } .badge-low { background: rgba(241,196,15,0.12); color: #f1c40f; } .badge-out { background: rgba(231,76,60,0.12); color: var(--danger); }
+        .curr-pill { padding: 12px 10px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px; border: 2px solid var(--border); background: var(--bg-input); color: var(--text-secondary); transition: all 0.3s; text-align: center; font-family: 'DM Sans', sans-serif; }
+        .curr-pill:hover { border-color: rgba(201,168,76,0.3); } .curr-pill.sel-riel { border-color: var(--riel); color: var(--riel); background: rgba(230,126,34,0.08); } .curr-pill.sel-usd { border-color: var(--usd); color: var(--usd); background: rgba(46,204,113,0.08); } .curr-pill.sel-rp { border-color: var(--rp); color: var(--rp); background: rgba(52,152,219,0.08); }
+        .modal-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 16px; } .modal-bg.show { display: flex; }
+        .modal-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; max-width: 480px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 28px; animation: mSlide 0.25s ease; }
         @keyframes mSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
         .toast-box { position: fixed; top: 16px; right: 16px; z-index: 300; display: flex; flex-direction: column; gap: 8px; }
-        .toast {
-            padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
-            display: flex; align-items: center; gap: 8px; min-width: 240px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-            animation: tIn 0.3s ease, tOut 0.3s ease 2.5s forwards;
-        }
-        .toast-ok { background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: var(--success); }
-        .toast-err { background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); color: var(--danger); }
-        .toast-inf { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
-        @keyframes tIn { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes tOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-8px); } }
-
-        .app-header {
-            background: var(--bg-secondary); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 50; backdrop-filter: blur(16px);
-        }
-        .tab-section { display: none; }
-        .tab-section.active { display: block; }
-        .preview-box {
-            background: var(--bg-secondary); border-radius: 14px; padding: 16px;
-            border: 1px solid var(--border);
-        }
-        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
-
-        .big-number { font-size: 28px; font-weight: 800; }
-        .label-sm { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-
-        .sync-spin { animation: spin 1s linear infinite; }
-        @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
-        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
-        .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-
-        .sheet-sale-row {
-            display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
-            padding: 12px 16px; border-bottom: 1px solid rgba(42,39,36,0.4);
-            transition: background 0.2s;
-        }
-        .sheet-sale-row:hover { background: rgba(201,168,76,0.04); }
-        .sheet-sale-row:last-child { border-bottom: none; }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
+        .toast { padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; min-width: 240px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); animation: tIn 0.3s ease, tOut 0.3s ease 2.5s forwards; }
+        .toast-ok { background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: var(--success); } .toast-err { background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); color: var(--danger); } .toast-inf { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
+        @keyframes tIn { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } } @keyframes tOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-8px); } }
+        .app-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(16px); }
+        .tab-section { display: none; } .tab-section.active { display: block; }
+        .preview-box { background: var(--bg-secondary); border-radius: 14px; padding: 16px; border: 1px solid var(--border); }
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; } @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+        .big-number { font-size: 28px; font-weight: 800; } .label-sm { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .sync-spin { animation: spin 1s linear infinite; } @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; } .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .sheet-sale-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(42,39,36,0.4); transition: background 0.2s; } .sheet-sale-row:hover { background: rgba(201,168,76,0.04); } .sheet-sale-row:last-child { border-bottom: none; }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
@@ -249,27 +86,12 @@
 <!-- ========================== LOGIN ========================== -->
 <div id="loginScreen">
     <div class="login-card">
-        <div class="login-logo">
-            <i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:26px;" id="logoLoginIcon"></i>
-        </div>
+        <div class="login-logo"><i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:26px;" id="logoLoginIcon"></i></div>
         <h1 class="font-display gold-shimmer" style="font-size:28px;font-weight:900;text-align:center;letter-spacing:3px;margin-bottom:4px;">VJ PARFUM</h1>
         <p style="text-align:center;color:var(--text-muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;">Dashboard Penjualan</p>
         <div style="display:flex;flex-direction:column;gap:16px;">
-            <div>
-                <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Username</label>
-                <div style="position:relative;">
-                    <i class="fas fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-                    <input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:40px;" autocomplete="username">
-                </div>
-            </div>
-            <div>
-                <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Password</label>
-                <div style="position:relative;">
-                    <i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-                    <input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:40px;" autocomplete="current-password">
-                    <button type="button" onclick="togglePassVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" id="passToggleBtn"><i class="fas fa-eye"></i></button>
-                </div>
-            </div>
+            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Username</label><div style="position:relative;"><i class="fas fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i><input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:40px;" autocomplete="username"></div></div>
+            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Password</label><div style="position:relative;"><i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i><input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:40px;" autocomplete="current-password"><button type="button" onclick="togglePassVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" id="passToggleBtn"><i class="fas fa-eye"></i></button></div></div>
             <div id="loginError" style="display:none;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:10px;padding:10px 14px;color:var(--danger);font-size:13px;text-align:center;"></div>
             <button class="btn-gold" id="loginBtn" onclick="doLogin()" style="margin-top:8px;"><i class="fas fa-right-to-bracket" style="margin-right:8px;"></i>Masuk</button>
         </div>
@@ -280,17 +102,8 @@
 <div id="dashboardScreen">
     <header class="app-header">
         <div style="max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-                <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:15px;"></i>
-                </div>
-                <div style="min-width:0;"><h1 class="font-display gold-shimmer" style="font-size:18px;font-weight:900;letter-spacing:2px;">VJ PARFUM</h1><p style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Dashboard</p></div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-                <button class="btn-outline" onclick="syncSheet()" id="btnSync" style="padding:6px 12px;font-size:12px;display:flex;align-items:center;gap:6px;"><i class="fas fa-cloud-arrow-down" id="syncIcon"></i> <span id="syncText">Sync</span></button>
-                <span style="font-size:12px;color:var(--text-secondary);" id="headerUser"></span>
-                <button class="btn-danger-sm" onclick="doLogout()"><i class="fas fa-sign-out-alt" style="margin-right:4px;"></i>Keluar</button>
-            </div>
+            <div style="display:flex;align-items:center;gap:12px;"><div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-spray-can-sparkles" style="color:#0a0a0a;font-size:15px;"></i></div><div style="min-width:0;"><h1 class="font-display gold-shimmer" style="font-size:18px;font-weight:900;letter-spacing:2px;">VJ PARFUM</h1><p style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Dashboard</p></div></div>
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><button class="btn-outline" onclick="syncSheet()" id="btnSync" style="padding:6px 12px;font-size:12px;display:flex;align-items:center;gap:6px;"><i class="fas fa-cloud-arrow-down" id="syncIcon"></i> <span id="syncText">Sync</span></button><span style="font-size:12px;color:var(--text-secondary);" id="headerUser"></span><button class="btn-danger-sm" onclick="doLogout()"><i class="fas fa-sign-out-alt" style="margin-right:4px;"></i>Keluar</button></div>
         </div>
     </header>
 
@@ -304,7 +117,7 @@
             <button class="tab-btn" data-tab="finance" onclick="switchTab('finance')"><i class="fas fa-coins" style="margin-right:5px;"></i>Keuangan</button>
         </nav>
 
-        <!-- ===== OVERVIEW ===== -->
+        <!-- OVERVIEW -->
         <section class="tab-section active" id="tab-overview">
             <div class="stat-grid g4" style="margin-bottom:20px;">
                 <div class="card" style="padding:18px;"><div class="label-sm">Total Varian</div><div class="big-number" id="sVarian">0</div><div style="font-size:11px;color:var(--text-muted);">jenis parfum</div></div>
@@ -322,239 +135,56 @@
                 <div class="card" style="padding:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Penjualan per Varian</h3><div style="position:relative;height:260px;"><canvas id="cSales"></canvas></div></div>
             </div>
             <div class="card" style="padding:16px;display:none;" id="lowStockCard"><h3 style="font-size:12px;color:var(--danger);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;"><i class="fas fa-triangle-exclamation" style="margin-right:6px;"></i>Stok Menipis</h3><div id="lowStockList" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
-            
-            <!-- Penjualan Terakhir dari Sheet -->
-            <div class="card" style="padding:16px;margin-top:16px;" id="recentSheetSalesCard">
-                <h3 style="font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan Terakhir dari Sheet</h3>
-                <div id="recentSheetSales" style="font-size:13px;color:var(--text-secondary);">Belum ada data. Klik Sync untuk mengambil dari Sheet.</div>
-            </div>
+            <div class="card" style="padding:16px;margin-top:16px;" id="recentSheetSalesCard"><h3 style="font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan Terakhir dari Sheet</h3><div id="recentSheetSales" style="font-size:13px;color:var(--text-secondary);">Belum ada data. Klik Sync untuk mengambil dari Sheet.</div></div>
         </section>
 
-        <!-- ===== PRODUCTS / VARIAN ===== -->
+        <!-- PRODUCTS -->
         <section class="tab-section" id="tab-products">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;">Daftar Varian</h2>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <input type="text" class="input-field" placeholder="Cari varian..." id="srcProd" oninput="renderProducts()" style="width:180px;">
-                    <button class="btn-success-sm" onclick="openAddVariant()"><i class="fas fa-plus" style="margin-right:5px;"></i>Tambah Varian</button>
-                </div>
-            </div>
-            <div class="stat-grid g3" style="margin-bottom:16px;">
-                <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Varian</div><div style="font-size:22px;font-weight:800;color:var(--gold);" id="pTotalVarian">0</div></div>
-                <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Botol Awal</div><div style="font-size:22px;font-weight:800;color:var(--info);" id="pTotalAwal">0</div></div>
-                <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Sisa Stok Semua</div><div style="font-size:22px;font-weight:800;color:var(--success);" id="pTotalSisa">0</div></div>
-            </div>
-            <div class="card table-wrap">
-                <table class="dtable">
-                    <thead><tr><th>No</th><th>Varian</th><th>Awal (Manual)</th><th>Terjual Sheet</th><th>Terjual Manual</th><th>Sisa Stok (Otomatis)</th><th>Aksi</th></tr></thead>
-                    <tbody id="tProd"></tbody>
-                </table>
-            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;"><h2 class="font-display" style="font-size:20px;font-weight:700;">Daftar Varian</h2><div style="display:flex;gap:8px;flex-wrap:wrap;"><input type="text" class="input-field" placeholder="Cari varian..." id="srcProd" oninput="renderProducts()" style="width:180px;"><button class="btn-success-sm" onclick="openAddVariant()"><i class="fas fa-plus" style="margin-right:5px;"></i>Tambah Varian</button></div></div>
+            <div class="stat-grid g3" style="margin-bottom:16px;"><div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Varian</div><div style="font-size:22px;font-weight:800;color:var(--gold);" id="pTotalVarian">0</div></div><div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Botol Awal</div><div style="font-size:22px;font-weight:800;color:var(--info);" id="pTotalAwal">0</div></div><div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Sisa Stok Semua</div><div style="font-size:22px;font-weight:800;color:var(--success);" id="pTotalSisa">0</div></div></div>
+            <div class="card table-wrap"><table class="dtable"><thead><tr><th>No</th><th>Varian</th><th>Awal (Manual)</th><th>Terjual Sheet</th><th>Terjual Manual</th><th>Sisa Stok (Otomatis)</th><th>Aksi</th></tr></thead><tbody id="tProd"></tbody></table></div>
         </section>
 
-        <!-- ===== COSTS / MODAL ===== -->
+        <!-- COSTS -->
         <section class="tab-section" id="tab-costs">
-            <div style="margin-bottom:20px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;">Pencatatan Modal & Bukti Transfer</h2>
-                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini.</p>
-            </div>
-            <div class="stat-grid g3" style="margin-bottom:20px;">
-                <div class="card" style="padding:20px;border-color:rgba(201,168,76,0.3);">
-                    <div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div>
-                    <div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div>
-                </div>
-                <div class="card" style="padding:20px;">
-                    <div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div>
-                    <div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div>
-                </div>
-                <div class="card" style="padding:20px;">
-                    <div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-sack-dollar" style="margin-right:4px;"></i>Untung</div>
-                    <div class="big-number" id="mUntung">Rp 0</div>
-                </div>
-            </div>
-            <div class="card" style="padding:24px;margin-bottom:20px;">
-                <h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold);"><i class="fas fa-plus-circle" style="margin-right:6px;"></i>Tambah Catatan Modal</h3>
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="number" class="input-field" id="modalInput" min="0" placeholder="Contoh: 500000"></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
-                    <div>
-                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer</label>
-                        <div class="file-input-wrapper btn-outline" style="text-align:center; padding:12px;">
-                            <i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar
-                            <input type="file" id="modalFile" accept="image/*" onchange="previewImgModal(this)">
-                        </div>
-                        <img id="previewModalImg" src="" style="display:none; max-height:100px; border-radius:10px; border:1px solid var(--border); margin-top:10px;">
-                    </div>
-                    <button class="btn-gold" onclick="saveModalEntry()"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button>
-                </div>
-            </div>
-            <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Riwayat Catatan Modal</h3>
-            <div id="modalEntriesList"></div>
+            <div style="margin-bottom:20px;"><h2 class="font-display" style="font-size:20px;font-weight:700;">Pencatatan Modal & Bukti Transfer</h2><p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini.</p></div>
+            <div class="stat-grid g3" style="margin-bottom:20px;"><div class="card" style="padding:20px;border-color:rgba(201,168,76,0.3);"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div><div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div></div><div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div></div><div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-sack-dollar" style="margin-right:4px;"></i>Untung</div><div class="big-number" id="mUntung">Rp 0</div></div></div>
+            <div class="card" style="padding:24px;margin-bottom:20px;"><h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold);"><i class="fas fa-plus-circle" style="margin-right:6px;"></i>Tambah Catatan Modal</h3><div style="display:flex;flex-direction:column;gap:14px;"><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="number" class="input-field" id="modalInput" min="0" placeholder="Contoh: 500000"></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer</label><div class="file-input-wrapper btn-outline" style="text-align:center; padding:12px;"><i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar<input type="file" id="modalFile" accept="image/*" onchange="previewImgModal(this)"></div><img id="previewModalImg" src="" style="display:none; max-height:100px; border-radius:10px; border:1px solid var(--border); margin-top:10px;"></div><button class="btn-gold" onclick="saveModalEntry()"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button></div></div>
+            <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Riwayat Catatan Modal</h3><div id="modalEntriesList"></div>
         </section>
 
-        <!-- ===== SALES / PENJUALAN ===== -->
+        <!-- SALES -->
         <section class="tab-section" id="tab-sales">
             <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;">Penjualan</h2>
-            
-            <!-- Penjualan dari Sheet -->
-            <div class="card" style="padding:20px;margin-bottom:20px;border-color:rgba(230,126,34,0.3);">
-                <h3 style="font-size:14px;font-weight:700;margin-bottom:4px;color:var(--riel);"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan dari Google Sheet</h3>
-                <p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">Data pesanan yang masuk ke Sheet otomatis tampil di sini setelah klik Sync. Tercatat: Tanggal, Nama, Varian, Pembayaran.</p>
-                <div id="sheetSalesList" style="max-height:400px;overflow-y:auto;border-radius:12px;border:1px solid var(--border);background:var(--bg-secondary);">
-                    <div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>
-                </div>
-            </div>
-            
-            <!-- Penjualan Manual -->
-            <div class="card" style="padding:24px;max-width:580px;">
-                <h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold);"><i class="fas fa-pen" style="margin-right:6px;"></i>Catat Penjualan Manual</h3>
-                <div style="display:flex;flex-direction:column;gap:16px;">
-                    <div>
-                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Pilih Varian</label>
-                        <select class="input-field" id="saleVar" onchange="onSaleVarChange()"><option value="">-- Pilih Varian --</option></select>
-                    </div>
-                    <div id="saleStockInfo" style="display:none;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:14px 16px;">
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <div>
-                                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Sisa Stok</div>
-                                <div style="font-size:24px;font-weight:800;color:var(--gold-light);margin-top:4px;" id="saleSisaStok">0</div>
-                            </div>
-                            <div style="text-align:right;">
-                                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Terjual</div>
-                                <div style="font-size:18px;font-weight:700;color:var(--text-secondary);margin-top:4px;" id="saleTerjual">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Beli</label><input type="number" class="input-field" id="saleQty" min="1" value="1" oninput="calcPreview()"></div>
-                    <div>
-                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:block;">Mata Uang Pembayaran</label>
-                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-                            <div class="curr-pill sel-riel" id="cRiel" onclick="pickCurr('riel')"><div style="font-size:10px;opacity:0.6;">Kamboja</div>Riel</div>
-                            <div class="curr-pill" id="cUsd" onclick="pickCurr('usd')"><div style="font-size:10px;opacity:0.6;">Dollar</div>USD</div>
-                            <div class="curr-pill" id="cRp" onclick="pickCurr('rp')"><div style="font-size:10px;opacity:0.6;">Indonesia</div>Rupiah</div>
-                        </div>
-                    </div>
-                    <div style="background:var(--bg-secondary);border-radius:12px;padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-                        <span style="font-size:12px;color:var(--text-secondary);">Harga per Botol</span><span style="font-size:16px;font-weight:800;" id="salePriceDisp">45.000 Riel</span>
-                    </div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Pembeli (opsional)</label><input type="text" class="input-field" id="saleBuyer" placeholder="Nama pembeli..."></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Catatan (opsional)</label><input type="text" class="input-field" id="saleNote" placeholder="Catatan..."></div>
-                    <div class="preview-box">
-                        <h4 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pratinjau Penjualan</h4>
-                        <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13px;">
-                            <span style="color:var(--text-secondary);">Varian:</span><span style="text-align:right;font-weight:600;" id="pvVarian">-</span>
-                            <span style="color:var(--text-secondary);">Harga Satuan:</span><span style="text-align:right;font-weight:600;" id="pvPrice">45.000 Riel</span>
-                            <span style="color:var(--text-secondary);">Jumlah:</span><span style="text-align:right;font-weight:600;" id="pvQty">1 botol</span>
-                            <span style="color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">Total Bayar:</span><span style="text-align:right;font-weight:800;font-size:15px;border-top:1px solid var(--border);padding-top:8px;" id="pvTotal">45.000 Riel</span>
-                            <span style="color:var(--text-secondary);">Setara Rupiah:</span><span style="text-align:right;font-weight:600;color:var(--rp);" id="pvTotalRp">Rp 200.000</span>
-                            <span style="color:var(--text-secondary);">Sisa Stok Setelah:</span><span style="text-align:right;font-weight:600;" id="pvSisa">-</span>
-                        </div>
-                    </div>
-                    <button class="btn-gold" onclick="recordSale()"><i class="fas fa-check" style="margin-right:8px;"></i>Simpan Penjualan</button>
-                </div>
-            </div>
+            <div class="card" style="padding:20px;margin-bottom:20px;border-color:rgba(230,126,34,0.3);"><h3 style="font-size:14px;font-weight:700;margin-bottom:4px;color:var(--riel);"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan dari Google Sheet</h3><p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">Data pesanan yang masuk ke Sheet otomatis tampil di sini setelah klik Sync. Tercatat: Tanggal, Nama, Varian, Pembayaran.</p><div id="sheetSalesList" style="max-height:400px;overflow-y:auto;border-radius:12px;border:1px solid var(--border);background:var(--bg-secondary);"><div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div></div></div>
+            <div class="card" style="padding:24px;max-width:580px;"><h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold);"><i class="fas fa-pen" style="margin-right:6px;"></i>Catat Penjualan Manual</h3><div style="display:flex;flex-direction:column;gap:16px;"><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Pilih Varian</label><select class="input-field" id="saleVar" onchange="onSaleVarChange()"><option value="">-- Pilih Varian --</option></select></div><div id="saleStockInfo" style="display:none;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:14px 16px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Sisa Stok</div><div style="font-size:24px;font-weight:800;color:var(--gold-light);margin-top:4px;" id="saleSisaStok">0</div></div><div style="text-align:right;"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Terjual</div><div style="font-size:18px;font-weight:700;color:var(--text-secondary);margin-top:4px;" id="saleTerjual">0</div></div></div></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Beli</label><input type="number" class="input-field" id="saleQty" min="1" value="1" oninput="calcPreview()"></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:block;">Mata Uang Pembayaran</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;"><div class="curr-pill sel-riel" id="cRiel" onclick="pickCurr('riel')"><div style="font-size:10px;opacity:0.6;">Kamboja</div>Riel</div><div class="curr-pill" id="cUsd" onclick="pickCurr('usd')"><div style="font-size:10px;opacity:0.6;">Dollar</div>USD</div><div class="curr-pill" id="cRp" onclick="pickCurr('rp')"><div style="font-size:10px;opacity:0.6;">Indonesia</div>Rupiah</div></div></div><div style="background:var(--bg-secondary);border-radius:12px;padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--text-secondary);">Harga per Botol</span><span style="font-size:16px;font-weight:800;" id="salePriceDisp">45.000 Riel</span></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Pembeli (opsional)</label><input type="text" class="input-field" id="saleBuyer" placeholder="Nama pembeli..."></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Catatan (opsional)</label><input type="text" class="input-field" id="saleNote" placeholder="Catatan..."></div><div class="preview-box"><h4 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pratinjau Penjualan</h4><div style="display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13px;"><span style="color:var(--text-secondary);">Varian:</span><span style="text-align:right;font-weight:600;" id="pvVarian">-</span><span style="color:var(--text-secondary);">Harga Satuan:</span><span style="text-align:right;font-weight:600;" id="pvPrice">45.000 Riel</span><span style="color:var(--text-secondary);">Jumlah:</span><span style="text-align:right;font-weight:600;" id="pvQty">1 botol</span><span style="color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">Total Bayar:</span><span style="text-align:right;font-weight:800;font-size:15px;border-top:1px solid var(--border);padding-top:8px;" id="pvTotal">45.000 Riel</span><span style="color:var(--text-secondary);">Setara Rupiah:</span><span style="text-align:right;font-weight:600;color:var(--rp);" id="pvTotalRp">Rp 200.000</span><span style="color:var(--text-secondary);">Sisa Stok Setelah:</span><span style="text-align:right;font-weight:600;" id="pvSisa">-</span></div></div><button class="btn-gold" onclick="recordSale()"><i class="fas fa-check" style="margin-right:8px;"></i>Simpan Penjualan</button></div></div>
         </section>
 
-        <!-- ===== HISTORY ===== -->
+        <!-- HISTORY -->
         <section class="tab-section" id="tab-history">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;">Riwayat Penjualan Manual</h2>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <input type="text" class="input-field" placeholder="Cari..." id="srcHist" oninput="renderHistory()" style="width:150px;">
-                    <select class="input-field" id="filVar" onchange="renderHistory()" style="width:160px;"><option value="">Semua Varian</option></select>
-                </div>
-            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;"><h2 class="font-display" style="font-size:20px;font-weight:700;">Riwayat Penjualan Manual</h2><div style="display:flex;gap:8px;flex-wrap:wrap;"><input type="text" class="input-field" placeholder="Cari..." id="srcHist" oninput="renderHistory()" style="width:150px;"><select class="input-field" id="filVar" onchange="renderHistory()" style="width:160px;"><option value="">Semua Varian</option></select></div></div>
             <div class="card table-wrap"><table class="dtable" style="min-width:700px;"><thead><tr><th>Tanggal</th><th>Varian</th><th>Qty</th><th>Bayar</th><th>Total (Rp)</th><th>Pembeli</th><th>Aksi</th></tr></thead><tbody id="tHist"></tbody></table></div>
             <div style="margin-top:10px;font-size:12px;color:var(--text-muted);" id="histSum"></div>
         </section>
 
-        <!-- ===== FINANCE ===== -->
+        <!-- FINANCE -->
         <section class="tab-section" id="tab-finance">
             <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;">Laporan Keuangan</h2>
-            <div class="stat-grid g3" style="margin-bottom:18px;">
-                <div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Modal</div><div style="font-size:20px;font-weight:800;" id="fModal">Rp 0</div></div>
-                <div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Penjualan</div><div style="font-size:20px;font-weight:800;" id="fPenjualan">Rp 0</div></div>
-                <div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Untung</div><div style="font-size:20px;font-weight:800;" id="fUntung">Rp 0</div></div>
-            </div>
-            <div class="card" style="padding:16px;margin-bottom:18px;">
-                <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pendapatan per Mata Uang</h3>
-                <div class="stat-grid g3">
-                    <div style="text-align:center;padding:12px;background:rgba(230,126,34,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--riel);margin-bottom:4px;">RIEL</div><div style="font-size:18px;font-weight:800;color:var(--riel);" id="fRiel">0</div></div>
-                    <div style="text-align:center;padding:12px;background:rgba(46,204,113,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--usd);margin-bottom:4px;">USD</div><div style="font-size:18px;font-weight:800;color:var(--usd);" id="fUsd">$0</div></div>
-                    <div style="text-align:center;padding:12px;background:rgba(52,152,219,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--rp);margin-bottom:4px;">RUPIAH</div><div style="font-size:18px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div></div>
-                </div>
-            </div>
+            <div class="stat-grid g3" style="margin-bottom:18px;"><div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Modal</div><div style="font-size:20px;font-weight:800;" id="fModal">Rp 0</div></div><div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Penjualan</div><div style="font-size:20px;font-weight:800;" id="fPenjualan">Rp 0</div></div><div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Untung</div><div style="font-size:20px;font-weight:800;" id="fUntung">Rp 0</div></div></div>
+            <div class="card" style="padding:16px;margin-bottom:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pendapatan per Mata Uang</h3><div class="stat-grid g3"><div style="text-align:center;padding:12px;background:rgba(230,126,34,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--riel);margin-bottom:4px;">RIEL</div><div style="font-size:18px;font-weight:800;color:var(--riel);" id="fRiel">0</div></div><div style="text-align:center;padding:12px;background:rgba(46,204,113,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--usd);margin-bottom:4px;">USD</div><div style="font-size:18px;font-weight:800;color:var(--usd);" id="fUsd">$0</div></div><div style="text-align:center;padding:12px;background:rgba(52,152,219,0.06);border-radius:12px;"><div style="font-size:11px;color:var(--rp);margin-bottom:4px;">RUPIAH</div><div style="font-size:18px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div></div></div></div>
             <div class="card table-wrap" style="margin-bottom:18px;"><table class="dtable" style="min-width:650px;"><thead><tr><th>Varian</th><th>Awal</th><th>Terjual</th><th>Sisa</th><th>Total Penjualan</th></tr></thead><tbody id="tFin"></tbody></table></div>
             <div class="card" style="padding:18px;margin-bottom:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Penjualan per Varian</h3><div style="position:relative;height:320px;"><canvas id="cProfit"></canvas></div></div>
-            <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;">
-                <button class="btn-outline" onclick="exportData()"><i class="fas fa-download" style="margin-right:4px;"></i>Ekspor Data</button>
-                <button class="btn-outline" onclick="openImport()"><i class="fas fa-upload" style="margin-right:4px;"></i>Impor Data</button>
-                <button class="btn-danger-sm" style="padding:8px 16px;font-size:13px;" onclick="confirmReset()"><i class="fas fa-rotate-left" style="margin-right:4px;"></i>Reset Semua</button>
-            </div>
+            <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;"><button class="btn-outline" onclick="exportData()"><i class="fas fa-download" style="margin-right:4px;"></i>Ekspor Data</button><button class="btn-outline" onclick="openImport()"><i class="fas fa-upload" style="margin-right:4px;"></i>Impor Data</button><button class="btn-danger-sm" style="padding:8px 16px;font-size:13px;" onclick="confirmReset()"><i class="fas fa-rotate-left" style="margin-right:4px;"></i>Reset Semua</button></div>
         </section>
     </main>
 </div>
 
-<!-- Tambah Varian Modal -->
-<div class="modal-bg" id="mAddVariant">
-    <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-            <h3 class="font-display" style="font-size:18px;font-weight:700;">Tambah Varian Baru</h3>
-            <button onclick="closeModal('mAddVariant')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="avName" placeholder="Contoh: CHANEL NO.5"></div>
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Botol Awal (Manual)</label><input type="number" class="input-field" id="avBottles" min="0" value="0" placeholder="Diisi manual"></div>
-            <button class="btn-gold" onclick="saveAddVariant()"><i class="fas fa-plus" style="margin-right:6px;"></i>Tambah Varian</button>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Product Modal -->
-<div class="modal-bg" id="mEditProd">
-    <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Stok Awal Varian</h3><button onclick="closeModal('mEditProd')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
-        <input type="hidden" id="epIdx">
-        <div style="display:flex;flex-direction:column;gap:14px;">
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="epName" readonly></div>
-            <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Stok Awal (botol) - DIISI MANUAL</label><input type="number" class="input-field" id="epStock" min="0"></div>
-            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:12px;padding:12px 16px;">
-                <div style="font-size:12px;color:var(--gold);"><i class="fas fa-info-circle" style="margin-right:5px;"></i>Terjual dihitung otomatis dari Sheet. Sisa = Awal - Terjual.</div>
-            </div>
-            <button class="btn-gold" onclick="saveProdEdit()"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan</button>
-        </div>
-    </div>
-</div>
-
-<!-- Hapus Varian Modal -->
-<div class="modal-bg" id="mDelVariant">
-    <div class="modal-box" style="text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-trash" style="color:var(--danger);font-size:22px;"></i></div>
-        <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Hapus Varian?</h3>
-        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;" id="delVarMsg">Varian ini akan dihapus permanen.</p>
-        <input type="hidden" id="delVarIdx">
-        <div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline" onclick="closeModal('mDelVariant')">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" onclick="confirmDelVariant()"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Hapus</button></div>
-    </div>
-</div>
-
-<!-- Reset Modal -->
-<div class="modal-bg" id="mReset">
-    <div class="modal-box" style="text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-triangle-exclamation" style="color:var(--danger);font-size:22px;"></i></div>
-        <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Reset Semua Data?</h3>
-        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">Stok, penjualan, dan catatan modal akan dikembalikan ke awal.</p>
-        <div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline" onclick="closeModal('mReset')">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" onclick="resetAll()"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Reset</button></div>
-    </div>
-</div>
-
-<!-- Import Modal -->
-<div class="modal-bg" id="mImport">
-    <div class="modal-box">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Impor Data</h3><button onclick="closeModal('mImport')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div>
-        <div style="margin-bottom:14px;"><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Paste JSON</label><textarea class="input-field" id="impJson" rows="6" placeholder="Paste data JSON..."></textarea></div>
-        <button class="btn-gold" onclick="doImport()"><i class="fas fa-upload" style="margin-right:6px;"></i>Impor</button>
-    </div>
-</div>
+<!-- MODALS -->
+<div class="modal-bg" id="mAddVariant"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Tambah Varian Baru</h3><button onclick="closeModal('mAddVariant')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div><div style="display:flex;flex-direction:column;gap:14px;"><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="avName" placeholder="Contoh: CHANEL NO.5"></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Botol Awal (Manual)</label><input type="number" class="input-field" id="avBottles" min="0" value="0" placeholder="Diisi manual"></div><button class="btn-gold" onclick="saveAddVariant()"><i class="fas fa-plus" style="margin-right:6px;"></i>Tambah Varian</button></div></div></div>
+<div class="modal-bg" id="mEditProd"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Stok Awal Varian</h3><button onclick="closeModal('mEditProd')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div><input type="hidden" id="epIdx"><div style="display:flex;flex-direction:column;gap:14px;"><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="epName" readonly></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Stok Awal (botol) - DIISI MANUAL</label><input type="number" class="input-field" id="epStock" min="0"></div><div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:12px;padding:12px 16px;"><div style="font-size:12px;color:var(--gold);"><i class="fas fa-info-circle" style="margin-right:5px;"></i>Terjual dihitung otomatis dari Sheet. Sisa = Awal - Terjual.</div></div><button class="btn-gold" onclick="saveProdEdit()"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan</button></div></div></div>
+<div class="modal-bg" id="mDelVariant"><div class="modal-box" style="text-align:center;"><div style="width:56px;height:56px;border-radius:50%;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-trash" style="color:var(--danger);font-size:22px;"></i></div><h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Hapus Varian?</h3><p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;" id="delVarMsg">Varian ini akan dihapus permanen.</p><input type="hidden" id="delVarIdx"><div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline" onclick="closeModal('mDelVariant')">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" onclick="confirmDelVariant()"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Hapus</button></div></div></div>
+<div class="modal-bg" id="mReset"><div class="modal-box" style="text-align:center;"><div style="width:56px;height:56px;border-radius:50%;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-triangle-exclamation" style="color:var(--danger);font-size:22px;"></i></div><h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Reset Semua Data?</h3><p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">Stok, penjualan, dan catatan modal akan dikembalikan ke awal.</p><div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline" onclick="closeModal('mReset')">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" onclick="resetAll()"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Reset</button></div></div></div>
+<div class="modal-bg" id="mImport"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Impor Data</h3><button onclick="closeModal('mImport')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div><div style="margin-bottom:14px;"><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Paste JSON</label><textarea class="input-field" id="impJson" rows="6" placeholder="Paste data JSON..."></textarea></div><button class="btn-gold" onclick="doImport()"><i class="fas fa-upload" style="margin-right:6px;"></i>Impor</button></div></div>
 
 <script>
 // ============================================================
@@ -583,7 +213,7 @@ var DEFAULT_PRODUCTS = [
 var products = [];
 var history = [];
 var modalEntries = [];
-var sheetSales = [];       // Data penjualan dari Sheet
+var sheetSales = [];
 var selectedCurr = 'riel';
 var chartStock = null, chartSales = null, chartProfit = null;
 
@@ -667,7 +297,7 @@ function getTotalPenjualanRp() {
         else {
             var qty = Number(s.Jumlah || s.Qty || 1) || 1;
             var bayar = String(s.Pembayaran || s.Bayar || 'rp').toLowerCase();
-            if(bayar.includes('riel')) total += qty * PRICE_RP; // Asumsi 1 botol = 200k rp
+            if(bayar.includes('riel')) total += qty * PRICE_RP; 
             else if(bayar.includes('usd') || bayar.includes('$')) total += qty * PRICE_RP;
             else total += qty * PRICE_RP;
         }
@@ -700,7 +330,6 @@ function getTotalPenjualanPerCurrency() {
     }
     return {riel: riel, usd: usd, rp: rp};
 }
-
 
 // ============================================================
 // LOGIN & SESSION
@@ -750,13 +379,8 @@ function initDashboard() {
     var session = JSON.parse(localStorage.getItem('vj_session') || '{}');
     document.getElementById('headerUser').textContent = session.user || '';
     
-    // Muat data lokal dulu
     loadDataLocal();
-    
-    // Render UI
     renderAll();
-    
-    // Sync otomatis dari Sheet
     syncSheet();
 }
 
@@ -788,7 +412,7 @@ function renderAll() {
 // SYNC GOOGLE SHEET (CRUD)
 // ============================================================
 async function syncSheet() {
-    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzqk2EwtSDgaa3WpOYfAkX6jh4L3qh-H_B8M-XawRQr9AJhhRPPsdzfXS5hZKqCKAp9kw/exec') {
+    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_LINK_WEB_APP_KAMU_DISINI') {
         showToast('Link Web App belum dimasukkan!', 'err');
         return;
     }
@@ -819,7 +443,6 @@ async function syncSheet() {
     }
 }
 
-// Post data ke Sheet
 async function postToSheet(payload) {
     if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_LINK_WEB_APP_KAMU_DISINI') return;
     try {
@@ -828,13 +451,11 @@ async function postToSheet(payload) {
             headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
         });
-        // Sync ulang biar data selalu sama
         syncSheet(); 
     } catch(e) {
         console.error('Post Error:', e);
     }
 }
-
 
 // ============================================================
 // RENDER: OVERVIEW / RINGKASAN
@@ -871,7 +492,6 @@ function renderOverview() {
     if(lowHtml) { lowCard.style.display = 'block'; document.getElementById('lowStockList').innerHTML = lowHtml; }
     else { lowCard.style.display = 'none'; }
     
-    // Charts
     renderCharts();
 }
 
@@ -895,15 +515,15 @@ function renderCharts() {
     });
 }
 
-
 // ============================================================
 // RENDER: SHEET SALES DI MENU PENJUALAN
 // ============================================================
 function renderSheetSales() {
-    // Di Tab Penjualan (Detail)
     var listEl = document.getElementById('sheetSalesList');
+    var recentEl = document.getElementById('recentSheetSales');
     if(sheetSales.length === 0) {
         listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header.</div>';
+        recentEl.innerHTML = 'Belum ada data dari Sheet.';
     } else {
         var html = '';
         sheetSales.forEach(function(s, i) {
@@ -920,15 +540,8 @@ function renderSheetSales() {
             '</div>';
         });
         listEl.innerHTML = html;
-    }
-    
-    // Di Tab Overview (5 Terakhir)
-    var recentEl = document.getElementById('recentSheetSales');
-    if(sheetSales.length === 0) {
-        recentEl.innerHTML = 'Belum ada data dari Sheet.';
-    } else {
-        var rHtml = '';
-        var start = sheetSales.length - 5; if(start < 0) start = 0;
+
+        var rHtml = ''; var start = sheetSales.length - 5; if(start < 0) start = 0;
         for(var i = sheetSales.length - 1; i >= start; i--) {
             var s = sheetSales[i];
             var tanggal = fDate(s.Timestamp || s.Tanggal || s.Date || '-');
@@ -943,7 +556,6 @@ function renderSheetSales() {
         recentEl.innerHTML = rHtml;
     }
 }
-
 
 // ============================================================
 // RENDER: PRODUCTS / VARIAN
@@ -982,7 +594,6 @@ function renderProducts() {
     document.getElementById('pTotalSisa').textContent = totSisa;
 }
 
-
 // ============================================================
 // RENDER: HISTORY MANUAL
 // ============================================================
@@ -990,7 +601,6 @@ function renderHistory() {
     var src = (document.getElementById('srcHist').value || '').toLowerCase();
     var filVar = document.getElementById('filVar').value;
     
-    // Update Filter Dropdown
     var currFilVar = filVar;
     var filEl = document.getElementById('filVar');
     filEl.innerHTML = '<option value="">Semua Varian</option>';
@@ -1020,7 +630,6 @@ function renderHistory() {
     document.getElementById('tHist').innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted);">Belum ada penjualan manual</td></tr>';
     document.getElementById('histSum').textContent = 'Total: ' + fRp(totalRp);
 }
-
 
 // ============================================================
 // RENDER: COSTS / MODAL
@@ -1053,7 +662,6 @@ function renderCosts() {
     document.getElementById('modalEntriesList').innerHTML = html || '<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:16px;">Belum ada catatan modal</div>';
 }
 
-
 // ============================================================
 // RENDER: FINANCE
 // ============================================================
@@ -1073,7 +681,6 @@ function renderFinance() {
     document.getElementById('fUsd').textContent = fUsd(currTotals.usd);
     document.getElementById('fRp').textContent = fRp(currTotals.rp);
     
-    // Table Varian
     var html = '';
     products.forEach(function(p) {
         var sold = getTotalSold(p);
@@ -1083,7 +690,6 @@ function renderFinance() {
     });
     document.getElementById('tFin').innerHTML = html;
     
-    // Chart
     var labels = products.map(function(p){ return p.name.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2702}-\u{27B0}\u{24C2}-\u{1F251}\u{1f926}-\u{1f937}\u{10000}-\u{10FFFF}\u{200D}\u{2640}\u{2642}\u{2600}-\u{2B55}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').trim(); });
     var profitData = products.map(function(p){ return getTotalSold(p) * PRICE_RP; });
     
@@ -1095,7 +701,6 @@ function renderFinance() {
     });
 }
 
-
 // ============================================================
 // TABS
 // ============================================================
@@ -1106,13 +711,11 @@ function switchTab(tab) {
     document.getElementById('tab-'+tab).classList.add('active');
 }
 
-
 // ============================================================
 // MODALS
 // ============================================================
 function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
 
 // ============================================================
 // ACTIONS: VARIAN
@@ -1133,7 +736,6 @@ function saveAddVariant() {
     renderAll();
     closeModal('mAddVariant');
     
-    // Post ke Sheet
     postToSheet({action: 'addVariant', name: name, stock: stock});
     showToast('Varian berhasil ditambahkan!', 'ok');
 }
@@ -1176,7 +778,6 @@ function confirmDelVariant() {
     postToSheet({action: 'deleteVariant', name: name});
     showToast('Varian berhasil dihapus!', 'ok');
 }
-
 
 // ============================================================
 // ACTIONS: SALES (PENJUALAN MANUAL)
@@ -1272,12 +873,10 @@ function recordSale() {
     saveDataLocal();
     renderAll();
     
-    // Reset Form
     document.getElementById('saleQty').value = 1;
     document.getElementById('saleBuyer').value = '';
     document.getElementById('saleNote').value = '';
     
-    // Post ke Sheet
     postToSheet({action: 'addSale', varian: varian, qty: qty, curr: selectedCurr, totalRp: totalRp, buyer: buyer, note: note});
     
     showToast('Penjualan berhasil dicatat!', 'ok');
@@ -1291,7 +890,6 @@ function delHistory(idx) {
     renderAll();
     postToSheet({action: 'deleteSale', date: h.date, varian: h.varian});
 }
-
 
 // ============================================================
 // ACTIONS: MODAL / COSTS
@@ -1316,7 +914,6 @@ function saveModalEntry() {
     saveDataLocal();
     renderAll();
     
-    // Reset
     document.getElementById('modalInput').value = '';
     document.getElementById('modalNote').value = '';
     document.getElementById('previewModalImg').src = '';
@@ -1335,7 +932,6 @@ function delModal(idx) {
     renderAll();
     postToSheet({action: 'deleteModal', date: m.date, amount: m.amount});
 }
-
 
 // ============================================================
 // ACTIONS: IMPORT / EXPORT / RESET
@@ -1387,7 +983,6 @@ function resetAll() {
     showToast('Semua data berhasil direset!', 'ok');
 }
 
-
 // ============================================================
 // INIT ON LOAD
 // ============================================================
@@ -1396,7 +991,6 @@ window.onload = function() {
         initDashboard();
     }
 };
-
 </script>
 </body>
 </html>
