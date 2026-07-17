@@ -10,6 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <script>
+        // HAPUS CACHE LAMA AGAR BISA LOGIN DI BROWSER LAIN TANPA ERROR
+        if(Number(localStorage.getItem('vj_fix_ver') || '0') < 9) {
+            localStorage.removeItem('vj_products');
+            localStorage.removeItem('vj_history');
+            localStorage.removeItem('vj_modals');
+            localStorage.removeItem('vj_sheetsales');
+            localStorage.setItem('vj_fix_ver', '9');
+        }
+
         if(localStorage.getItem('vj_session')) {
             document.write('<style>#loginScreen{display:none!important;} #dashboardScreen{display:block!important;}</style>');
         } else {
@@ -213,7 +222,7 @@ var DEFAULT_PRODUCTS = [
 var products = [];
 var history = [];
 var modalEntries = [];
-var sheetSales = [];
+var sheetSales = [];       // Data penjualan dari Sheet
 var selectedCurr = 'riel';
 var chartStock = null, chartSales = null, chartProfit = null;
 
@@ -255,14 +264,14 @@ function showToast(msg, type) {
 // ============================================================
 function getSoldFromSheet(varianName) {
     var total = 0;
-    var searchName = varianName.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2702}-\u{27B0}\u{24C2}-\u{1F251}\u{1f926}-\u{1f937}\u{10000}-\u{10FFFF}\u{200D}\u{2640}\u{2642}\u{2600}-\u{2B55}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').trim().toLowerCase();
+    var searchName = varianName.replace(/[^\w\s]/gi,'').trim().toLowerCase();
     for (var i = 0; i < sheetSales.length; i++) {
         var s = sheetSales[i];
-        var sVarian = String(s.Varian || s.varian || s.Parfum || s.Produk || '');
-        var sVarianClean = sVarian.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2702}-\u{27B0}\u{24C2}-\u{1F251}\u{1f926}-\u{1f937}\u{10000}-\u{10FFFF}\u{200D}\u{2640}\u{2642}\u{2600}-\u{2B55}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').trim().toLowerCase();
+        var sVarian = String(s['Varian'] || s['varian'] || s['Parfum'] || s['parfum'] || s['Produk'] || '');
+        var sVarianClean = sVarian.replace(/[^\w\s]/gi,'').trim().toLowerCase();
         
         if (sVarianClean && searchName && (sVarianClean.indexOf(searchName) >= 0 || searchName.indexOf(sVarianClean) >= 0)) {
-            var qty = Number(s.Jumlah || s.jumlah || s.Qty || s.qty || s.Quantity || 1) || 1;
+            var qty = Number(s['Jumlah'] || s['jumlah'] || s['Qty'] || s['qty'] || s['Quantity'] || 1) || 1;
             total += qty;
         }
     }
@@ -290,13 +299,13 @@ function getTotalSold(product) {
 // Total Penjualan dalam Rupiah (gabungan Sheet + Manual)
 function getTotalPenjualanRp() {
     var total = 0;
-    // Dari Sheet (Asumsi kolom TotalRp ada, atau dihitung manual dari qty * harga)
+    // Dari Sheet
     for(var i=0; i<sheetSales.length; i++) {
         var s = sheetSales[i];
-        if(s.TotalRp) { total += Number(s.TotalRp) || 0; }
+        if(s['TotalRp']) { total += Number(s['TotalRp']) || 0; }
         else {
-            var qty = Number(s.Jumlah || s.Qty || 1) || 1;
-            var bayar = String(s.Pembayaran || s.Bayar || 'rp').toLowerCase();
+            var qty = Number(s['Jumlah'] || s['Qty'] || 1) || 1;
+            var bayar = String(s['Pembayaran'] || s['Bayar'] || 'rp').toLowerCase();
             if(bayar.includes('riel')) total += qty * PRICE_RP; 
             else if(bayar.includes('usd') || bayar.includes('$')) total += qty * PRICE_RP;
             else total += qty * PRICE_RP;
@@ -315,8 +324,8 @@ function getTotalPenjualanPerCurrency() {
     // Sheet
     for(var i=0; i<sheetSales.length; i++) {
         var s = sheetSales[i];
-        var qty = Number(s.Jumlah || s.Qty || 1) || 1;
-        var bayar = String(s.Pembayaran || s.Bayar || 'rp').toLowerCase();
+        var qty = Number(s['Jumlah'] || s['Qty'] || 1) || 1;
+        var bayar = String(s['Pembayaran'] || s['Bayar'] || 'rp').toLowerCase();
         if(bayar.includes('riel')) riel += qty * PRICE_RIEL;
         else if(bayar.includes('usd') || bayar.includes('$')) usd += qty * PRICE_USD;
         else rp += qty * PRICE_RP;
@@ -412,7 +421,7 @@ function renderAll() {
 // SYNC GOOGLE SHEET (CRUD)
 // ============================================================
 async function syncSheet() {
-    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzqk2EwtSDgaa3WpOYfAkX6jh4L3qh-H_B8M-XawRQr9AJhhRPPsdzfXS5hZKqCKAp9kw/exec') {
+    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxbkZoi1IYXv7PWyX4ZNgPGfJ_dCmiTqzeObv6P9nhSYMQeg6adsh96SsCoqdvnpsaZ-Q/exec') {
         showToast('Link Web App belum dimasukkan!', 'err');
         return;
     }
@@ -426,9 +435,6 @@ async function syncSheet() {
         var response = await fetch(APPS_SCRIPT_URL);
         var data = await response.json();
         
-        if(data.products) products = data.products;
-        if(data.history) history = data.history;
-        if(data.modals) modalEntries = data.modals;
         if(data.sheetSales) sheetSales = data.sheetSales;
         
         saveDataLocal();
@@ -440,20 +446,6 @@ async function syncSheet() {
     } finally {
         icon.className = 'fas fa-cloud-arrow-down';
         text.textContent = 'Sync';
-    }
-}
-
-async function postToSheet(payload) {
-    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_LINK_WEB_APP_KAMU_DISINI') return;
-    try {
-        await fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(payload)
-        });
-        syncSheet(); 
-    } catch(e) {
-        console.error('Post Error:', e);
     }
 }
 
@@ -496,7 +488,7 @@ function renderOverview() {
 }
 
 function renderCharts() {
-    var labels = products.map(function(p){ return p.name.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2702}-\u{27B0}\u{24C2}-\u{1F251}\u{1f926}-\u{1f937}\u{10000}-\u{10FFFF}\u{200D}\u{2640}\u{2642}\u{2600}-\u{2B55}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').trim(); });
+    var labels = products.map(function(p){ return p.name.replace(/[^\w\s]/gi,'').trim(); });
     var sisaData = products.map(function(p){ return getRemainingStock(p); });
     var soldData = products.map(function(p){ return getTotalSold(p); });
     
@@ -515,23 +507,27 @@ function renderCharts() {
     });
 }
 
+
 // ============================================================
 // RENDER: SHEET SALES DI MENU PENJUALAN
 // ============================================================
 function renderSheetSales() {
+    // Di Tab Penjualan (Detail)
     var listEl = document.getElementById('sheetSalesList');
+    // Di Tab Overview (5 Terakhir)
     var recentEl = document.getElementById('recentSheetSales');
+    
     if(sheetSales.length === 0) {
         listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header.</div>';
         recentEl.innerHTML = 'Belum ada data dari Sheet.';
     } else {
         var html = '';
         sheetSales.forEach(function(s, i) {
-            var tanggal = fDateTime(s.Timestamp || s.Tanggal || s.Date || '-');
-            var nama = s.Nama || s.Name || s.Customer || '-';
-            var varian = s.Varian || s.Parfum || s.Produk || '-';
-            var bayar = s.Pembayaran || s.Bayar || s.Payment || '-';
-            var qty = Number(s.Jumlah || s.Qty || 1) || 1;
+            var tanggal = fDateTime(s['Timestamp'] || s['Tanggal'] || s['Date'] || '-');
+            var nama = s['Nama'] || s['Name'] || s['Customer'] || '-';
+            var varian = s['Varian'] || s['Parfum'] || s['Produk'] || '-';
+            var bayar = s['Pembayaran'] || s['Bayar'] || s['Payment'] || '-';
+            var qty = Number(s['Jumlah'] || s['Qty'] || 1) || 1;
             
             html += '<div class="sheet-sale-row">' +
                 '<div><div style="font-size:11px;color:var(--text-muted)">' + tanggal + '</div><div style="font-weight:600;color:var(--text-primary)">' + nama + '</div></div>' +
@@ -544,10 +540,10 @@ function renderSheetSales() {
         var rHtml = ''; var start = sheetSales.length - 5; if(start < 0) start = 0;
         for(var i = sheetSales.length - 1; i >= start; i--) {
             var s = sheetSales[i];
-            var tanggal = fDate(s.Timestamp || s.Tanggal || s.Date || '-');
-            var nama = s.Nama || s.Name || '-';
-            var varian = s.Varian || s.Parfum || '-';
-            var bayar = s.Pembayaran || s.Bayar || '-';
+            var tanggal = fDate(s['Timestamp'] || s['Tanggal'] || s['Date'] || '-');
+            var nama = s['Nama'] || s['Name'] || '-';
+            var varian = s['Varian'] || s['Parfum'] || '-';
+            var bayar = s['Pembayaran'] || s['Bayar'] || '-';
             rHtml += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(42,39,36,0.3);font-size:12px;">' +
                 '<span>' + tanggal + ' • <b>' + nama + '</b></span>' +
                 '<span style="color:var(--gold)">' + varian + ' (' + bayar + ')</span>' +
@@ -556,6 +552,7 @@ function renderSheetSales() {
         recentEl.innerHTML = rHtml;
     }
 }
+
 
 // ============================================================
 // RENDER: PRODUCTS / VARIAN
@@ -594,6 +591,7 @@ function renderProducts() {
     document.getElementById('pTotalSisa').textContent = totSisa;
 }
 
+
 // ============================================================
 // RENDER: HISTORY MANUAL
 // ============================================================
@@ -631,6 +629,7 @@ function renderHistory() {
     document.getElementById('histSum').textContent = 'Total: ' + fRp(totalRp);
 }
 
+
 // ============================================================
 // RENDER: COSTS / MODAL
 // ============================================================
@@ -662,6 +661,7 @@ function renderCosts() {
     document.getElementById('modalEntriesList').innerHTML = html || '<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:16px;">Belum ada catatan modal</div>';
 }
 
+
 // ============================================================
 // RENDER: FINANCE
 // ============================================================
@@ -681,6 +681,7 @@ function renderFinance() {
     document.getElementById('fUsd').textContent = fUsd(currTotals.usd);
     document.getElementById('fRp').textContent = fRp(currTotals.rp);
     
+    // Table Varian
     var html = '';
     products.forEach(function(p) {
         var sold = getTotalSold(p);
@@ -690,7 +691,8 @@ function renderFinance() {
     });
     document.getElementById('tFin').innerHTML = html;
     
-    var labels = products.map(function(p){ return p.name.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2702}-\u{27B0}\u{24C2}-\u{1F251}\u{1f926}-\u{1f937}\u{10000}-\u{10FFFF}\u{200D}\u{2640}\u{2642}\u{2600}-\u{2B55}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').trim(); });
+    // Chart
+    var labels = products.map(function(p){ return p.name.replace(/[^\w\s]/gi,'').trim(); });
     var profitData = products.map(function(p){ return getTotalSold(p) * PRICE_RP; });
     
     if(chartProfit) chartProfit.destroy();
@@ -700,6 +702,7 @@ function renderFinance() {
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: '#8a8578', callback: function(v){ return 'Rp '+v/1000+'k'; } }, grid: { color: 'rgba(42,39,36,0.4)' } }, x: { ticks: { color: '#8a8578', font: {size: 9} }, grid: { display: false } } } }
     });
 }
+
 
 // ============================================================
 // TABS
@@ -716,6 +719,7 @@ function switchTab(tab) {
 // ============================================================
 function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
 
 // ============================================================
 // ACTIONS: VARIAN
@@ -735,8 +739,6 @@ function saveAddVariant() {
     saveDataLocal();
     renderAll();
     closeModal('mAddVariant');
-    
-    postToSheet({action: 'addVariant', name: name, stock: stock});
     showToast('Varian berhasil ditambahkan!', 'ok');
 }
 
@@ -755,8 +757,6 @@ function saveProdEdit() {
     saveDataLocal();
     renderAll();
     closeModal('mEditProd');
-    
-    postToSheet({action: 'updateStock', name: products[idx].name, stock: stock});
     showToast('Stok awal berhasil diperbarui!', 'ok');
 }
 
@@ -768,16 +768,14 @@ function openDelVariant(idx) {
 
 function confirmDelVariant() {
     var idx = parseInt(document.getElementById('delVarIdx').value);
-    var name = products[idx].name;
     products.splice(idx, 1);
     
     saveDataLocal();
     renderAll();
     closeModal('mDelVariant');
-    
-    postToSheet({action: 'deleteVariant', name: name});
     showToast('Varian berhasil dihapus!', 'ok');
 }
+
 
 // ============================================================
 // ACTIONS: SALES (PENJUALAN MANUAL)
@@ -877,19 +875,16 @@ function recordSale() {
     document.getElementById('saleBuyer').value = '';
     document.getElementById('saleNote').value = '';
     
-    postToSheet({action: 'addSale', varian: varian, qty: qty, curr: selectedCurr, totalRp: totalRp, buyer: buyer, note: note});
-    
     showToast('Penjualan berhasil dicatat!', 'ok');
 }
 
 function delHistory(idx) {
     if(!confirm('Hapus riwayat penjualan ini?')) return;
-    var h = history[idx];
     history.splice(idx, 1);
     saveDataLocal();
     renderAll();
-    postToSheet({action: 'deleteSale', date: h.date, varian: h.varian});
 }
+
 
 // ============================================================
 // ACTIONS: MODAL / COSTS
@@ -920,18 +915,16 @@ function saveModalEntry() {
     document.getElementById('previewModalImg').style.display = 'none';
     document.getElementById('modalFile').value = '';
     
-    postToSheet({action: 'addModal', amount: amount, note: note});
     showToast('Catatan modal berhasil disimpan!', 'ok');
 }
 
 function delModal(idx) {
     if(!confirm('Hapus catatan modal ini?')) return;
-    var m = modalEntries[idx];
     modalEntries.splice(idx, 1);
     saveDataLocal();
     renderAll();
-    postToSheet({action: 'deleteModal', date: m.date, amount: m.amount});
 }
+
 
 // ============================================================
 // ACTIONS: IMPORT / EXPORT / RESET
@@ -962,7 +955,6 @@ function doImport() {
         saveDataLocal();
         renderAll();
         closeModal('mImport');
-        postToSheet({action: 'importAll', data: data});
         showToast('Data berhasil diimpor!', 'ok');
     } catch(e) {
         showToast('Format JSON tidak valid!', 'err');
@@ -979,9 +971,9 @@ function resetAll() {
     saveDataLocal();
     renderAll();
     closeModal('mReset');
-    postToSheet({action: 'resetAll'});
     showToast('Semua data berhasil direset!', 'ok');
 }
+
 
 // ============================================================
 // INIT ON LOAD
