@@ -8,6 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- F5 FIX: Mencegah halaman kedip ke login saat refresh -->
+    <script>
+        if(localStorage.getItem('vj_session')) {
+            document.write('<style>#loginScreen{display:none!important;} #dashboardScreen{display:block!important;}</style>');
+        } else {
+            document.write('<style>#loginScreen{display:flex!important;} #dashboardScreen{display:none!important;}</style>');
+        }
+    </script>
+
     <style>
         :root {
             --bg-primary: #0a0a0a;
@@ -233,7 +243,7 @@
         .monthly-row:hover { background: rgba(201,168,76,0.04); }
         .monthly-row:last-child { border-bottom: none; }
 
-        /* Tambahan untuk Sync & Gambar */
+        /* Tambahan Sync & Gambar */
         .sync-spin { animation: spin 1s linear infinite; }
         @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
         .img-preview { max-width: 80px; max-height: 60px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); transition: transform 0.2s; }
@@ -267,14 +277,14 @@
                 <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Username</label>
                 <div style="position:relative;">
                     <i class="fas fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-                    <input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:40px;" value="admin" autocomplete="username">
+                    <input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" value="admin" style="padding-left:40px;" autocomplete="username">
                 </div>
             </div>
             <div>
                 <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Password</label>
                 <div style="position:relative;">
                     <i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-                    <input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:40px;" value="admin123" autocomplete="current-password">
+                    <input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" value="admin123" style="padding-left:40px;" autocomplete="current-password">
                     <button onclick="togglePassVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" id="passToggleBtn"><i class="fas fa-eye"></i></button>
                 </div>
             </div>
@@ -372,7 +382,7 @@
         <section class="tab-section" id="tab-costs">
             <div style="margin-bottom:20px;">
                 <h2 class="font-display" style="font-size:20px;font-weight:700;">Pencatatan Modal & Bukti Transfer</h2>
-                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini beserta bukti transfernya.</p>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini.</p>
             </div>
             <div class="stat-grid g3" style="margin-bottom:20px;">
                 <div class="card" style="padding:20px;border-color:rgba(201,168,76,0.3);">
@@ -415,14 +425,12 @@
             </div>
             <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Riwayat Catatan Modal</h3>
             <div id="modalEntriesList"></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--text-muted);" id="modalEntriesSum"></div>
         </section>
 
         <!-- ===== SALES ===== -->
         <section class="tab-section" id="tab-sales">
             <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;">Catat Penjualan Manual</h2>
-            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;">
-                <div style="font-size:12px;color:var(--gold);"><i class="fas fa-info-circle" style="margin-right:5px;"></i>Penjualan otomatis dari Google Sheet saat klik "Sync Sheet". Form ini hanya jika ada yang lupa dicatat di Sheet.</div>
-            </div>
             <div class="card" style="padding:24px;max-width:580px;">
                 <div style="display:flex;flex-direction:column;gap:16px;">
                     <div>
@@ -477,7 +485,7 @@
         <!-- ===== HISTORY ===== -->
         <section class="tab-section" id="tab-history">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;">Riwayat Penjualan</h2>
+                <h2 class="font-display" style="font-size:20px;font-weight:700;">Riwayat Penjualan Manual</h2>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
                     <input type="text" class="input-field" placeholder="Cari..." id="srcHist" oninput="renderHistory()" style="width:150px;">
                     <select class="input-field" id="filVar" onchange="renderHistory()" style="width:160px;"><option value="">Semua Varian</option></select>
@@ -538,10 +546,10 @@
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="epName" readonly></div>
             <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Stok Awal (botol) - DIISI MANUAL</label><input type="number" class="input-field" id="epStock" min="0"></div>
-            <div style="background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.15);border-radius:12px;padding:12px 16px;">
-                <div style="font-size:12px;color:var(--danger);"><i class="fas fa-triangle-exclamation" style="margin-right:5px;"></i>Mengubah stok awal hanya untuk koreksi. Terjual otomatis dari Sheet.</div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:12px;padding:12px 16px;">
+                <div style="font-size:12px;color:var(--gold);"><i class="fas fa-info-circle" style="margin-right:5px;"></i>Terjual otomatis dari Sheet. Sisa = Awal - Terjual.</div>
             </div>
-            <button class="btn-gold" onclick="saveProdEdit()"><i class="fas fa-save" style="margin-right:6px;"></i>Simpan</button>
+            <button class="btn-gold" onclick="saveProdEdit()"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan</button>
         </div>
     </div>
 </div>
@@ -673,6 +681,7 @@ function toast(msg, type) {
     setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 3000);
 }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function viewImage(src) { document.getElementById('imgViewerSrc').src = src; document.getElementById('imgViewerModal').style.display = 'flex'; }
 
 // ============================================================
 // DATA PERSISTENCE
@@ -703,10 +712,12 @@ function loadData() {
 }
 
 // ============================================================
-// GOOGLE SHEET SYNC
+// GOOGLE SHEET SYNC (PENCOCOKAN CERDAS)
 // ============================================================
+function cleanStr(s) { return s.toString().toUpperCase().replace(/[^A-Z0-9]/g, ''); }
+
 function syncSheet() {
-    if(APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxLvE0e5hrwPniUr-58uFpZl91VqErOekiRQdprd-lJMaUsspjCEgNOWsWQG-rIbGsEuQ/exec') {
+    if(APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxlCiFPsg8Na65OXuy9wuilcYnfVuLh2cV1YRfRk8ttH6iimfJzEkFqku-3UQBkPC2Buw/exec') {
         toast('Link Web App belum dimasukkan ke dalam kode!', 'err'); return;
     }
     var icon = document.getElementById('syncIcon');
@@ -715,22 +726,23 @@ function syncSheet() {
     text.textContent = 'Syncing...';
     
     fetch(APPS_SCRIPT_URL)
-    .then(function(res) { return res.json(); })
+    .then(function(res) { if (!res.ok) throw new Error('Script Error'); return res.json(); })
     .then(function(data) {
         products.forEach(function(p){ p.soldSheet = 0; });
         sheetTotalRiel = 0; sheetTotalUsd = 0; sheetTotalRp = 0;
 
         data.forEach(function(row) {
-            var rawVarian = (row['品种'] || row['Varian'] || '').toString().trim().toUpperCase();
+            var rawVarian = (row['品种'] || row['Varian'] || '').toString().trim();
             var rawQty = parseInt(row['数量'] || row['Qty'] || '0') || 0;
             var rawBayar = (row['支付'] || row['Bayar'] || '').toString().toLowerCase();
             var rawTotal = (row['总计'] || row['Total'] || '0').toString().replace(/[^0-9.,]/g, '').replace(/,/g, '');
             var totalNum = parseFloat(rawTotal) || 0;
 
             if (rawVarian && rawQty > 0) {
+                var rawClean = cleanStr(rawVarian);
                 var matchedVarian = products.find(function(p) {
-                    var pClean = p.name.replace(/[^\w\s]/g, '').trim().toUpperCase();
-                    return rawVarian.includes(pClean) || pClean.includes(rawVarian);
+                    var pClean = cleanStr(p.name);
+                    return rawClean.includes(pClean) || pClean.includes(rawClean);
                 });
                 if (matchedVarian) { matchedVarian.soldSheet += rawQty; }
             }
@@ -747,7 +759,7 @@ function syncSheet() {
     })
     .catch(function(err) {
         icon.className = 'fas fa-cloud-arrow-down'; text.textContent = 'Sync Sheet';
-        toast('Gagal ambil data! Pastikan link Web App benar & akses Anyone.', 'err');
+        toast('Gagal ambil data! Cek Apps Scriptmu. Error: ' + err.message, 'err');
     });
 }
 
@@ -921,11 +933,6 @@ function previewImgModal(input) {
     }
 }
 
-function viewImage(src) {
-    document.getElementById('imgViewerSrc').src = src;
-    document.getElementById('imgViewerModal').style.display = 'flex';
-}
-
 function saveModalEntry() {
     var amount = parseFloat(document.getElementById('modalInput').value) || 0;
     var note = document.getElementById('modalNote').value.trim();
@@ -965,10 +972,7 @@ function renderModalEntries() {
     document.getElementById('modalEntriesList').innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada catatan modal</p>';
 }
 
-function delModalEntry(i) {
-    if (!confirm('Hapus catatan modal ini?')) return;
-    modalEntries.splice(i, 1); saveData(); renderAll();
-}
+function delModalEntry(i) { if (!confirm('Hapus catatan modal ini?')) return; modalEntries.splice(i, 1); saveData(); renderAll(); }
 
 // ============================================================
 // FINANCE
@@ -1099,8 +1103,6 @@ function resetAll() {
 // ============================================================
 window.onload = function() {
     if (localStorage.getItem('vj_session')) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboardScreen').style.display = 'block';
         document.getElementById('headerUser').textContent = localStorage.getItem('vj_session');
         initApp();
     }
