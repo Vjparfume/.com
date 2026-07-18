@@ -374,8 +374,8 @@ var PRICE_RIEL = 45000;
 var PRICE_USD = 11.25;
 var PRICE_RP = 200000;
 
-// PASTE LINK WEB APP GOOGLE SCRIPT KAMU DI BAWAH SINI
-var APPS_SCRIPT_URL = 'PASTE_LINK_WEB_APP_KAMU_DISINI';
+// LINK WEB APP GOOGLE SCRIPT SUDAH DIPASANG OTOMATIS DI BAWAH INI
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3qQHJ8Vqv13goaL2XvWrx8gljCF3m3JA6yn6hZlhijM5PCUboYwL66eQBXXuj8tA2ng/exec';
 
 var DEFAULT_PRODUCTS = [
     {name:"🌹 Scandalous",stockAwal:0},{name:"🌸 Black Opium",stockAwal:0},
@@ -577,11 +577,10 @@ function renderAll(){
 }
 
 // ============================================================
-// SYNC GOOGLE SHEET
+// SYNC GOOGLE SHEET ( LENGKAP TANPA DIPOTONG )
 // ============================================================
 async function syncSheet(){
-    // PENGECEKAN LINK DIPERBAIKI DISINI
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3qQHJ8Vqv13goaL2XvWrx8gljCF3m3JA6yn6hZlhijM5PCUboYwL66eQBXXuj8tA2ng/exec';
+    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL==='PASTE_LINK_WEB_APP_KAMU_DISINI' || APPS_SCRIPT_URL.includes('PASTE_LINK')){
         showToast('Link Web App belum dimasukkan!', 'err');
         return;
     }
