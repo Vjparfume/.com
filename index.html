@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VJ PARFUM - Dashboard</title>
     
+    <!-- ANTI KEDIP & AUTO CLEAR CACHE RUSAK -->
     <script>
+        if(Number(localStorage.getItem('vj_fix_ver') || '0') < 99) {
+            localStorage.removeItem('vj_session_v2');
+            localStorage.removeItem('vj_products_v2');
+            localStorage.removeItem('vj_history_v2');
+            localStorage.removeItem('vj_modals_v2');
+            localStorage.removeItem('vj_sheetsales_v2');
+            localStorage.setItem('vj_fix_ver', '99');
+        }
         if(localStorage.getItem('vj_session_v2')) {
             document.write('<style>#loginScreen{display:none!important;} #dashboardScreen{display:block!important;}</style>');
         } else {
@@ -373,8 +382,8 @@ var PRICE_RIEL = 45000;
 var PRICE_USD = 11.25;
 var PRICE_RP = 200000;
 
-// LINK WEB APP GOOGLE SCRIPT SUDAH DIPASANG OTOMATIS
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytZcPswLGsaEsd_UjGDbE1lQR1KjjHyot1PEllEEx1sMiwNcF27gbpIyhEkQDioR8ksw/exec';
+// LINK ASLI GOOGLE APPS SCRIPT KAMU (SUDAH BENAR)
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3qQHJ8Vqv13goaL2XvWrx8gljCF3m3JA6yn6hZlhijM5PCUboYwL66eQBXXuj8tA2ng/exec';
 
 var DEFAULT_PRODUCTS = [
     {name:"🌹 Scandalous",stockAwal:0},{name:"🌸 Black Opium",stockAwal:0},
@@ -576,7 +585,7 @@ function renderAll(){
 }
 
 // ============================================================
-// SYNC GOOGLE SHEET ( SISTEM DETEKSI ERROR )
+// SYNC GOOGLE SHEET
 // ============================================================
 async function syncSheet(){
     if(isSyncing)return;
@@ -592,7 +601,7 @@ async function syncSheet(){
         try {
             data = JSON.parse(textData);
         } catch (e) {
-            throw new Error('Respon Server bukan JSON. Mungkin Web App belum di-deploy ulang sebagai "Anyone".');
+            throw new Error('Server Error: Web App belum di-deploy ulang.');
         }
         if(data.error) throw new Error(data.error);
         if(data.sheetSales)sheetSales=data.sheetSales;
@@ -1120,7 +1129,7 @@ function resetAll(){
 }
 
 // ============================================================
-// AUTO INIT IF LOGGED IN (Safe execution)
+// AUTO INIT IF LOGGED IN
 // ============================================================
 window.onload = function() {
     if(localStorage.getItem('vj_session_v2')){
