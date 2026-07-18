@@ -419,6 +419,7 @@ function getSoldFromSheet(varianName){
     var searchName=varianName.replace(/[^\w\s]/gi,'').trim().toLowerCase();
     for(var i=0;i<sheetSales.length;i++){
         var s=sheetSales[i];
+        if(!s) continue; // TAMENG ERROR
         var sVarian=String(s['Varian']||s['varian']||s['Parfum']||s['parfum']||s['Produk']||s['produk']||'');
         var sVarianClean=sVarian.replace(/[^\w\s]/gi,'').trim().toLowerCase();
         if(sVarianClean&&searchName&&(sVarianClean.indexOf(searchName)>=0||searchName.indexOf(sVarianClean)>=0)){
@@ -431,7 +432,7 @@ function getSoldFromSheet(varianName){
 function getSoldManual(varianName){
     var total=0;
     for(var i=0;i<history.length;i++){
-        if(history[i].varian===varianName)total+=history[i].qty;
+        if(history[i] && history[i].varian===varianName)total+=history[i].qty;
     }
     return total;
 }
@@ -447,11 +448,12 @@ function getTotalPenjualanRp(){
     var total=0;
     for(var i=0;i<sheetSales.length;i++){
         var s=sheetSales[i];
+        if(!s) continue;
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         total+=qty*PRICE_RP;
     }
     for(var i=0;i<history.length;i++){
-        total+=history[i].totalRp||0;
+        if(history[i]) total+=history[i].totalRp||0;
     }
     return total;
 }
@@ -459,6 +461,7 @@ function getTotalPenjualanPerCurrency(){
     var riel=0,usd=0,rp=0;
     for(var i=0;i<sheetSales.length;i++){
         var s=sheetSales[i];
+        if(!s) continue;
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
         if(bayar.indexOf('riel')>=0)riel+=qty*PRICE_RIEL;
@@ -467,6 +470,7 @@ function getTotalPenjualanPerCurrency(){
     }
     for(var i=0;i<history.length;i++){
         var h=history[i];
+        if(!h) continue;
         if(h.curr==='riel')riel+=h.totalRp/PRICE_RP*PRICE_RIEL;
         else if(h.curr==='usd')usd+=h.totalRp/PRICE_RP*PRICE_USD;
         else rp+=h.totalRp;
@@ -476,7 +480,7 @@ function getTotalPenjualanPerCurrency(){
 function getTotalModal(){
     var total=0;
     for(var i=0;i<modalEntries.length;i++){
-        total+=Number(modalEntries[i].amount)||0;
+        if(modalEntries[i]) total+=Number(modalEntries[i].amount)||0;
     }
     return total;
 }
@@ -557,10 +561,13 @@ function syncSheet(){
         try { data = JSON.parse(textData); }
         catch (e) { throw new Error('Server bukan JSON'); }
         if(data.error) throw new Error(data.error);
-        if(data.sheetSales)sheetSales=data.sheetSales;
-        if(data.products&&data.products.length>0)products=data.products;
-        if(data.history)history=data.history;
-        if(data.modals)modalEntries=data.modals;
+        
+        // TAMENG KEAMANAN ARRAY
+        if(Array.isArray(data.sheetSales)) sheetSales = data.sheetSales;
+        if(Array.isArray(data.products) && data.products.length > 0) products = data.products;
+        if(Array.isArray(data.history)) history = data.history;
+        if(Array.isArray(data.modals)) modalEntries = data.modals;
+        
         saveDataLocal();
         renderAll();
         showToast('Data berhasil disinkronisasi dari Sheet!','ok');
@@ -617,6 +624,7 @@ function renderRecentSheetSales(){
     var count=Math.min(sheetSales.length,5);
     for(var i=sheetSales.length-1;i>=sheetSales.length-count;i--){
         var s=sheetSales[i];
+        if(!s) continue; // TAMENG
         var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
         var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||s['Nama Customer']||'-';
         var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
@@ -766,6 +774,7 @@ function renderSheetSales(){
     var html='';
     for(var i=sheetSales.length-1;i>=0;i--){
         var s=sheetSales[i];
+        if(!s) continue; // TAMENG ERROR
         var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
         var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||s['Nama Customer']||'-';
         var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
@@ -888,6 +897,7 @@ function renderHistory(){
     var totalRp=0;
     for(var i=history.length-1;i>=0;i--){
         var h=history[i];
+        if(!h) continue; // TAMENG ERROR
         if(search&&h.varian.toLowerCase().indexOf(search)<0&&(h.buyer||'').toLowerCase().indexOf(search)<0)continue;
         if(filVar&&h.varian!==filVar)continue;
         totalRp+=h.totalRp;
@@ -933,6 +943,7 @@ function renderCosts(){
     var html='';
     for(var i=modalEntries.length-1;i>=0;i--){
         var m=modalEntries[i];
+        if(!m) continue; // TAMENG ERROR
         html+='<div class="card" style="padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">';
         html+='<div>';
         html+='<div style="font-weight:700;color:var(--gold-light);font-size:16px;">'+fRp(m.amount)+'</div>';
