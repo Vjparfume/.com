@@ -9,6 +9,15 @@
         #dashboardScreen { display: none; }
     </style>
 
+    <!-- ANTI KEDIP SAAT REFRESH -->
+    <script>
+        if(localStorage.getItem('vj_session_v3')) {
+            document.write('<style>#loginScreen{display:none!important;} #dashboardScreen{display:block!important;}</style>');
+        } else {
+            document.write('<style>#loginScreen{display:flex!important;} #dashboardScreen{display:none!important;}</style>');
+        }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -405,19 +414,32 @@ function getRemainingStock(product){
 function getTotalSold(product){
     return getSoldFromSheet(product.name)+getSoldManual(product.name);
 }
+
+// PERHITUNGAN TOTAL PENJUALAN RUPIAH DENGAN MEMBACA HARGA DARI SHEET
 function getTotalPenjualanRp(){
     var total=0;
     for(var i=0;i<sheetSales.length;i++){
         var s=sheetSales[i];
         if(!s) continue;
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
-        total+=qty*PRICE_RP;
+        var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
+        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
+        
+        if(customTotal > 0) {
+            if(bayar.indexOf('riel')>=0) total += customTotal * (PRICE_RP/PRICE_RIEL);
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) total += customTotal * (PRICE_RP/PRICE_USD);
+            else total += customTotal;
+        } else {
+            total += qty*PRICE_RP;
+        }
     }
     for(var i=0;i<history.length;i++){
         if(history[i]) total+=history[i].totalRp||0;
     }
     return total;
 }
+
+// PERHITUNGAN MATA UANG DENGAN MEMBACA HARGA DARI SHEET
 function getTotalPenjualanPerCurrency(){
     var riel=0,usd=0,rp=0;
     for(var i=0;i<sheetSales.length;i++){
@@ -425,9 +447,17 @@ function getTotalPenjualanPerCurrency(){
         if(!s) continue;
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
-        if(bayar.indexOf('riel')>=0)riel+=qty*PRICE_RIEL;
-        else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0)usd+=qty*PRICE_USD;
-        else rp+=qty*PRICE_RP;
+        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
+        
+        if(customTotal > 0) {
+            if(bayar.indexOf('riel')>=0) riel+=customTotal;
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) usd+=customTotal;
+            else rp+=customTotal;
+        } else {
+            if(bayar.indexOf('riel')>=0)riel+=qty*PRICE_RIEL;
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0)usd+=qty*PRICE_USD;
+            else rp+=qty*PRICE_RP;
+        }
     }
     for(var i=0;i<history.length;i++){
         var h=history[i];
@@ -438,6 +468,7 @@ function getTotalPenjualanPerCurrency(){
     }
     return{riel:riel,usd:usd,rp:rp};
 }
+
 function getTotalModal(){
     var total=0;
     for(var i=0;i<modalEntries.length;i++){
@@ -506,6 +537,7 @@ function renderAll(){
     renderSheetSales();
 }
 
+// SISTEM PROTEKSI GANDA: JIKA SHEET KOSONG TAPI LOKAL ADA DATA, KIRIM DATA LOKAL KE SHEET
 function syncSheet(){
     if(isSyncing)return;
     isSyncing=true;
@@ -521,11 +553,25 @@ function syncSheet(){
         catch (e) { throw new Error('Server bukan JSON'); }
         if(data.error) throw new Error(data.error);
         
-        // PROTEKSI ANTI-TIMPA: Hanya timpa data lokal jika data dari Sheet ADA (tidak kosong).
         if(Array.isArray(data.sheetSales)) sheetSales = data.sheetSales;
-        if(Array.isArray(data.products) && data.products.length > 0) products = data.products;
-        if(Array.isArray(data.history) && data.history.length > 0) history = data.history;
-        if(Array.isArray(data.modals) && data.modals.length > 0) modalEntries = data.modals;
+        
+        if(Array.isArray(data.products) && data.products.length > 0) {
+            products = data.products;
+        } else if (products.length > 0) {
+            saveToCloud(); 
+        }
+        
+        if(Array.isArray(data.history) && data.history.length > 0) {
+            history = data.history;
+        } else if (history.length > 0) {
+            saveToCloud();
+        }
+        
+        if(Array.isArray(data.modals) && data.modals.length > 0) {
+            modalEntries = data.modals;
+        } else if (modalEntries.length > 0) {
+            saveToCloud();
+        }
         
         saveDataLocal();
         renderAll();
@@ -573,6 +619,8 @@ function renderOverview(){
     renderLowStock();
     renderOverviewCharts();
 }
+
+// RENDER PENJUALAN DENGAN MENAMPILKAN NOMINAL
 function renderRecentSheetSales(){
     var list=document.getElementById('recentSheetSales');
     if(sheetSales.length===0){
@@ -587,15 +635,30 @@ function renderRecentSheetSales(){
         var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
         var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||s['Nama Customer']||'-';
         var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
-        var pembayaran=s['Pembayaran']||s['Bayar']||s['Payment']||s['Metode Pembayaran']||'-';
+        var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'').toLowerCase();
+        var qty=Number(s['Jumlah']||s['Qty']||s['Quantity']||1)||1;
+        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
+        var displayTotal = '';
+        
+        if(customTotal > 0) {
+            if(bayar.indexOf('riel')>=0) displayTotal = customTotal.toLocaleString('en-US')+' Riel';
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+customTotal.toFixed(2);
+            else displayTotal = 'Rp '+customTotal.toLocaleString('en-US');
+        } else {
+            if(bayar.indexOf('riel')>=0) displayTotal = (qty*PRICE_RIEL).toLocaleString('en-US')+' Riel';
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+(qty*PRICE_USD).toFixed(2);
+            else displayTotal = 'Rp '+(qty*PRICE_RP).toLocaleString('en-US');
+        }
+
         html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">';
         html+='<div><div style="font-weight:600;color:var(--text-primary);">'+varian+'</div>';
         html+='<div style="font-size:11px;color:var(--text-muted);margin-top:2px;"><i class="fas fa-user" style="margin-right:3px;"></i>'+nama+' &bull; <i class="fas fa-calendar" style="margin-right:3px;"></i>'+fDate(tanggal)+'</div></div>';
-        html+='<div style="text-align:right;"><div style="font-size:12px;color:var(--gold-light);font-weight:600;">'+pembayaran+'</div></div>';
+        html+='<div style="text-align:right;"><div style="font-size:12px;color:var(--gold-light);font-weight:600;">'+displayTotal+'</div></div>';
         html+='</div>';
     }
     list.innerHTML=html;
 }
+
 function renderLowStock(){
     var card=document.getElementById('lowStockCard');
     var list=document.getElementById('lowStockList');
@@ -722,6 +785,7 @@ function confirmDelVariant(){
     showToast('Varian berhasil dihapus','ok');
 }
 
+// RENDER LIST PENJUALAN DENGAN NOMINAL
 function renderSheetSales(){
     var list=document.getElementById('sheetSalesList');
     if(sheetSales.length===0){
@@ -735,8 +799,21 @@ function renderSheetSales(){
         var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
         var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||s['Nama Customer']||'-';
         var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
-        var pembayaran=s['Pembayaran']||s['Bayar']||s['Payment']||s['Metode Pembayaran']||'-';
-        var qty=s['Jumlah']||s['Qty']||s['Quantity']||1;
+        var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'').toLowerCase();
+        var qty=Number(s['Jumlah']||s['Qty']||s['Quantity']||1)||1;
+        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
+        var displayTotal = '';
+        
+        if(customTotal > 0) {
+            if(bayar.indexOf('riel')>=0) displayTotal = customTotal.toLocaleString('en-US')+' Riel';
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+customTotal.toFixed(2);
+            else displayTotal = 'Rp '+customTotal.toLocaleString('en-US');
+        } else {
+            if(bayar.indexOf('riel')>=0) displayTotal = (qty*PRICE_RIEL).toLocaleString('en-US')+' Riel';
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+(qty*PRICE_USD).toFixed(2);
+            else displayTotal = 'Rp '+(qty*PRICE_RP).toLocaleString('en-US');
+        }
+
         html+='<div class="sheet-sale-row">';
         html+='<div style="text-align:center;width:40px;"><i class="fas fa-receipt" style="color:var(--gold-light);"></i></div>';
         html+='<div>';
@@ -748,7 +825,7 @@ function renderSheetSales(){
         html+='</div>';
         html+='<div style="text-align:right;">';
         html+='<div style="font-weight:700;color:var(--gold-light);font-size:14px;">'+qty+' botol</div>';
-        html+='<div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;margin-top:2px;">'+pembayaran+'</div>';
+        html+='<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-top:2px;">'+displayTotal+'</div>';
         html+='</div>';
         html+='</div>';
     }
