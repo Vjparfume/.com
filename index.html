@@ -109,9 +109,25 @@
         .sheet-sale-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);}
         .sheet-sale-row:last-child{border-bottom:none;}
         h1, h2, h3 { text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
+        
+        /* CSS UNTUK POP-UP GAMBAR BIAR GAK LARI KE GOOGLE */
+        #imgPreviewOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 9999; display: none;
+            justify-content: center; align-items: center; cursor: pointer;
+            padding: 20px;
+        }
+        #imgPreviewLarge {
+            max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: contain;
+        }
     </style>
 </head>
 <body>
+
+<!-- POP-UP PREVIEW GAMBAR -->
+<div id="imgPreviewOverlay" onclick="this.style.display='none'">
+    <img id="imgPreviewLarge" src="">
+</div>
 
 <div class="toast-box" id="toastBox"></div>
 
@@ -247,7 +263,7 @@
                             <i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar
                             <input type="file" id="modalFile" accept="image/*" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;">
                         </label>
-                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;cursor:pointer;" onclick="window.open(this.src, '_blank')">
+                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;cursor:pointer;" onclick="openImgPreview(this.src)">
                     </div>
                     
                     <button class="btn-gold" id="btnSaveModal"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button>
@@ -389,6 +405,14 @@ function switchTab(tab){
     document.getElementById('tab-'+tab).classList.add('active');
 }
 function closeModal(id){document.getElementById(id).classList.remove('show');}
+
+// FUNGSI POP-UP PREVIEW GAMBAR BIAR GAK LARI KE GOOGLE
+function openImgPreview(src) {
+    var overlay = document.getElementById('imgPreviewOverlay');
+    var largeImg = document.getElementById('imgPreviewLarge');
+    largeImg.src = src;
+    overlay.style.display = 'flex';
+}
 
 function getSoldFromSheet(varianName){
     var total=0;
@@ -557,24 +581,37 @@ function syncSheet(){
         catch (e) { throw new Error('Server bukan JSON'); }
         if(data.error) throw new Error(data.error);
         
-        if(Array.isArray(data.sheetSales)) sheetSales = data.sheetSales;
+        var cProds = Array.isArray(data.products) ? data.products : [];
+        var cHist = Array.isArray(data.history) ? data.history : [];
+        var cModals = Array.isArray(data.modals) ? data.modals : [];
+        var cSales = Array.isArray(data.sheetSales) ? data.sheetSales : [];
         
-        if(Array.isArray(data.products) && data.products.length > 0) {
-            products = data.products;
+        var needSave = false;
+        
+        // Selalu overwrite sales
+        if(cSales.length > 0) sheetSales = cSales;
+        
+        // Update lokal dari cloud jika cloud ada data
+        if(cProds.length > 0) {
+            products = cProds;
         } else if (products.length > 0) {
-            saveToCloud(); 
+            needSave = true;
         }
         
-        if(Array.isArray(data.history) && data.history.length > 0) {
-            history = data.history;
+        if(cHist.length > 0) {
+            history = cHist;
         } else if (history.length > 0) {
-            saveToCloud();
+            needSave = true;
         }
         
-        // BACA DATA MODALS DARI CLOUD DENGAN AMAN
-        if(Array.isArray(data.modals) && data.modals.length > 0) {
-            modalEntries = data.modals;
+        if(cModals.length > 0) {
+            modalEntries = cModals;
         } else if (modalEntries.length > 0) {
+            needSave = true;
+        }
+        
+        // Jika lokal ada data tapi cloud kosong, push lokal ke cloud
+        if(needSave) {
             saveToCloud();
         }
         
@@ -860,8 +897,8 @@ function renderCosts(){
         html+='<div style="font-weight:700;color:var(--gold-light);font-size:16px;">'+fRp(m.amount)+'</div>';
         html+='<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">'+fDate(m.date)+(m.note?' &bull; '+m.note:'')+'</div>';
         if(m.img){
-            // GAMBAR BISA DIKLIK UNTUK DIPERBESAR
-            html+='<img src="'+m.img+'" onclick="window.open(this.src, \'_blank\')" style="max-height:60px;border-radius:8px;margin-top:8px;border:1px solid var(--border);cursor:pointer;">';
+            // PAKAI FUNGSI openImgPreview BIAR GAK LARI KE GOOGLE
+            html+='<img src="'+m.img+'" onclick="openImgPreview(this.src)" style="max-height:80px;border-radius:8px;margin-top:8px;border:1px solid var(--border);cursor:pointer;">';
         }
         html+='</div>';
         html+='<button class="btn-danger-sm delModalBtn" data-idx="'+i+'"><i class="fas fa-trash"></i></button>';
@@ -881,41 +918,58 @@ function renderCosts(){
         };
     }
 }
+
+// KOMPRESI GAMBAR OTOMATIS SEBELUM DISIMPAN
 function previewImgModal(input){
     var preview=document.getElementById('previewModalImg');
     if(input.files&&input.files[0]){
+        var file=input.files[0];
         var reader=new FileReader();
-        reader.onload=function(e){preview.src=e.target.result;preview.style.display='block';};
-        reader.readAsDataURL(input.files[0]);
+        reader.onload=function(e){
+            var img=new Image();
+            img.onload=function(){
+                var canvas=document.createElement('canvas');
+                var ctx=canvas.getContext('2d');
+                var MAX_WIDTH=600; // Kompres ke max 600px
+                var width=img.width;
+                var height=img.height;
+                
+                if(width>MAX_WIDTH){
+                    height*=MAX_WIDTH/width;
+                    width=MAX_WIDTH;
+                }
+                canvas.width=width;
+                canvas.height=height;
+                ctx.drawImage(img,0,0,width,height);
+                var dataUrl=canvas.toDataURL('image/jpeg',0.6); // 60% quality
+                preview.src=dataUrl;
+                preview.style.display='block';
+                preview.setAttribute('data-compressed', dataUrl);
+            };
+            img.src=e.target.result;
+        };
+        reader.readAsDataURL(file);
     }else{
-        preview.src='';preview.style.display='none';
+        preview.src='';preview.style.display='none';preview.removeAttribute('data-compressed');
     }
 }
 function saveModalEntry(){
     var amountStr=document.getElementById('modalInput').value.replace(/,/g, '');
     var amount=Number(amountStr)||0;
     var note=document.getElementById('modalNote').value.trim();
-    var fileInput=document.getElementById('modalFile');
-    var img='';
+    var img=document.getElementById('previewModalImg').getAttribute('data-compressed') || '';
     if(amount<=0){showToast('Nominal modal harus > 0','err');return;}
-    function doSave(){
-        modalEntries.push({date:new Date().toISOString(),amount:amount,note:note,img:img});
-        saveAndSync();
-        renderCosts();
-        renderOverview();
-        document.getElementById('modalInput').value='';
-        document.getElementById('modalNote').value='';
-        document.getElementById('modalFile').value='';
-        document.getElementById('previewModalImg').style.display='none';
-        showToast('Catatan modal disimpan & tersinkron','ok');
-    }
-    if(fileInput.files&&fileInput.files[0]){
-        var reader=new FileReader();
-        reader.onload=function(e){img=e.target.result;doSave();};
-        reader.readAsDataURL(fileInput.files[0]);
-    }else{
-        doSave();
-    }
+    
+    modalEntries.push({date:new Date().toISOString(),amount:amount,note:note,img:img});
+    saveAndSync();
+    renderCosts();
+    renderOverview();
+    document.getElementById('modalInput').value='';
+    document.getElementById('modalNote').value='';
+    document.getElementById('modalFile').value='';
+    document.getElementById('previewModalImg').style.display='none';
+    document.getElementById('previewModalImg').removeAttribute('data-compressed');
+    showToast('Catatan modal disimpan & tersinkron','ok');
 }
 
 function renderFinance(){
