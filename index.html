@@ -43,7 +43,7 @@
         
         .btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#0a0a0a;font-weight:700;border:none;border-radius:12px;padding:14px 24px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-size:15px;width:100%;box-shadow:0 4px 15px rgba(201,168,76,0.3);}
         .btn-gold:hover{background:linear-gradient(135deg,var(--gold),var(--gold-light));transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.5);}
-        .btn-outline{background:transparent;color:var(--gold-light);border:1px solid var(--gold-dark);border-radius:10px;padding:8px 16px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;}
+        .btn-outline{background:transparent;color:var(--gold-light);border:1px solid var(--gold-dark);border-radius:10px;padding:8px 16px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;display:inline-block;text-align:center;}
         .btn-outline:hover{background:var(--gold);color:#000;border-color:var(--gold);}
         .btn-danger-sm{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:5px 12px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-size:12px;}
         .btn-danger-sm:hover{background:var(--danger);color:#fff;}
@@ -94,7 +94,7 @@
         .label-sm{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
         .sync-spin{animation:spin 1s linear infinite;}
         @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-        .file-input-wrapper{position:relative;overflow:hidden;display:inline-block;width:100%;}
+        .file-input-wrapper{position:relative;overflow:hidden;display:block;width:100%;margin-bottom:10px;}
         .file-input-wrapper input[type=file]{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer;}
         .sheet-sale-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);}
         .sheet-sale-row:last-child{border-bottom:none;}
@@ -227,9 +227,14 @@
             <div class="card" style="padding:24px;margin-bottom:20px;">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold-light);"><i class="fas fa-plus-circle" style="margin-right:6px;"></i>Tambah Catatan Modal</h3>
                 <div style="display:flex;flex-direction:column;gap:14px;">
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="number" class="input-field" id="modalInput" min="0" placeholder="Contoh: 500000"></div>
+                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="text" class="input-field" id="modalInput" placeholder="Contoh: 500,000" oninput="formatNumber(this)"></div>
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer</label><div class="file-input-wrapper btn-outline" style="text-align:center;padding:12px;"><i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar<input type="file" id="modalFile" accept="image/*"></div><img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;"></div>
+                    <div>
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer</label>
+                        <label for="modalFile" class="btn-outline" style="display:block;padding:12px;cursor:pointer;"><i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar</label>
+                        <input type="file" id="modalFile" accept="image/*" style="display:none;">
+                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;">
+                    </div>
                     <button class="btn-gold" id="btnSaveModal"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button>
                 </div>
             </div>
@@ -322,13 +327,22 @@ var selectedCurr = 'riel';
 var chartStock = null, chartSales = null, chartProfit = null;
 var isSyncing = false;
 
-function fRp(n){return 'Rp '+Math.round(n).toLocaleString('id-ID');}
-function fRiel(n){return Math.round(n).toLocaleString('id-ID')+' Riel';}
+// FORMAT DENGAN KOMA UNTUK NOMINAL
+function fRp(n){return 'Rp '+Math.round(n).toLocaleString('en-US');}
+function fRiel(n){return Math.round(n).toLocaleString('en-US')+' Riel';}
 function fUsd(n){return '$'+n.toFixed(2);}
 function formatCurr(amountRp,curr){
     if(curr==='riel')return fRiel(amountRp/PRICE_RP*PRICE_RIEL);
     if(curr==='usd')return fUsd(amountRp/PRICE_RP*PRICE_USD);
     return fRp(amountRp);
+}
+function formatNumber(input) {
+    var value = input.value.replace(/[^0-9]/g, '');
+    if(value) {
+        input.value = parseInt(value, 10).toLocaleString('en-US');
+    } else {
+        input.value = '';
+    }
 }
 function fDate(d){
     if(!d)return '-';
@@ -508,7 +522,6 @@ function syncSheet(){
         if(data.error) throw new Error(data.error);
         
         // PROTEKSI ANTI-TIMPA: Hanya timpa data lokal jika data dari Sheet ADA (tidak kosong).
-        // Ini mencegah data hilang setelah logout/login.
         if(Array.isArray(data.sheetSales)) sheetSales = data.sheetSales;
         if(Array.isArray(data.products) && data.products.length > 0) products = data.products;
         if(Array.isArray(data.history) && data.history.length > 0) history = data.history;
@@ -794,7 +807,8 @@ function previewImgModal(input){
     }
 }
 function saveModalEntry(){
-    var amount=Number(document.getElementById('modalInput').value)||0;
+    var amountStr=document.getElementById('modalInput').value.replace(/,/g, '');
+    var amount=Number(amountStr)||0;
     var note=document.getElementById('modalNote').value.trim();
     var fileInput=document.getElementById('modalFile');
     var img='';
