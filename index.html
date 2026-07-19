@@ -6,16 +6,19 @@
     <title>VJ PARFUM - Dashboard</title>
     
     <style>
+        #loginScreen { display: flex; }
         #dashboardScreen { display: none; }
+        html.logged-in #loginScreen { display: none !important; }
+        html.logged-in #dashboardScreen { display: block !important; }
     </style>
 
-    <!-- ANTI KEDIP SAAT REFRESH -->
+    <!-- ANTI LAG / ANTI KEDIP SAAT REFRESH -->
     <script>
-        if(localStorage.getItem('vj_session_v3')) {
-            document.write('<style>#loginScreen{display:none!important;} #dashboardScreen{display:block!important;}</style>');
-        } else {
-            document.write('<style>#loginScreen{display:flex!important;} #dashboardScreen{display:none!important;}</style>');
-        }
+        try {
+            if (localStorage.getItem('vj_session_v3')) {
+                document.documentElement.classList.add('logged-in');
+            }
+        } catch(e) {}
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -103,8 +106,6 @@
         .label-sm{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
         .sync-spin{animation:spin 1s linear infinite;}
         @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-        .file-input-wrapper{position:relative;overflow:hidden;display:block;width:100%;margin-bottom:10px;}
-        .file-input-wrapper input[type=file]{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer;}
         .sheet-sale-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);}
         .sheet-sale-row:last-child{border-bottom:none;}
         h1, h2, h3 { text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
@@ -226,7 +227,7 @@
         <section class="tab-section" id="tab-costs">
             <div style="margin-bottom:20px;">
                 <h2 class="font-display" style="font-size:20px;font-weight:700;color:var(--text-primary);">Pencatatan Modal & Bukti Transfer</h2>
-                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini.</p>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini. Data tersimpan otomatis di semua perangkat.</p>
             </div>
             <div class="stat-grid g3" style="margin-bottom:20px;">
                 <div class="card" style="padding:20px;border-color:rgba(201,168,76,0.4);"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div><div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div></div>
@@ -238,16 +239,21 @@
                 <div style="display:flex;flex-direction:column;gap:14px;">
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="text" class="input-field" id="modalInput" placeholder="Contoh: 500,000" oninput="formatNumber(this)"></div>
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
+                    
+                    <!-- TOMBOL UPLOAD GAMBAR 100% BISA DIKLIK -->
                     <div>
-                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer</label>
-                        <label for="modalFile" class="btn-outline" style="display:block;padding:12px;cursor:pointer;"><i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar</label>
-                        <input type="file" id="modalFile" accept="image/*" style="display:none;">
-                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;">
+                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer (Klik untuk pilih gambar)</label>
+                        <label class="btn-outline" style="display:block;padding:12px;cursor:pointer;position:relative;overflow:hidden;">
+                            <i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar
+                            <input type="file" id="modalFile" accept="image/*" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;">
+                        </label>
+                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;cursor:pointer;" onclick="window.open(this.src, '_blank')">
                     </div>
+                    
                     <button class="btn-gold" id="btnSaveModal"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button>
                 </div>
             </div>
-            <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Riwayat Catatan Modal</h3>
+            <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Riwayat Catatan Modal (Klik gambar untuk perbesar)</h3>
             <div id="modalEntriesList"></div>
         </section>
 
@@ -489,8 +495,7 @@ function doLogin(){
     var err=document.getElementById('loginError');
     if(u==='admin'&&p==='admin123'){
         localStorage.setItem('vj_session_v3',JSON.stringify({user:u,time:Date.now()}));
-        document.getElementById('loginScreen').style.display='none';
-        document.getElementById('dashboardScreen').style.display='block';
+        document.documentElement.classList.add('logged-in');
         err.style.display='none';
         initDashboard();
     }else{
@@ -500,8 +505,7 @@ function doLogin(){
 }
 function doLogout(){
     localStorage.removeItem('vj_session_v3');
-    document.getElementById('loginScreen').style.display='flex';
-    document.getElementById('dashboardScreen').style.display='none';
+    document.documentElement.classList.remove('logged-in');
     document.getElementById('loginUser').value='';
     document.getElementById('loginPass').value='';
 }
@@ -567,6 +571,7 @@ function syncSheet(){
             saveToCloud();
         }
         
+        // BACA DATA MODALS DARI CLOUD DENGAN AMAN
         if(Array.isArray(data.modals) && data.modals.length > 0) {
             modalEntries = data.modals;
         } else if (modalEntries.length > 0) {
@@ -575,7 +580,7 @@ function syncSheet(){
         
         saveDataLocal();
         renderAll();
-        showToast('Data berhasil disinkronisasi dari Sheet!','ok');
+        showToast('Data berhasil disinkronisasi!','ok');
     })
     .catch(function(e){
         console.error('Sync Error:',e);
@@ -854,7 +859,10 @@ function renderCosts(){
         html+='<div>';
         html+='<div style="font-weight:700;color:var(--gold-light);font-size:16px;">'+fRp(m.amount)+'</div>';
         html+='<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">'+fDate(m.date)+(m.note?' &bull; '+m.note:'')+'</div>';
-        if(m.img)html+='<img src="'+m.img+'" style="max-height:60px;border-radius:8px;margin-top:8px;border:1px solid var(--border);">';
+        if(m.img){
+            // GAMBAR BISA DIKLIK UNTUK DIPERBESAR
+            html+='<img src="'+m.img+'" onclick="window.open(this.src, \'_blank\')" style="max-height:60px;border-radius:8px;margin-top:8px;border:1px solid var(--border);cursor:pointer;">';
+        }
         html+='</div>';
         html+='<button class="btn-danger-sm delModalBtn" data-idx="'+i+'"><i class="fas fa-trash"></i></button>';
         html+='</div>';
@@ -899,7 +907,7 @@ function saveModalEntry(){
         document.getElementById('modalNote').value='';
         document.getElementById('modalFile').value='';
         document.getElementById('previewModalImg').style.display='none';
-        showToast('Catatan modal disimpan','ok');
+        showToast('Catatan modal disimpan & tersinkron','ok');
     }
     if(fileInput.files&&fileInput.files[0]){
         var reader=new FileReader();
@@ -995,12 +1003,7 @@ function resetAll(){
 // ATTACH EVENT LISTENERS (SAFE EXECUTION)
 window.onload = function() {
     if(localStorage.getItem('vj_session_v3')){
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboardScreen').style.display = 'block';
         initDashboard();
-    } else {
-        document.getElementById('loginScreen').style.display = 'flex';
-        document.getElementById('dashboardScreen').style.display = 'none';
     }
     
     document.getElementById('loginBtn').onclick = doLogin;
