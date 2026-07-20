@@ -12,7 +12,6 @@
         html.logged-in #dashboardScreen { display: block !important; }
     </style>
 
-    <!-- ANTI LAG / ANTI KEDIP SAAT REFRESH -->
     <script>
         try {
             if (localStorage.getItem('vj_session_v3')) {
@@ -81,10 +80,11 @@
         .dtable thead th{background:var(--bg-secondary);color:var(--gold-light);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;}
         .dtable tbody td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;color:var(--text-primary);}
         
-        .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
-        .badge-ok{background:rgba(16,185,129,0.2);color:var(--success);border:1px solid rgba(16,185,129,0.3);}
-        .badge-low{background:rgba(245,158,11,0.2);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);}
-        .badge-out{background:rgba(239,68,68,0.2);color:var(--danger);border:1px solid rgba(239,68,68,0.3);}
+        /* PERUBAHAN WARNA BADGE SISA STOK BIAR JELAS */
+        .badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:8px;font-size:16px;font-weight:800;}
+        .badge-ok{background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.4);}
+        .badge-low{background:rgba(249,115,22,0.3);color:#fb923c;border:1px solid rgba(249,115,22,0.5);}
+        .badge-out{background:rgba(239,68,68,0.3);color:#f87171;border:1px solid rgba(239,68,68,0.5);}
         
         .modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;}
         .modal-bg.show{display:flex;}
@@ -110,7 +110,6 @@
         .sheet-sale-row:last-child{border-bottom:none;}
         h1, h2, h3 { text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
         
-        /* CSS UNTUK POP-UP GAMBAR BIAR GAK LARI KE GOOGLE */
         #imgPreviewOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 9999; display: none;
@@ -124,7 +123,6 @@
 </head>
 <body>
 
-<!-- POP-UP PREVIEW GAMBAR -->
 <div id="imgPreviewOverlay" onclick="this.style.display='none'">
     <img id="imgPreviewLarge" src="">
 </div>
@@ -256,7 +254,6 @@
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="text" class="input-field" id="modalInput" placeholder="Contoh: 500,000" oninput="formatNumber(this)"></div>
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
                     
-                    <!-- TOMBOL UPLOAD GAMBAR 100% BISA DIKLIK -->
                     <div>
                         <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer (Klik untuk pilih gambar)</label>
                         <label class="btn-outline" style="display:block;padding:12px;cursor:pointer;position:relative;overflow:hidden;">
@@ -358,7 +355,6 @@ var selectedCurr = 'riel';
 var chartStock = null, chartSales = null, chartProfit = null;
 var isSyncing = false;
 
-// FORMAT DENGAN KOMA UNTUK NOMINAL
 function fRp(n){return 'Rp '+Math.round(n).toLocaleString('en-US');}
 function fRiel(n){return Math.round(n).toLocaleString('en-US')+' Riel';}
 function fUsd(n){return '$'+n.toFixed(2);}
@@ -406,7 +402,6 @@ function switchTab(tab){
 }
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 
-// FUNGSI POP-UP PREVIEW GAMBAR BIAR GAK LARI KE GOOGLE
 function openImgPreview(src) {
     var overlay = document.getElementById('imgPreviewOverlay');
     var largeImg = document.getElementById('imgPreviewLarge');
@@ -445,7 +440,6 @@ function getTotalSold(product){
     return getSoldFromSheet(product.name)+getSoldManual(product.name);
 }
 
-// PERHITUNGAN TOTAL PENJUALAN RUPIAH DENGAN MEMBACA HARGA DARI SHEET
 function getTotalPenjualanRp(){
     var total=0;
     for(var i=0;i<sheetSales.length;i++){
@@ -454,22 +448,17 @@ function getTotalPenjualanRp(){
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
         var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
-        
         if(customTotal > 0) {
             if(bayar.indexOf('riel')>=0) total += customTotal * (PRICE_RP/PRICE_RIEL);
             else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) total += customTotal * (PRICE_RP/PRICE_USD);
             else total += customTotal;
-        } else {
-            total += qty*PRICE_RP;
-        }
+        } else { total += qty*PRICE_RP; }
     }
     for(var i=0;i<history.length;i++){
         if(history[i]) total+=history[i].totalRp||0;
     }
     return total;
 }
-
-// PERHITUNGAN MATA UANG DENGAN MEMBACA HARGA DARI SHEET
 function getTotalPenjualanPerCurrency(){
     var riel=0,usd=0,rp=0;
     for(var i=0;i<sheetSales.length;i++){
@@ -478,10 +467,9 @@ function getTotalPenjualanPerCurrency(){
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
         var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
-        
         if(customTotal > 0) {
-            if(bayar.indexOf('riel')>=0) riel+=customTotal;
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) usd+=customTotal;
+            if(bayar.indexOf('riel')>=0)riel+=customTotal;
+            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0)usd+=customTotal;
             else rp+=customTotal;
         } else {
             if(bayar.indexOf('riel')>=0)riel+=qty*PRICE_RIEL;
@@ -498,7 +486,6 @@ function getTotalPenjualanPerCurrency(){
     }
     return{riel:riel,usd:usd,rp:rp};
 }
-
 function getTotalModal(){
     var total=0;
     for(var i=0;i<modalEntries.length;i++){
@@ -565,7 +552,6 @@ function renderAll(){
     renderSheetSales();
 }
 
-// SISTEM PROTEKSI GANDA: JIKA SHEET KOSONG TAPI LOKAL ADA DATA, KIRIM DATA LOKAL KE SHEET
 function syncSheet(){
     if(isSyncing)return;
     isSyncing=true;
@@ -587,33 +573,11 @@ function syncSheet(){
         var cSales = Array.isArray(data.sheetSales) ? data.sheetSales : [];
         
         var needSave = false;
-        
-        // Selalu overwrite sales
         if(cSales.length > 0) sheetSales = cSales;
-        
-        // Update lokal dari cloud jika cloud ada data
-        if(cProds.length > 0) {
-            products = cProds;
-        } else if (products.length > 0) {
-            needSave = true;
-        }
-        
-        if(cHist.length > 0) {
-            history = cHist;
-        } else if (history.length > 0) {
-            needSave = true;
-        }
-        
-        if(cModals.length > 0) {
-            modalEntries = cModals;
-        } else if (modalEntries.length > 0) {
-            needSave = true;
-        }
-        
-        // Jika lokal ada data tapi cloud kosong, push lokal ke cloud
-        if(needSave) {
-            saveToCloud();
-        }
+        if(cProds.length > 0) { products = cProds; } else if (products.length > 0) { needSave = true; }
+        if(cHist.length > 0) { history = cHist; } else if (history.length > 0) { needSave = true; }
+        if(cModals.length > 0) { modalEntries = cModals; } else if (modalEntries.length > 0) { needSave = true; }
+        if(needSave) { saveToCloud(); }
         
         saveDataLocal();
         renderAll();
@@ -629,17 +593,24 @@ function syncSheet(){
         isSyncing=false;
     });
 }
-function saveToCloud(){
-    fetch(APPS_SCRIPT_URL,{
-        method:'POST',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({
-            action:'saveAll',
-            products:products,
-            history:history,
-            modals:modalEntries
-        })
-    }).catch(function(e){ console.error('Save cloud error:',e); });
+
+async function saveToCloud(){
+    try {
+        const response = await fetch(APPS_SCRIPT_URL,{
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body:JSON.stringify({ action:'saveAll', products:products, history:history, modals:modalEntries })
+        });
+        const result = await response.json();
+        if(result.status === 'ok') {
+            showToast('Data berhasil tersimpan di server!', 'ok');
+        } else {
+            showToast('Gagal simpan: ' + (result.message || 'Server Error'), 'err');
+        }
+    } catch(e){
+        console.error('Save cloud error:',e);
+        showToast('Gagal simpan: Koneksi terputus', 'err');
+    }
 }
 
 function renderOverview(){
@@ -662,13 +633,9 @@ function renderOverview(){
     renderOverviewCharts();
 }
 
-// RENDER PENJUALAN DENGAN MENAMPILKAN NOMINAL
 function renderRecentSheetSales(){
     var list=document.getElementById('recentSheetSales');
-    if(sheetSales.length===0){
-        list.innerHTML='Belum ada data. Klik Sync untuk mengambil dari Sheet.';
-        return;
-    }
+    if(sheetSales.length===0){ list.innerHTML='Belum ada data. Klik Sync untuk mengambil dari Sheet.'; return; }
     var html='';
     var count=Math.min(sheetSales.length,5);
     for(var i=sheetSales.length-1;i>=sheetSales.length-count;i--){
@@ -681,7 +648,6 @@ function renderRecentSheetSales(){
         var qty=Number(s['Jumlah']||s['Qty']||s['Quantity']||1)||1;
         var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
         var displayTotal = '';
-        
         if(customTotal > 0) {
             if(bayar.indexOf('riel')>=0) displayTotal = customTotal.toLocaleString('en-US')+' Riel';
             else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+customTotal.toFixed(2);
@@ -691,7 +657,6 @@ function renderRecentSheetSales(){
             else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+(qty*PRICE_USD).toFixed(2);
             else displayTotal = 'Rp '+(qty*PRICE_RP).toLocaleString('en-US');
         }
-
         html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">';
         html+='<div><div style="font-weight:600;color:var(--text-primary);">'+varian+'</div>';
         html+='<div style="font-size:11px;color:var(--text-muted);margin-top:2px;"><i class="fas fa-user" style="margin-right:3px;"></i>'+nama+' &bull; <i class="fas fa-calendar" style="margin-right:3px;"></i>'+fDate(tanggal)+'</div></div>';
@@ -707,14 +672,9 @@ function renderLowStock(){
     var lowItems=[];
     for(var i=0;i<products.length;i++){
         var sisa=getRemainingStock(products[i]);
-        if(sisa<=5){
-            lowItems.push({name:products[i].name,sisa:sisa});
-        }
+        if(sisa<=5){ lowItems.push({name:products[i].name,sisa:sisa}); }
     }
-    if(lowItems.length===0){
-        card.style.display='none';
-        return;
-    }
+    if(lowItems.length===0){ card.style.display='none'; return; }
     card.style.display='block';
     var html='';
     for(var i=0;i<lowItems.length;i++){
@@ -764,21 +724,10 @@ function renderProducts(){
     document.getElementById('pTotalVarian').textContent=products.length;
     document.getElementById('pTotalAwal').textContent=totalAwal;
     document.getElementById('pTotalSisa').textContent=totalSisa;
-    
     var editBtns=document.querySelectorAll('.editProdBtn');
-    for(var k=0;k<editBtns.length;k++){
-        editBtns[k].onclick=function(){
-            var idx=Number(this.getAttribute('data-idx'));
-            openEditProd(idx);
-        };
-    }
+    for(var k=0;k<editBtns.length;k++){ editBtns[k].onclick=function(){ var idx=Number(this.getAttribute('data-idx')); openEditProd(idx); }; }
     var delBtns=document.querySelectorAll('.delProdBtn');
-    for(var l=0;l<delBtns.length;l++){
-        delBtns[l].onclick=function(){
-            var idx=Number(this.getAttribute('data-idx'));
-            openDelVariant(idx);
-        };
-    }
+    for(var l=0;l<delBtns.length;l++){ delBtns[l].onclick=function(){ var idx=Number(this.getAttribute('data-idx')); openDelVariant(idx); }; }
 }
 function openAddVariant(){
     document.getElementById('avName').value='';
@@ -791,10 +740,7 @@ function saveAddVariant(){
     if(!name){showToast('Nama varian wajib diisi','err');return;}
     products.push({name:name,stockAwal:bottles});
     saveAndSync();
-    renderProducts();
-    renderOverview();
-    closeModal('mAddVariant');
-    showToast('Varian berhasil ditambahkan','ok');
+    renderProducts(); renderOverview(); closeModal('mAddVariant'); showToast('Varian berhasil ditambahkan','ok');
 }
 function openEditProd(idx){
     document.getElementById('epIdx').value=idx;
@@ -807,10 +753,7 @@ function saveProdEdit(){
     var stock=Number(document.getElementById('epStock').value)||0;
     products[idx].stockAwal=stock;
     saveAndSync();
-    renderProducts();
-    renderOverview();
-    closeModal('mEditProd');
-    showToast('Stok awal berhasil disimpan','ok');
+    renderProducts(); renderOverview(); closeModal('mEditProd'); showToast('Stok awal berhasil disimpan','ok');
 }
 function openDelVariant(idx){
     document.getElementById('delVarIdx').value=idx;
@@ -821,19 +764,12 @@ function confirmDelVariant(){
     var idx=Number(document.getElementById('delVarIdx').value);
     products.splice(idx,1);
     saveAndSync();
-    renderProducts();
-    renderOverview();
-    closeModal('mDelVariant');
-    showToast('Varian berhasil dihapus','ok');
+    renderProducts(); renderOverview(); closeModal('mDelVariant'); showToast('Varian berhasil dihapus','ok');
 }
 
-// RENDER LIST PENJUALAN DENGAN NOMINAL
 function renderSheetSales(){
     var list=document.getElementById('sheetSalesList');
-    if(sheetSales.length===0){
-        list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>';
-        return;
-    }
+    if(sheetSales.length===0){ list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>'; return; }
     var html='';
     for(var i=sheetSales.length-1;i>=0;i--){
         var s=sheetSales[i];
@@ -845,7 +781,6 @@ function renderSheetSales(){
         var qty=Number(s['Jumlah']||s['Qty']||s['Quantity']||1)||1;
         var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
         var displayTotal = '';
-        
         if(customTotal > 0) {
             if(bayar.indexOf('riel')>=0) displayTotal = customTotal.toLocaleString('en-US')+' Riel';
             else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+customTotal.toFixed(2);
@@ -855,7 +790,6 @@ function renderSheetSales(){
             else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+(qty*PRICE_USD).toFixed(2);
             else displayTotal = 'Rp '+(qty*PRICE_RP).toLocaleString('en-US');
         }
-
         html+='<div class="sheet-sale-row">';
         html+='<div style="text-align:center;width:40px;"><i class="fas fa-receipt" style="color:var(--gold-light);"></i></div>';
         html+='<div>';
@@ -863,13 +797,11 @@ function renderSheetSales(){
         html+='<div style="font-size:12px;color:var(--text-muted);margin-top:3px;">';
         html+='<i class="fas fa-user" style="margin-right:3px;"></i>'+nama;
         html+=' &bull; <i class="fas fa-calendar" style="margin-right:3px;"></i>'+fDate(tanggal);
-        html+='</div>';
-        html+='</div>';
+        html+='</div></div>';
         html+='<div style="text-align:right;">';
         html+='<div style="font-weight:700;color:var(--gold-light);font-size:14px;">'+qty+' botol</div>';
         html+='<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-top:2px;">'+displayTotal+'</div>';
-        html+='</div>';
-        html+='</div>';
+        html+='</div></div>';
     }
     list.innerHTML=html;
 }
@@ -884,10 +816,7 @@ function renderCosts(){
     untungEl.textContent=fRp(untung);
     untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
     var list=document.getElementById('modalEntriesList');
-    if(modalEntries.length===0){
-        list.innerHTML='<div class="card" style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada catatan modal</div>';
-        return;
-    }
+    if(modalEntries.length===0){ list.innerHTML='<div class="card" style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada catatan modal</div>'; return; }
     var html='';
     for(var i=modalEntries.length-1;i>=0;i--){
         var m=modalEntries[i];
@@ -896,30 +825,24 @@ function renderCosts(){
         html+='<div>';
         html+='<div style="font-weight:700;color:var(--gold-light);font-size:16px;">'+fRp(m.amount)+'</div>';
         html+='<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">'+fDate(m.date)+(m.note?' &bull; '+m.note:'')+'</div>';
-        if(m.img){
-            // PAKAI FUNGSI openImgPreview BIAR GAK LARI KE GOOGLE
-            html+='<img src="'+m.img+'" onclick="openImgPreview(this.src)" style="max-height:80px;border-radius:8px;margin-top:8px;border:1px solid var(--border);cursor:pointer;">';
-        }
+        if(m.img){ html+='<img src="'+m.img+'" onclick="openImgPreview(this.src)" style="max-height:80px;border-radius:8px;margin-top:8px;border:1px solid var(--border);cursor:pointer;">'; }
         html+='</div>';
         html+='<button class="btn-danger-sm delModalBtn" data-idx="'+i+'"><i class="fas fa-trash"></i></button>';
         html+='</div>';
     }
     list.innerHTML=html;
-    
     var delBtns=document.querySelectorAll('.delModalBtn');
     for(var k=0;k<delBtns.length;k++){
         delBtns[k].onclick=function(){
             var idx=Number(this.getAttribute('data-idx'));
             modalEntries.splice(idx,1);
             saveAndSync();
-            renderCosts();
-            renderOverview();
-            showToast('Catatan modal dihapus','ok');
+            renderCosts(); renderOverview(); showToast('Catatan modal dihapus','ok');
         };
     }
 }
 
-// KOMPRESI GAMBAR OTOMATIS SEBELUM DISIMPAN
+// KOMPRESI GAMBAR EKSTREM (200px, 40% QUALITY) BIAR PASTI MASUK SHEET
 function previewImgModal(input){
     var preview=document.getElementById('previewModalImg');
     if(input.files&&input.files[0]){
@@ -930,18 +853,14 @@ function previewImgModal(input){
             img.onload=function(){
                 var canvas=document.createElement('canvas');
                 var ctx=canvas.getContext('2d');
-                var MAX_WIDTH=600; // Kompres ke max 600px
+                var MAX_WIDTH=200; 
                 var width=img.width;
                 var height=img.height;
-                
-                if(width>MAX_WIDTH){
-                    height*=MAX_WIDTH/width;
-                    width=MAX_WIDTH;
-                }
+                if(width>MAX_WIDTH){ height*=MAX_WIDTH/width; width=MAX_WIDTH; }
                 canvas.width=width;
                 canvas.height=height;
                 ctx.drawImage(img,0,0,width,height);
-                var dataUrl=canvas.toDataURL('image/jpeg',0.6); // 60% quality
+                var dataUrl=canvas.toDataURL('image/jpeg',0.4); 
                 preview.src=dataUrl;
                 preview.style.display='block';
                 preview.setAttribute('data-compressed', dataUrl);
@@ -961,7 +880,7 @@ function saveModalEntry(){
     if(amount<=0){showToast('Nominal modal harus > 0','err');return;}
     
     modalEntries.push({date:new Date().toISOString(),amount:amount,note:note,img:img});
-    saveAndSync();
+    saveAndSync(); 
     renderCosts();
     renderOverview();
     document.getElementById('modalInput').value='';
@@ -969,7 +888,6 @@ function saveModalEntry(){
     document.getElementById('modalFile').value='';
     document.getElementById('previewModalImg').style.display='none';
     document.getElementById('previewModalImg').removeAttribute('data-compressed');
-    showToast('Catatan modal disimpan & tersinkron','ok');
 }
 
 function renderFinance(){
@@ -1039,9 +957,7 @@ function doImport(){
         renderAll();
         closeModal('mImport');
         showToast('Data berhasil diimpor','ok');
-    }catch(e){
-        showToast('JSON tidak valid','err');
-    }
+    }catch(e){ showToast('JSON tidak valid','err'); }
 }
 function resetAll(){
     products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
@@ -1054,11 +970,8 @@ function resetAll(){
     showToast('Semua data direset','ok');
 }
 
-// ATTACH EVENT LISTENERS (SAFE EXECUTION)
 window.onload = function() {
-    if(localStorage.getItem('vj_session_v3')){
-        initDashboard();
-    }
+    if(localStorage.getItem('vj_session_v3')){ initDashboard(); }
     
     document.getElementById('loginBtn').onclick = doLogin;
     document.getElementById('loginUser').addEventListener('keydown', function(e){ if(e.key==='Enter'){e.preventDefault();document.getElementById('loginPass').focus();} });
@@ -1068,18 +981,10 @@ window.onload = function() {
     document.getElementById('btnLogout').onclick = doLogout;
     
     var tabs = document.querySelectorAll('.tab-btn');
-    for(var i=0;i<tabs.length;i++){
-        tabs[i].onclick = function(){
-            switchTab(this.getAttribute('data-tab'));
-        };
-    }
+    for(var i=0;i<tabs.length;i++){ tabs[i].onclick = function(){ switchTab(this.getAttribute('data-tab')); }; }
     
     var closeBtns = document.querySelectorAll('.closeModal');
-    for(var i=0;i<closeBtns.length;i++){
-        closeBtns[i].onclick = function(){
-            closeModal(this.getAttribute('data-id'));
-        };
-    }
+    for(var i=0;i<closeBtns.length;i++){ closeBtns[i].onclick = function(){ closeModal(this.getAttribute('data-id')); }; }
     
     document.getElementById('srcProd').oninput = renderProducts;
     document.getElementById('btnAddVar').onclick = openAddVariant;
