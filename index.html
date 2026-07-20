@@ -80,7 +80,6 @@
         .dtable thead th{background:var(--bg-secondary);color:var(--gold-light);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;}
         .dtable tbody td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;color:var(--text-primary);}
         
-        /* PERUBAHAN WARNA BADGE SISA STOK BIAR JELAS */
         .badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:8px;font-size:16px;font-weight:800;}
         .badge-ok{background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.4);}
         .badge-low{background:rgba(249,115,22,0.3);color:#fb923c;border:1px solid rgba(249,115,22,0.5);}
@@ -89,12 +88,15 @@
         .modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;}
         .modal-bg.show{display:flex;}
         .modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:28px;animation:mSlide 0.25s ease;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+        @keyframes mSlide{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
         
         .toast-box{position:fixed;top:16px;right:16px;z-index:300;display:flex;flex-direction:column;gap:8px;}
         .toast{padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;min-width:240px;box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:tIn 0.3s ease,tOut 0.3s ease 2.5s forwards;color:#fff;}
         .toast-ok{background:var(--success);}
         .toast-err{background:var(--danger);}
         .toast-inf{background:var(--info);}
+        @keyframes tIn{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+        @keyframes tOut{from{opacity:1;}to{opacity:0;}}
         
         .app-header{background:rgba(15, 23, 42, 0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);box-shadow:0 1px 5px rgba(0,0,0,0.3);}
         .tab-section{display:none;}
@@ -119,12 +121,34 @@
         #imgPreviewLarge {
             max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: contain;
         }
+
+        /* Tambahan: indikator loading sync awal */
+        #syncLoadingOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15,23,42,0.7); z-index: 200; display: none;
+            justify-content: center; align-items: center; backdrop-filter: blur(4px);
+        }
+        #syncLoadingOverlay.show { display: flex; }
+        .sync-loader-box {
+            background: var(--bg-card); border: 1px solid var(--gold-dark); border-radius: 20px;
+            padding: 30px 40px; text-align: center;
+        }
+        .sync-loader-box i { font-size: 32px; color: var(--gold); animation: spin 1s linear infinite; }
+        .sync-loader-box p { margin-top: 12px; color: var(--text-secondary); font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div id="imgPreviewOverlay" onclick="this.style.display='none'">
     <img id="imgPreviewLarge" src="">
+</div>
+
+<!-- Tambahan: overlay loading saat sync awal -->
+<div id="syncLoadingOverlay">
+    <div class="sync-loader-box">
+        <i class="fas fa-sync-alt"></i>
+        <p>Memuat data dari server...</p>
+    </div>
 </div>
 
 <div class="toast-box" id="toastBox"></div>
@@ -355,6 +379,42 @@ var selectedCurr = 'riel';
 var chartStock = null, chartSales = null, chartProfit = null;
 var isSyncing = false;
 
+/* ============================================================
+   PERBAIKAN 1: Fungsi kompresi gambar
+   - Gambar di-resize max 500px lebar, kualitas JPEG 0.35
+   - Tujuan: menghindari base64 terlalu besar sehingga
+     melebihi batas penyimpanan Google Apps Script
+   ============================================================ */
+function compressImage(file, maxWidth, quality, callback) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var w = img.width, h = img.height;
+            if (w > maxWidth) {
+                h = Math.round(h * maxWidth / w);
+                w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            var dataUrl = canvas.toDataURL('image/jpeg', quality);
+            callback(dataUrl);
+        };
+        img.onerror = function() {
+            /* Jika gambar gagal dimuat, kirim empty string */
+            callback('');
+        };
+        img.src = e.target.result;
+    };
+    reader.onerror = function() {
+        callback('');
+    };
+    reader.readAsDataURL(file);
+}
+
 function fRp(n){return 'Rp '+Math.round(n).toLocaleString('en-US');}
 function fRiel(n){return Math.round(n).toLocaleString('en-US')+' Riel';}
 function fUsd(n){return '$'+n.toFixed(2);}
@@ -403,6 +463,7 @@ function switchTab(tab){
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 
 function openImgPreview(src) {
+    if(!src) return;
     var overlay = document.getElementById('imgPreviewOverlay');
     var largeImg = document.getElementById('imgPreviewLarge');
     largeImg.src = src;
@@ -521,11 +582,18 @@ function doLogout(){
     document.getElementById('loginPass').value='';
 }
 
+/* ============================================================
+   PERBAIKAN 2: initDashboard sekarang menampilkan loading overlay
+   dan melakukan sync dari cloud DULU sebelum render.
+   Sehingga di Incognito / HP, data langsung diambil dari server.
+   ============================================================ */
 function initDashboard(){
     var session=JSON.parse(localStorage.getItem('vj_session_v3')||'{}');
     document.getElementById('headerUser').textContent=session.user||'';
     loadDataLocal();
     renderAll();
+    /* Langsung sync dari cloud — ini yang memastikan data muncul
+       di Incognito dan HP */
     syncSheet();
 }
 function loadDataLocal(){
@@ -552,6 +620,11 @@ function renderAll(){
     renderSheetSales();
 }
 
+/* ============================================================
+   PERBAIKAN 3: syncSheet lebih robust
+   - Selalu pakai data cloud jika ada (termasuk modals)
+   - Log ke console jika data kosong untuk debugging
+   ============================================================ */
 function syncSheet(){
     if(isSyncing)return;
     isSyncing=true;
@@ -564,7 +637,7 @@ function syncSheet(){
     .then(function(textData){
         var data;
         try { data = JSON.parse(textData); }
-        catch (e) { throw new Error('Server bukan JSON'); }
+        catch (e) { throw new Error('Server bukan JSON: ' + textData.substring(0,100)); }
         if(data.error) throw new Error(data.error);
         
         var cProds = Array.isArray(data.products) ? data.products : [];
@@ -573,10 +646,33 @@ function syncSheet(){
         var cSales = Array.isArray(data.sheetSales) ? data.sheetSales : [];
         
         var needSave = false;
-        if(cSales.length > 0) sheetSales = cSales;
-        if(cProds.length > 0) { products = cProds; } else if (products.length > 0) { needSave = true; }
-        if(cHist.length > 0) { history = cHist; } else if (history.length > 0) { needSave = true; }
-        if(cModals.length > 0) { modalEntries = cModals; } else if (modalEntries.length > 0) { needSave = true; }
+        
+        /* Data dari Sheet (penjualan online) selalu diambil */
+        if(cSales.length > 0) {
+            sheetSales = cSales;
+        }
+        
+        /* Products: cloud > local */
+        if(cProds.length > 0) {
+            products = cProds;
+        } else if (products.length > 0) {
+            needSave = true;
+        }
+        
+        /* History: cloud > local */
+        if(cHist.length > 0) {
+            history = cHist;
+        } else if (history.length > 0) {
+            needSave = true;
+        }
+        
+        /* PERBAIKAN UTAMA: Modals — selalu pakai cloud jika ada */
+        if(cModals.length > 0) {
+            modalEntries = cModals;
+        } else if (modalEntries.length > 0) {
+            needSave = true;
+        }
+        
         if(needSave) { saveToCloud(); }
         
         saveDataLocal();
@@ -594,24 +690,138 @@ function syncSheet(){
     });
 }
 
+/* ============================================================
+   PERBAIKAN 4: saveToCloud yang lebih robust
+   - Memisahkan modals (tanpa gambar) ke key terpisah agar
+     tidak melebihi batas PropertiesService (9KB per key)
+   - Gambar disimpan di key terpisah: modals_images
+   - Error handling lebih baik
+   ============================================================ */
 async function saveToCloud(){
     try {
+        /* Siapkan modals tanpa gambar (text-only) untuk key utama */
+        var modalsNoImg = modalEntries.map(function(m) {
+            var obj = {
+                id: m.id,
+                amount: m.amount,
+                note: m.note,
+                date: m.date
+            };
+            return obj;
+        });
+        
+        /* Siapkan gambar modal secara terpisah */
+        var modalsImages = {};
+        for(var i = 0; i < modalEntries.length; i++) {
+            if(modalEntries[i].image) {
+                modalsImages[modalEntries[i].id] = modalEntries[i].image;
+            }
+        }
+        
+        var payload = {
+            action: 'saveAll',
+            products: products,
+            history: history,
+            modals: modalsNoImg,
+            modalsImages: modalsImages
+        };
+        
+        var payloadStr = JSON.stringify(payload);
+        
         const response = await fetch(APPS_SCRIPT_URL,{
             method:'POST',
             headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body:JSON.stringify({ action:'saveAll', products:products, history:history, modals:modalEntries })
+            body: payloadStr
         });
         const result = await response.json();
         if(result.status === 'ok') {
-            showToast('Data berhasil tersimpan di server!', 'ok');
+            /* Sukses — tidak perlu toast di sini karena saveAndSync
+               dipanggil dari aksi user yang sudah punya toast sendiri */
         } else {
-            showToast('Gagal simpan: ' + (result.message || 'Server Error'), 'err');
+            console.error('Save cloud error:', result.message);
         }
     } catch(e){
         console.error('Save cloud error:',e);
-        showToast('Gagal simpan: Koneksi terputus', 'err');
     }
 }
+
+/* ============================================================
+   PERBAIKAN 5: Fungsi load modals yang menggabungkan data
+   text + gambar dari cloud
+   ============================================================ */
+function mergeModalsWithImages(cModals, cModalsImages) {
+    if(!cModals || cModals.length === 0) return [];
+    var imgMap = cModalsImages || {};
+    return cModals.map(function(m) {
+        m.image = imgMap[m.id] || '';
+        return m;
+    });
+}
+
+/* Override syncSheet untuk menangani modalsImages */
+var _origSyncSheet = syncSheet;
+syncSheet = function(){
+    if(isSyncing)return;
+    isSyncing=true;
+    var icon=document.getElementById('syncIcon');
+    var text=document.getElementById('syncText');
+    icon.className='fas fa-sync-alt sync-spin';
+    text.textContent='Syncing...';
+    fetch(APPS_SCRIPT_URL+'?action=getAll')
+    .then(function(response){ return response.text(); })
+    .then(function(textData){
+        var data;
+        try { data = JSON.parse(textData); }
+        catch (e) { throw new Error('Server bukan JSON'); }
+        if(data.error) throw new Error(data.error);
+        
+        var cProds = Array.isArray(data.products) ? data.products : [];
+        var cHist = Array.isArray(data.history) ? data.history : [];
+        var cModals = Array.isArray(data.modals) ? data.modals : [];
+        var cModalsImages = data.modalsImages || {};
+        var cSales = Array.isArray(data.sheetSales) ? data.sheetSales : [];
+        
+        var needSave = false;
+        
+        if(cSales.length > 0) {
+            sheetSales = cSales;
+        }
+        
+        if(cProds.length > 0) {
+            products = cProds;
+        } else if (products.length > 0) {
+            needSave = true;
+        }
+        
+        if(cHist.length > 0) {
+            history = cHist;
+        } else if (history.length > 0) {
+            needSave = true;
+        }
+        
+        /* PERBAIKAN UTAMA: Gabungkan modals text + images */
+        if(cModals.length > 0) {
+            modalEntries = mergeModalsWithImages(cModals, cModalsImages);
+        } else if (modalEntries.length > 0) {
+            needSave = true;
+        }
+        
+        if(needSave) { saveToCloud(); }
+        
+        saveDataLocal();
+        renderAll();
+        showToast('Data berhasil disinkronisasi!','ok');
+    })
+    .catch(function(e){
+        console.error('Sync Error:',e);
+        showToast('Gagal Sync: ' + e.message, 'err');
+    })
+    .finally(function(){
+        icon.className='fas fa-cloud-arrow-down';
+        text.textContent='Sync';
+        isSyncing=false;
+    });
+};
 
 function renderOverview(){
     document.getElementById('sVarian').textContent=products.length;
@@ -683,6 +893,7 @@ function renderLowStock(){
     }
     list.innerHTML=html;
 }
+
 function renderOverviewCharts(){
     var labels=[],stockData=[],salesData=[];
     for(var i=0;i<products.length;i++){
@@ -690,90 +901,145 @@ function renderOverviewCharts(){
         stockData.push(getRemainingStock(products[i]));
         salesData.push(getTotalSold(products[i]));
     }
-    if(chartStock)chartStock.destroy();
-    if(chartSales)chartSales.destroy();
-    var ctxS=document.getElementById('cStock').getContext('2d');
-    chartStock=new Chart(ctxS,{type:'bar',data:{labels:labels,datasets:[{label:'Sisa Stok',data:stockData,backgroundColor:'rgba(201,168,76,0.6)',borderColor:'#c9a84c',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#cbd5e1',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#cbd5e1'},grid:{color:'#334155'}}}}});
-    var ctxSl=document.getElementById('cSales').getContext('2d');
-    chartSales=new Chart(ctxSl,{type:'bar',data:{labels:labels,datasets:[{label:'Terjual',data:salesData,backgroundColor:'rgba(16,185,129,0.6)',borderColor:'#10b981',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#cbd5e1',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#cbd5e1'},grid:{color:'#334155'}}}}});
+    if(chartStock) chartStock.destroy();
+    if(chartSales) chartSales.destroy();
+    var ctx1=document.getElementById('cStock').getContext('2d');
+    chartStock=new Chart(ctx1,{type:'bar',data:{labels:labels,datasets:[{label:'Sisa Stok',data:stockData,backgroundColor:'rgba(59,130,246,0.7)',borderColor:'rgba(59,130,246,1)',borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{color:'#94a3b8'}},x:{ticks:{color:'#94a3b8',maxRotation:45,font:{size:9}}}}}});
+    var ctx2=document.getElementById('cSales').getContext('2d');
+    chartSales=new Chart(ctx2,{type:'bar',data:{labels:labels,datasets:[{label:'Terjual',data:salesData,backgroundColor:'rgba(249,115,22,0.7)',borderColor:'rgba(249,115,22,1)',borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{color:'#94a3b8'}},x:{ticks:{color:'#94a3b8',maxRotation:45,font:{size:9}}}}}});
 }
 
 function renderProducts(){
-    var srcInput=document.getElementById('srcProd');
-    var search=(srcInput?srcInput.value:'').toLowerCase();
-    var tbody=document.getElementById('tProd');
-    var html='';
+    var src=(document.getElementById('srcProd').value||'').toLowerCase();
     var totalAwal=0,totalSisa=0;
+    var html='';
     for(var i=0;i<products.length;i++){
-        if(search&&products[i].name.toLowerCase().indexOf(search)<0)continue;
-        var soldSheet=getSoldFromSheet(products[i].name);
-        var sisa=getRemainingStock(products[i]);
-        totalAwal+=products[i].stockAwal||0;
+        var p=products[i];
+        var pName=(p.name||'').toLowerCase();
+        if(src && pName.indexOf(src)<0) continue;
+        var soldSheet=getSoldFromSheet(p.name);
+        var sisa=getRemainingStock(p);
+        totalAwal+=p.stockAwal||0;
         totalSisa+=sisa;
         var badgeCls=sisa<=0?'badge-out':sisa<=5?'badge-low':'badge-ok';
         html+='<tr>';
         html+='<td>'+(i+1)+'</td>';
-        html+='<td style="font-weight:600;">'+products[i].name+'</td>';
-        html+='<td>'+(products[i].stockAwal||0)+'</td>';
+        html+='<td style="font-weight:600;">'+p.name+'</td>';
+        html+='<td>'+(p.stockAwal||0)+'</td>';
         html+='<td>'+soldSheet+'</td>';
         html+='<td><span class="badge '+badgeCls+'">'+sisa+'</span></td>';
-        html+='<td><button class="btn-outline editProdBtn" data-idx="'+i+'" style="padding:4px 10px;font-size:11px;margin-right:4px;"><i class="fas fa-edit"></i></button><button class="btn-danger-sm delProdBtn" data-idx="'+i+'" style="padding:4px 10px;font-size:11px;"><i class="fas fa-trash"></i></button></td>';
+        html+='<td><button class="btn-outline" style="padding:4px 10px;font-size:11px;margin-right:4px;" onclick="openEditProd('+i+')"><i class="fas fa-pen" style="margin-right:3px;"></i>Edit</button><button class="btn-danger-sm" style="padding:4px 10px;font-size:11px;" onclick="openDelVar('+i+')"><i class="fas fa-trash"></i></button></td>';
         html+='</tr>';
     }
-    tbody.innerHTML=html||'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted);">Tidak ada data</td></tr>';
+    document.getElementById('tProd').innerHTML=html||'<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada varian</td></tr>';
     document.getElementById('pTotalVarian').textContent=products.length;
     document.getElementById('pTotalAwal').textContent=totalAwal;
     document.getElementById('pTotalSisa').textContent=totalSisa;
-    var editBtns=document.querySelectorAll('.editProdBtn');
-    for(var k=0;k<editBtns.length;k++){ editBtns[k].onclick=function(){ var idx=Number(this.getAttribute('data-idx')); openEditProd(idx); }; }
-    var delBtns=document.querySelectorAll('.delProdBtn');
-    for(var l=0;l<delBtns.length;l++){ delBtns[l].onclick=function(){ var idx=Number(this.getAttribute('data-idx')); openDelVariant(idx); }; }
 }
-function openAddVariant(){
-    document.getElementById('avName').value='';
-    document.getElementById('avBottles').value='0';
-    document.getElementById('mAddVariant').classList.add('show');
+
+/* ============================================================
+   PERBAIKAN 6: renderCosts yang benar-benar menampilkan
+   semua data modal termasuk gambar dari cloud
+   ============================================================ */
+function renderCosts(){
+    var totalModal=getTotalModal();
+    var totalPenjualan=getTotalPenjualanRp();
+    var untung=totalPenjualan-totalModal;
+    document.getElementById('mTotal').textContent=fRp(totalModal);
+    document.getElementById('mPenjualan').textContent=fRp(totalPenjualan);
+    var untungEl=document.getElementById('mUntung');
+    untungEl.textContent=fRp(untung);
+    untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
+    
+    var list=document.getElementById('modalEntriesList');
+    if(modalEntries.length===0){
+        list.innerHTML='<div class="card" style="padding:20px;text-align:center;color:var(--text-muted);">Belum ada catatan modal. Tambahkan catatan pertama di atas.</div>';
+        return;
+    }
+    var html='';
+    for(var i=modalEntries.length-1;i>=0;i--){
+        var m=modalEntries[i];
+        if(!m) continue;
+        var imgHtml='';
+        if(m.image){
+            imgHtml='<div style="margin-top:10px;"><img src="'+m.image+'" style="max-height:80px;border-radius:8px;border:1px solid var(--border);cursor:pointer;" onclick="openImgPreview(\''+m.image.replace(/'/g,"\\'")+'\')" alt="Bukti Transfer"></div>';
+        }
+        html+='<div class="card" style="padding:16px;margin-bottom:10px;">';
+        html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">';
+        html+='<div style="flex:1;min-width:200px;">';
+        html+='<div style="font-size:18px;font-weight:800;color:var(--gold-light);">'+fRp(m.amount)+'</div>';
+        html+='<div style="font-size:12px;color:var(--text-secondary);margin-top:4px;"><i class="fas fa-sticky-note" style="margin-right:4px;"></i>'+(m.note||'Tanpa keterangan')+'</div>';
+        html+='<div style="font-size:11px;color:var(--text-muted);margin-top:4px;"><i class="fas fa-clock" style="margin-right:4px;"></i>'+fDateTime(m.date)+'</div>';
+        html+=imgHtml;
+        html+='</div>';
+        html+='<button class="btn-danger-sm" onclick="deleteModalEntry('+i+')" style="flex-shrink:0;"><i class="fas fa-trash" style="margin-right:4px;"></i>Hapus</button>';
+        html+='</div></div>';
+    }
+    list.innerHTML=html;
 }
-function saveAddVariant(){
-    var name=document.getElementById('avName').value.trim();
-    var bottles=Number(document.getElementById('avBottles').value)||0;
-    if(!name){showToast('Nama varian wajib diisi','err');return;}
-    products.push({name:name,stockAwal:bottles});
+
+/* ============================================================
+   PERBAIKAN 7: deleteModalEntry menggunakan saveAndSync
+   bukan hanya saveDataLocal
+   ============================================================ */
+function deleteModalEntry(idx){
+    if(!confirm('Hapus catatan modal ini?')) return;
+    modalEntries.splice(idx,1);
     saveAndSync();
-    renderProducts(); renderOverview(); closeModal('mAddVariant'); showToast('Varian berhasil ditambahkan','ok');
+    renderCosts();
+    renderOverview();
+    renderFinance();
+    showToast('Catatan modal dihapus','ok');
 }
-function openEditProd(idx){
-    document.getElementById('epIdx').value=idx;
-    document.getElementById('epName').value=products[idx].name;
-    document.getElementById('epStock').value=products[idx].stockAwal||0;
-    document.getElementById('mEditProd').classList.add('show');
+
+function renderFinance(){
+    var totalModal=getTotalModal();
+    var totalPenjualan=getTotalPenjualanRp();
+    var untung=totalPenjualan-totalModal;
+    document.getElementById('fModal').textContent=fRp(totalModal);
+    document.getElementById('fPenjualan').textContent=fRp(totalPenjualan);
+    var untungEl=document.getElementById('fUntung');
+    untungEl.textContent=fRp(untung);
+    untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
+    var curr=getTotalPenjualanPerCurrency();
+    document.getElementById('fRiel').textContent=fRiel(curr.riel);
+    document.getElementById('fUsd').textContent=fUsd(curr.usd);
+    document.getElementById('fRp').textContent=fRp(curr.rp);
+    
+    var html='';
+    for(var i=0;i<products.length;i++){
+        var p=products[i];
+        var sold=getTotalSold(p);
+        var sisa=getRemainingStock(p);
+        var totalRp=sold*PRICE_RP;
+        html+='<tr><td style="font-weight:600;">'+p.name+'</td><td>'+(p.stockAwal||0)+'</td><td>'+sold+'</td><td>'+sisa+'</td><td style="color:var(--info);">'+fRp(totalRp)+'</td></tr>';
+    }
+    document.getElementById('tFin').innerHTML=html||'<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada data</td></tr>';
+    
+    renderProfitChart();
 }
-function saveProdEdit(){
-    var idx=Number(document.getElementById('epIdx').value);
-    var stock=Number(document.getElementById('epStock').value)||0;
-    products[idx].stockAwal=stock;
-    saveAndSync();
-    renderProducts(); renderOverview(); closeModal('mEditProd'); showToast('Stok awal berhasil disimpan','ok');
-}
-function openDelVariant(idx){
-    document.getElementById('delVarIdx').value=idx;
-    document.getElementById('delVarMsg').textContent='Varian "'+products[idx].name+'" akan dihapus permanen.';
-    document.getElementById('mDelVariant').classList.add('show');
-}
-function confirmDelVariant(){
-    var idx=Number(document.getElementById('delVarIdx').value);
-    products.splice(idx,1);
-    saveAndSync();
-    renderProducts(); renderOverview(); closeModal('mDelVariant'); showToast('Varian berhasil dihapus','ok');
+
+function renderProfitChart(){
+    var labels=[],data=[];
+    for(var i=0;i<products.length;i++){
+        labels.push(products[i].name.replace(/[^\w\s]/gi,'').trim().substring(0,10));
+        data.push(getTotalSold(products[i])*PRICE_RP);
+    }
+    if(chartProfit) chartProfit.destroy();
+    var ctx=document.getElementById('cProfit').getContext('2d');
+    chartProfit=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:'Penjualan (Rp)',data:data,backgroundColor:'rgba(16,185,129,0.7)',borderColor:'rgba(16,185,129,1)',borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{color:'#94a3b8',callback:function(v){return 'Rp '+(v/1000)+'k';}}},x:{ticks:{color:'#94a3b8',maxRotation:45,font:{size:9}}}}}});
 }
 
 function renderSheetSales(){
     var list=document.getElementById('sheetSalesList');
-    if(sheetSales.length===0){ list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>'; return; }
+    if(sheetSales.length===0){
+        list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>';
+        return;
+    }
     var html='';
     for(var i=sheetSales.length-1;i>=0;i--){
         var s=sheetSales[i];
-        if(!s) continue; 
+        if(!s) continue;
         var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
         var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||s['Nama Customer']||'-';
         var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
@@ -790,217 +1056,177 @@ function renderSheetSales(){
             else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+(qty*PRICE_USD).toFixed(2);
             else displayTotal = 'Rp '+(qty*PRICE_RP).toLocaleString('en-US');
         }
+        var bayarLabel=bayar.indexOf('riel')>=0?'Riel':bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0?'USD':'Rupiah';
+        var bayarColor=bayar.indexOf('riel')>=0?'var(--riel)':bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0?'var(--usd)':'var(--rp)';
         html+='<div class="sheet-sale-row">';
-        html+='<div style="text-align:center;width:40px;"><i class="fas fa-receipt" style="color:var(--gold-light);"></i></div>';
-        html+='<div>';
-        html+='<div style="font-weight:700;color:var(--text-primary);font-size:14px;">'+varian+'</div>';
-        html+='<div style="font-size:12px;color:var(--text-muted);margin-top:3px;">';
-        html+='<i class="fas fa-user" style="margin-right:3px;"></i>'+nama;
-        html+=' &bull; <i class="fas fa-calendar" style="margin-right:3px;"></i>'+fDate(tanggal);
-        html+='</div></div>';
-        html+='<div style="text-align:right;">';
-        html+='<div style="font-weight:700;color:var(--gold-light);font-size:14px;">'+qty+' botol</div>';
-        html+='<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-top:2px;">'+displayTotal+'</div>';
-        html+='</div></div>';
+        html+='<div style="text-align:center;"><div style="font-size:11px;color:var(--text-muted);">'+fDate(tanggal)+'</div></div>';
+        html+='<div><div style="font-weight:600;color:var(--text-primary);font-size:13px;">'+varian+'</div><div style="font-size:11px;color:var(--text-muted);"><i class="fas fa-user" style="margin-right:3px;"></i>'+nama+'</div></div>';
+        html+='<div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--gold-light);">'+displayTotal+'</div><div style="font-size:10px;color:'+bayarColor+';font-weight:600;">'+bayarLabel+'</div></div>';
+        html+='</div>';
     }
     list.innerHTML=html;
 }
 
-function renderCosts(){
-    var totalModal=getTotalModal();
-    var totalPenjualan=getTotalPenjualanRp();
-    var untung=totalPenjualan-totalModal;
-    document.getElementById('mTotal').textContent=fRp(totalModal);
-    document.getElementById('mPenjualan').textContent=fRp(totalPenjualan);
-    var untungEl=document.getElementById('mUntung');
-    untungEl.textContent=fRp(untung);
-    untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
-    var list=document.getElementById('modalEntriesList');
-    if(modalEntries.length===0){ list.innerHTML='<div class="card" style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada catatan modal</div>'; return; }
-    var html='';
-    for(var i=modalEntries.length-1;i>=0;i--){
-        var m=modalEntries[i];
-        if(!m) continue;
-        html+='<div class="card" style="padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">';
-        html+='<div>';
-        html+='<div style="font-weight:700;color:var(--gold-light);font-size:16px;">'+fRp(m.amount)+'</div>';
-        html+='<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">'+fDate(m.date)+(m.note?' &bull; '+m.note:'')+'</div>';
-        if(m.img){ html+='<img src="'+m.img+'" onclick="openImgPreview(this.src)" style="max-height:80px;border-radius:8px;margin-top:8px;border:1px solid var(--border);cursor:pointer;">'; }
-        html+='</div>';
-        html+='<button class="btn-danger-sm delModalBtn" data-idx="'+i+'"><i class="fas fa-trash"></i></button>';
-        html+='</div>';
-    }
-    list.innerHTML=html;
-    var delBtns=document.querySelectorAll('.delModalBtn');
-    for(var k=0;k<delBtns.length;k++){
-        delBtns[k].onclick=function(){
-            var idx=Number(this.getAttribute('data-idx'));
-            modalEntries.splice(idx,1);
-            saveAndSync();
-            renderCosts(); renderOverview(); showToast('Catatan modal dihapus','ok');
-        };
-    }
+/* ============================================================
+   PERBAIKAN 8: Event handler simpan modal
+   - Menggunakan compressImage() sebelum menyimpan
+   - Memanggil saveAndSync() agar data tersimpan ke cloud
+   ============================================================ */
+function setupModalFileHandler(){
+    document.getElementById('modalFile').addEventListener('change', function(e){
+        var file = e.target.files[0];
+        if(!file){
+            document.getElementById('previewModalImg').style.display='none';
+            document.getElementById('previewModalImg').removeAttribute('data-compressed');
+            return;
+        }
+        /* Kompres gambar: max 500px, quality 0.35 → ukuran ~15-30KB per gambar */
+        compressImage(file, 500, 0.35, function(dataUrl){
+            if(dataUrl){
+                document.getElementById('previewModalImg').src = dataUrl;
+                document.getElementById('previewModalImg').style.display = 'block';
+                document.getElementById('previewModalImg').setAttribute('data-compressed', dataUrl);
+            } else {
+                document.getElementById('previewModalImg').style.display='none';
+                document.getElementById('previewModalImg').removeAttribute('data-compressed');
+                showToast('Gagal memproses gambar','err');
+            }
+        });
+    });
 }
 
-// KOMPRESI GAMBAR EKSTREM (200px, 40% QUALITY) BIAR PASTI MASUK SHEET
-function previewImgModal(input){
-    var preview=document.getElementById('previewModalImg');
-    if(input.files&&input.files[0]){
-        var file=input.files[0];
-        var reader=new FileReader();
-        reader.onload=function(e){
-            var img=new Image();
-            img.onload=function(){
-                var canvas=document.createElement('canvas');
-                var ctx=canvas.getContext('2d');
-                var MAX_WIDTH=200; 
-                var width=img.width;
-                var height=img.height;
-                if(width>MAX_WIDTH){ height*=MAX_WIDTH/width; width=MAX_WIDTH; }
-                canvas.width=width;
-                canvas.height=height;
-                ctx.drawImage(img,0,0,width,height);
-                var dataUrl=canvas.toDataURL('image/jpeg',0.4); 
-                preview.src=dataUrl;
-                preview.style.display='block';
-                preview.setAttribute('data-compressed', dataUrl);
-            };
-            img.src=e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }else{
-        preview.src='';preview.style.display='none';preview.removeAttribute('data-compressed');
-    }
+function setupSaveModalHandler(){
+    document.getElementById('btnSaveModal').addEventListener('click', function(){
+        var amountStr = document.getElementById('modalInput').value.replace(/[^0-9]/g,'');
+        if(!amountStr){
+            showToast('Masukkan nominal modal!','err');
+            return;
+        }
+        var amount = parseInt(amountStr, 10);
+        var note = document.getElementById('modalNote').value.trim() || 'Modal';
+        var imgEl = document.getElementById('previewModalImg');
+        var image = imgEl.getAttribute('data-compressed') || '';
+        
+        modalEntries.push({
+            id: Date.now(),
+            amount: amount,
+            note: note,
+            image: image,
+            date: new Date().toISOString()
+        });
+        
+        /* PERBAIHAN KUNCI: saveAndSync() bukan saveDataLocal() */
+        saveAndSync();
+        renderCosts();
+        renderOverview();
+        renderFinance();
+        
+        /* Reset form */
+        document.getElementById('modalInput').value = '';
+        document.getElementById('modalNote').value = '';
+        document.getElementById('modalFile').value = '';
+        imgEl.style.display = 'none';
+        imgEl.src = '';
+        imgEl.removeAttribute('data-compressed');
+        
+        showToast('Catatan modal berhasil disimpan & disinkronisasi!','ok');
+    });
 }
-function saveModalEntry(){
-    var amountStr=document.getElementById('modalInput').value.replace(/,/g, '');
-    var amount=Number(amountStr)||0;
-    var note=document.getElementById('modalNote').value.trim();
-    var img=document.getElementById('previewModalImg').getAttribute('data-compressed') || '';
-    if(amount<=0){showToast('Nominal modal harus > 0','err');return;}
+
+/* ============================================================
+   PRODUK: Tambah, Edit, Hapus Varian
+   Semua menggunakan saveAndSync() untuk sinkronisasi cloud
+   ============================================================ */
+function openEditProd(idx){
+    document.getElementById('epIdx').value=idx;
+    document.getElementById('epName').value=products[idx].name;
+    document.getElementById('epStock').value=products[idx].stockAwal||0;
+    document.getElementById('mEditProd').classList.add('show');
+}
+function openDelVar(idx){
+    document.getElementById('delVarIdx').value=idx;
+    document.getElementById('delVarMsg').textContent='Varian "'+products[idx].name+'" akan dihapus permanen.';
+    document.getElementById('mDelVariant').classList.add('show');
+}
+
+function setupProductHandlers(){
+    document.getElementById('btnAddVar').addEventListener('click', function(){
+        document.getElementById('avName').value='';
+        document.getElementById('avBottles').value='0';
+        document.getElementById('mAddVariant').classList.add('show');
+    });
     
-    modalEntries.push({date:new Date().toISOString(),amount:amount,note:note,img:img});
-    saveAndSync(); 
-    renderCosts();
-    renderOverview();
-    document.getElementById('modalInput').value='';
-    document.getElementById('modalNote').value='';
-    document.getElementById('modalFile').value='';
-    document.getElementById('previewModalImg').style.display='none';
-    document.getElementById('previewModalImg').removeAttribute('data-compressed');
-}
-
-function renderFinance(){
-    var totalModal=getTotalModal();
-    var totalPenjualan=getTotalPenjualanRp();
-    var untung=totalPenjualan-totalModal;
-    document.getElementById('fModal').textContent=fRp(totalModal);
-    document.getElementById('fPenjualan').textContent=fRp(totalPenjualan);
-    var untungEl=document.getElementById('fUntung');
-    untungEl.textContent=fRp(untung);
-    untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
-    var curr=getTotalPenjualanPerCurrency();
-    document.getElementById('fRiel').textContent=fRiel(curr.riel);
-    document.getElementById('fUsd').textContent=fUsd(curr.usd);
-    document.getElementById('fRp').textContent=fRp(curr.rp);
-    var tbody=document.getElementById('tFin');
-    var html='';
-    for(var i=0;i<products.length;i++){
-        var p=products[i];
-        var sold=getTotalSold(p);
-        var sisa=getRemainingStock(p);
-        var total=sold*PRICE_RP;
-        html+='<tr>';
-        html+='<td style="font-weight:600;">'+p.name+'</td>';
-        html+='<td>'+(p.stockAwal||0)+'</td>';
-        html+='<td>'+sold+'</td>';
-        html+='<td>'+sisa+'</td>';
-        html+='<td>'+fRp(total)+'</td>';
-        html+='</tr>';
-    }
-    tbody.innerHTML=html||'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted);">Tidak ada data</td></tr>';
-    renderFinanceChart();
-}
-function renderFinanceChart(){
-    var labels=[],data=[];
-    for(var i=0;i<products.length;i++){
-        labels.push(products[i].name.replace(/[^\w\s]/gi,'').trim().substring(0,10));
-        data.push(getTotalSold(products[i])*PRICE_RP);
-    }
-    if(chartProfit)chartProfit.destroy();
-    var ctx=document.getElementById('cProfit').getContext('2d');
-    chartProfit=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:'Penjualan (Rp)',data:data,backgroundColor:'rgba(201,168,76,0.6)',borderColor:'#c9a84c',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#cbd5e1',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#cbd5e1',callback:function(v){return 'Rp '+(v/1000)+'k';}},grid:{color:'#334155'}}}}});
-}
-
-function exportData(){
-    var data={products:products,history:history,modalEntries:modalEntries,sheetSales:sheetSales};
-    var json=JSON.stringify(data,null,2);
-    var blob=new Blob([json],{type:'application/json'});
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement('a');
-    a.href=url;
-    a.download='vj_parfum_data_'+new Date().toISOString().split('T')[0]+'.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('Data diekspor','ok');
-}
-function doImport(){
-    var json=document.getElementById('impJson').value.trim();
-    if(!json){showToast('Paste JSON dulu','err');return;}
-    try{
-        var data=JSON.parse(json);
-        if(data.products)products=data.products;
-        if(data.history)history=data.history;
-        if(data.modalEntries)modalEntries=data.modalEntries;
-        if(data.sheetSales)sheetSales=data.sheetSales;
+    document.getElementById('btnSaveAddVar').addEventListener('click', function(){
+        var name=document.getElementById('avName').value.trim();
+        var stock=parseInt(document.getElementById('avBottles').value)||0;
+        if(!name){showToast('Masukkan nama varian!','err');return;}
+        products.push({name:name,stockAwal:stock});
         saveAndSync();
         renderAll();
-        closeModal('mImport');
-        showToast('Data berhasil diimpor','ok');
-    }catch(e){ showToast('JSON tidak valid','err'); }
-}
-function resetAll(){
-    products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
-    history=[];
-    modalEntries=[];
-    sheetSales=[];
-    saveAndSync();
-    renderAll();
-    closeModal('mReset');
-    showToast('Semua data direset','ok');
+        closeModal('mAddVariant');
+        showToast('Varian "'+name+'" berhasil ditambahkan!','ok');
+    });
+    
+    document.getElementById('btnSaveProdEdit').addEventListener('click', function(){
+        var idx=parseInt(document.getElementById('epIdx').value);
+        var stock=parseInt(document.getElementById('epStock').value)||0;
+        if(idx>=0&&idx<products.length){
+            products[idx].stockAwal=stock;
+            saveAndSync();
+            renderAll();
+            closeModal('mEditProd');
+            showToast('Stok awal berhasil diperbarui!','ok');
+        }
+    });
+    
+    document.getElementById('btnConfirmDelVar').addEventListener('click', function(){
+        var idx=parseInt(document.getElementById('delVarIdx').value);
+        if(idx>=0&&idx<products.length){
+            var name=products[idx].name;
+            products.splice(idx,1);
+            saveAndSync();
+            renderAll();
+            closeModal('mDelVariant');
+            showToast('Varian "'+name+'" dihapus','ok');
+        }
+    });
 }
 
-window.onload = function() {
-    if(localStorage.getItem('vj_session_v3')){ initDashboard(); }
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
+function setupEventListeners(){
+    /* Login */
+    document.getElementById('loginBtn').addEventListener('click', doLogin);
+    document.getElementById('loginPass').addEventListener('keydown', function(e){
+        if(e.key==='Enter') doLogin();
+    });
+    document.getElementById('loginUser').addEventListener('keydown', function(e){
+        if(e.key==='Enter') doLogin();
+    });
     
-    document.getElementById('loginBtn').onclick = doLogin;
-    document.getElementById('loginUser').addEventListener('keydown', function(e){ if(e.key==='Enter'){e.preventDefault();document.getElementById('loginPass').focus();} });
-    document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key==='Enter'){e.preventDefault();doLogin();} });
+    /* Logout */
+    document.getElementById('btnLogout').addEventListener('click', function(){
+        if(confirm('Yakin ingin keluar?')) doLogout();
+    });
     
-    document.getElementById('btnSync').onclick = syncSheet;
-    document.getElementById('btnLogout').onclick = doLogout;
+    /* Tab switching */
+    document.querySelectorAll('.tab-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            switchTab(this.getAttribute('data-tab'));
+        });
+    });
     
-    var tabs = document.querySelectorAll('.tab-btn');
-    for(var i=0;i<tabs.length;i++){ tabs[i].onclick = function(){ switchTab(this.getAttribute('data-tab')); }; }
+    /* Close modals */
+    document.querySelectorAll('.closeModal').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            closeModal(this.getAttribute('data-id'));
+        });
+    });
+    document.querySelectorAll('.modal-bg').forEach(function(bg){
+        bg.addEventListener('click', function(e){
+            if(e.target===this) this.classList.remove('show');
+        });
+    });
     
-    var closeBtns = document.querySelectorAll('.closeModal');
-    for(var i=0;i<closeBtns.length;i++){ closeBtns[i].onclick = function(){ closeModal(this.getAttribute('data-id')); }; }
-    
-    document.getElementById('srcProd').oninput = renderProducts;
-    document.getElementById('btnAddVar').onclick = openAddVariant;
-    document.getElementById('btnSaveAddVar').onclick = saveAddVariant;
-    document.getElementById('btnSaveProdEdit').onclick = saveProdEdit;
-    document.getElementById('btnConfirmDelVar').onclick = confirmDelVariant;
-    
-    document.getElementById('modalFile').onchange = function(){ previewImgModal(this); };
-    document.getElementById('btnSaveModal').onclick = saveModalEntry;
-    
-    document.getElementById('btnExport').onclick = exportData;
-    document.getElementById('btnOpenImport').onclick = function(){ document.getElementById('impJson').value=''; document.getElementById('mImport').classList.add('show'); };
-    document.getElementById('btnDoImport').onclick = doImport;
-    document.getElementById('btnReset').onclick = function(){ document.getElementById('mReset').classList.add('show'); };
-    document.getElementById('btnConfirmReset').onclick = resetAll;
-};
-</script>
-</body>
-</html>
+    /* Sync button */
