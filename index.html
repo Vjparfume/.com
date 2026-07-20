@@ -651,23 +651,7 @@ function syncSheet(){
     });
 }
 
-async function saveToCloud(){
-    try {
-        const response = await fetch(APPS_SCRIPT_URL,{
-            method:'POST',
-            headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body:JSON.stringify({ action:'saveAll', products:products, history:history, modals:modalEntries })
-        });
-        const result = await response.json();
-        if(result.status === 'ok') {
-            /* sukses simpan ke cloud */
-        } else {
-            showToast('Gagal simpan cloud: ' + (result.message || 'Server Error'), 'err');
-        }
-    } catch(e){
-        console.error('Save cloud error:',e);
-    }
-}
+aasync function saveToCloud(){
 
 function renderOverview(){
     document.getElementById('sVarian').textContent=products.length;
