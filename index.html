@@ -565,7 +565,7 @@ function doLogout(){
     document.getElementById('loginPass').value='';
 }
 
-/* ===== PERBAIKAN: initDashboard MENunggu syncSheet selesai ===== */
+/* ===== PERBAIKAN: initDashboard Menunggu syncSheet selesai ===== */
 function initDashboard(){
     var session=JSON.parse(localStorage.getItem('vj_session_v3')||'{}');
     document.getElementById('headerUser').textContent=session.user||'';
@@ -623,7 +623,6 @@ function syncSheet(){
         
         var cProds = Array.isArray(data.products) ? data.products : [];
         var cHist = Array.isArray(data.history) ? data.history : [];
-        /* PERBAIKAN: cek modals DAN modalEntries dari cloud */
         var cModals = Array.isArray(data.modals) ? data.modals : (Array.isArray(data.modalEntries) ? data.modalEntries : []);
         var cSales = Array.isArray(data.sheetSales) ? data.sheetSales : [];
         
@@ -631,7 +630,6 @@ function syncSheet(){
         if(cSales.length > 0) sheetSales = cSales;
         if(cProds.length > 0) { products = cProds; } else if (products.length > 0) { needSave = true; }
         if(cHist.length > 0) { history = cHist; } else if (history.length > 0) { needSave = true; }
-        /* PERBAIKAN UTAMA: selalu pakai data cloud kalau ada, KALAU TIDAK ADA CLOUD TAPI LOCAL ADA, UPLOAD */
         if(cModals.length > 0) { modalEntries = cModals; }
         else if (modalEntries.length > 0) { needSave = true; }
         if(needSave) { saveToCloud(); }
@@ -651,7 +649,41 @@ function syncSheet(){
     });
 }
 
-aasync function saveToCloud(){
+/* ===== PERBAIKAN: saveToCloud yang tadanya aasync dan kosong ===== */
+async function saveToCloud(){
+    try {
+        var safeModals = Array.isArray(modalEntries) ? modalEntries : [];
+        var modalsToSave = safeModals.map(function(m) {
+            if (!m) return m;
+            var entry = Object.assign({}, m);
+            if (entry.image && entry.image.length > 45000) {
+                entry.image = entry.image.substring(0, 45000);
+            }
+            return entry;
+        });
+        var safeProducts = Array.isArray(products) ? products : [];
+        var safeHistory = Array.isArray(history) ? history : [];
+        const response = await fetch(APPS_SCRIPT_URL,{
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body:JSON.stringify({ 
+                action:'saveAll', 
+                products:safeProducts, 
+                history:safeHistory, 
+                modals:modalsToSave 
+            })
+        });
+        const result = await response.json();
+        if(result.status === 'ok') {
+            /* sukses simpan */
+        } else {
+            showToast('Gagal simpan cloud: ' + (result.message || result.error || 'Server Error'), 'err');
+        }
+    } catch(e){
+        console.error('Save cloud error:',e);
+        showToast('Gagal simpan: ' + e.message, 'err');
+    }
+}
 
 function renderOverview(){
     document.getElementById('sVarian').textContent=products.length;
@@ -843,7 +875,6 @@ function renderFinance(){
     }
     tbody.innerHTML=html||'<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Tidak ada data</td></tr>';
     
-    /* Chart */
     var labels=[];var profitData=[];
     for(var j=0;j<products.length;j++){
         labels.push(products[j].name.replace(/[^\w\s]/gi,'').trim());
@@ -891,7 +922,6 @@ function renderSheetSales(){
     container.innerHTML=html;
 }
 
-/* ===== MODAL / DIALOG FUNCTIONS ===== */
 function openEditProd(idx){
     document.getElementById('epIdx').value=idx;
     document.getElementById('epName').value=products[idx].name;
@@ -906,38 +936,31 @@ function openDelVar(idx){
 
 /* ===== EVENT LISTENERS ===== */
 document.addEventListener('DOMContentLoaded',function(){
-    /* Tab navigation */
     var tabBtns=document.querySelectorAll('.tab-btn');
     for(var t=0;t<tabBtns.length;t++){
         tabBtns[t].addEventListener('click',function(){
             switchTab(this.getAttribute('data-tab'));
         });
     }
-    /* Close modal buttons */
     var closeBtns=document.querySelectorAll('.closeModal');
     for(var c=0;c<closeBtns.length;c++){
         closeBtns[c].addEventListener('click',function(){
             closeModal(this.getAttribute('data-id'));
         });
     }
-    /* Close modal on bg click */
     var modalBgs=document.querySelectorAll('.modal-bg');
     for(var m=0;m<modalBgs.length;m++){
         modalBgs[m].addEventListener('click',function(e){
             if(e.target===this) this.classList.remove('show');
         });
     }
-    /* Login */
     document.getElementById('loginBtn').addEventListener('click',doLogin);
     document.getElementById('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
     document.getElementById('loginUser').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-    /* Logout */
     document.getElementById('btnLogout').addEventListener('click',doLogout);
-    /* Sync */
     document.getElementById('btnSync').addEventListener('click',function(){syncSheet();});
-    /* Search products */
     document.getElementById('srcProd').addEventListener('input',renderProducts);
-    /* Add variant */
+    
     document.getElementById('btnAddVar').addEventListener('click',function(){
         document.getElementById('avName').value='';
         document.getElementById('avBottles').value='0';
@@ -953,7 +976,6 @@ document.addEventListener('DOMContentLoaded',function(){
         closeModal('mAddVariant');
         showToast('Varian "'+name+'" berhasil ditambahkan!','ok');
     });
-    /* Edit product */
     document.getElementById('btnSaveProdEdit').addEventListener('click',function(){
         var idx=parseInt(document.getElementById('epIdx').value);
         var stock=parseInt(document.getElementById('epStock').value)||0;
@@ -963,7 +985,6 @@ document.addEventListener('DOMContentLoaded',function(){
         closeModal('mEditProd');
         showToast('Stok awal berhasil diperbarui!','ok');
     });
-    /* Delete variant */
     document.getElementById('btnConfirmDelVar').addEventListener('click',function(){
         var idx=parseInt(document.getElementById('delVarIdx').value);
         var name=products[idx].name;
@@ -974,7 +995,6 @@ document.addEventListener('DOMContentLoaded',function(){
         showToast('Varian "'+name+'" dihapus.','ok');
     });
     
-    /* ===== PERBAIKAN: btnSaveModal dengan kompres gambar ===== */
     document.getElementById('btnSaveModal').addEventListener('click',async function(){
         var amountStr=document.getElementById('modalInput').value.replace(/[^0-9]/g,'');
         var amount=parseInt(amountStr,10)||0;
@@ -986,7 +1006,6 @@ document.addEventListener('DOMContentLoaded',function(){
             return;
         }
         
-        /* Kompres gambar sebelum simpan */
         var imgData='';
         if(fileInput.files&&fileInput.files[0]){
             showToast('Mengompres gambar...','inf');
@@ -1006,7 +1025,6 @@ document.addEventListener('DOMContentLoaded',function(){
         renderCosts();
         renderFinance();
         
-        /* Reset form */
         document.getElementById('modalInput').value='';
         document.getElementById('modalNote').value='';
         fileInput.value='';
@@ -1015,7 +1033,6 @@ document.addEventListener('DOMContentLoaded',function(){
         showToast('Catatan modal berhasil disimpan!','ok');
     });
     
-    /* Preview gambar sebelum upload */
     document.getElementById('modalFile').addEventListener('change',function(){
         var preview=document.getElementById('previewModalImg');
         if(this.files&&this.files[0]){
@@ -1030,7 +1047,6 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     });
     
-    /* Reset all */
     document.getElementById('btnReset').addEventListener('click',function(){
         document.getElementById('mReset').classList.add('show');
     });
@@ -1045,7 +1061,6 @@ document.addEventListener('DOMContentLoaded',function(){
         showToast('Semua data berhasil direset!','ok');
     });
     
-    /* Export */
     document.getElementById('btnExport').addEventListener('click',function(){
         var data={products:products,history:history,modalEntries:modalEntries,sheetSales:sheetSales,exportedAt:new Date().toISOString()};
         var json=JSON.stringify(data,null,2);
@@ -1057,7 +1072,6 @@ document.addEventListener('DOMContentLoaded',function(){
         showToast('Data berhasil diekspor!','ok');
     });
     
-    /* Import */
     document.getElementById('btnOpenImport').addEventListener('click',function(){
         document.getElementById('impJson').value='';
         document.getElementById('mImport').classList.add('show');
@@ -1079,7 +1093,6 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     });
     
-    /* ===== INIT: Cek session dan jalankan dashboard ===== */
     if(localStorage.getItem('vj_session_v3')){
         initDashboard();
     }
