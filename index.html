@@ -80,7 +80,6 @@
         .dtable thead th{background:var(--bg-secondary);color:var(--gold-light);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;}
         .dtable tbody td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;color:var(--text-primary);}
         
-        /* BADGE SISA DIPERBESAR & DITONJOLKAN */
         .badge{display:inline-flex;align-items:center;padding:8px 20px;border-radius:10px;font-size:22px;font-weight:900;letter-spacing:0.5px;}
         .badge-ok{background:rgba(59,130,246,0.25);color:#93c5fd;border:1px solid rgba(59,130,246,0.5);text-shadow:0 0 14px rgba(59,130,246,0.7),0 0 4px rgba(59,130,246,0.4);}
         .badge-low{background:rgba(249,115,22,0.3);color:#fdba74;border:1px solid rgba(249,115,22,0.5);text-shadow:0 0 14px rgba(249,115,22,0.7),0 0 4px rgba(249,115,22,0.4);}
@@ -103,7 +102,6 @@
         .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
         @media(max-width:768px){.chart-row{grid-template-columns:1fr;}}
         .big-number{font-size:28px;font-weight:800;color:#ffffff;text-shadow:0 0 10px rgba(59, 130, 246, 0.3);}
-        /* SISA STOK DI OVERVIEW LEBIH MENONJOL */
         .big-number.sisa-highlight{font-size:34px;color:#93c5fd;text-shadow:0 0 18px rgba(59,130,246,0.6),0 0 6px rgba(59,130,246,0.3);}
         .label-sm{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
         .sync-spin{animation:spin 1s linear infinite;}
@@ -121,7 +119,6 @@
         #imgPreviewLarge {
             max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: contain;
         }
-        /* LOADING OVERLAY SAAT SYNC PERTAMA */
         #syncLoadingOverlay {
             position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.92);
             z-index:200;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;
@@ -267,7 +264,6 @@
                 <div style="display:flex;flex-direction:column;gap:14px;">
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="text" class="input-field" id="modalInput" placeholder="Contoh: 500,000" oninput="formatNumber(this)"></div>
                     <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
-                    
                     <div>
                         <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer (Klik untuk pilih gambar)</label>
                         <label class="btn-outline" style="display:block;padding:12px;cursor:pointer;position:relative;overflow:hidden;">
@@ -276,11 +272,13 @@
                         </label>
                         <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;cursor:pointer;" onclick="openImgPreview(this.src)">
                     </div>
-                    
                     <button class="btn-gold" id="btnSaveModal"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button>
                 </div>
             </div>
-            <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Riwayat Catatan Modal (Klik gambar untuk perbesar)</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Riwayat Catatan Modal (Klik gambar untuk perbesar)</h3>
+                <button class="btn-danger-sm" id="btnClearAllModals" style="padding:8px 16px;font-size:12px;"><i class="fas fa-trash" style="margin-right:4px;"></i>Hapus Semua Modal</button>
+            </div>
             <div id="modalEntriesList"></div>
         </section>
 
@@ -423,7 +421,6 @@ function openImgPreview(src) {
     overlay.style.display = 'flex';
 }
 
-/* ===== FUNGSI KOMPRES GAMBAR BIAR UKURANNYA KECIL ===== */
 function compressImage(file, maxWidth, quality) {
     return new Promise(function(resolve) {
         if (!file) { resolve(''); return; }
@@ -451,6 +448,23 @@ function compressImage(file, maxWidth, quality) {
         reader.onerror = function() { resolve(''); };
         reader.readAsDataURL(file);
     });
+}
+
+/* ===== VALIDASI DATA MODAL DARI CLOUD ===== */
+function validateModalEntries(arr) {
+    if (!Array.isArray(arr)) return [];
+    var valid = [];
+    for (var i = 0; i < arr.length; i++) {
+        var m = arr[i];
+        if (!m) continue;
+        /* Hanya terima entry yang punya amount valid (angka > 0) dan punya id/date */
+        var amt = Number(String(m.amount).replace(/[^0-9]/g, '')) || 0;
+        if (amt > 0 && (m.id || m.date)) {
+            m.amount = amt;
+            valid.push(m);
+        }
+    }
+    return valid;
 }
 
 function getSoldFromSheet(varianName){
@@ -533,7 +547,7 @@ function getTotalPenjualanPerCurrency(){
 function getTotalModal(){
     var total=0;
     for(var i=0;i<modalEntries.length;i++){
-        if(modalEntries[i]) total+=Number(modalEntries[i].amount)||0;
+        if(modalEntries[i]) total+=Number(String(modalEntries[i].amount).replace(/[^0-9]/g,''))||0;
     }
     return total;
 }
@@ -565,13 +579,11 @@ function doLogout(){
     document.getElementById('loginPass').value='';
 }
 
-/* ===== PERBAIKAN: initDashboard Menunggu syncSheet selesai ===== */
 function initDashboard(){
     var session=JSON.parse(localStorage.getItem('vj_session_v3')||'{}');
     document.getElementById('headerUser').textContent=session.user||'';
     loadDataLocal();
     renderAll();
-    /* Tampilkan loading overlay saat sync pertama kali */
     var overlay = document.getElementById('syncLoadingOverlay');
     overlay.classList.add('show');
     syncSheet().then(function(){
@@ -583,7 +595,7 @@ function initDashboard(){
 function loadDataLocal(){
     products=JSON.parse(localStorage.getItem('vj_products_v3')||'null')||JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
     history=JSON.parse(localStorage.getItem('vj_history_v3')||'[]');
-    modalEntries=JSON.parse(localStorage.getItem('vj_modals_v3')||'[]');
+    modalEntries=validateModalEntries(JSON.parse(localStorage.getItem('vj_modals_v3')||'[]'));
     sheetSales=JSON.parse(localStorage.getItem('vj_sheetsales_v3')||'[]');
 }
 function saveDataLocal(){
@@ -604,7 +616,6 @@ function renderAll(){
     renderSheetSales();
 }
 
-/* ===== PERBAIKAN: syncSheet mengembalikan Promise ===== */
 function syncSheet(){
     if(isSyncing) return Promise.resolve();
     isSyncing=true;
@@ -623,7 +634,7 @@ function syncSheet(){
         
         var cProds = Array.isArray(data.products) ? data.products : [];
         var cHist = Array.isArray(data.history) ? data.history : [];
-        var cModals = Array.isArray(data.modals) ? data.modals : (Array.isArray(data.modalEntries) ? data.modalEntries : []);
+        var cModals = validateModalEntries(Array.isArray(data.modals) ? data.modals : (Array.isArray(data.modalEntries) ? data.modalEntries : []));
         var cSales = Array.isArray(data.sheetSales) ? data.sheetSales : [];
         
         var needSave = false;
@@ -649,7 +660,6 @@ function syncSheet(){
     });
 }
 
-/* ===== PERBAIKAN: saveToCloud yang tadanya aasync dan kosong ===== */
 async function saveToCloud(){
     try {
         var safeModals = Array.isArray(modalEntries) ? modalEntries : [];
@@ -675,7 +685,7 @@ async function saveToCloud(){
         });
         const result = await response.json();
         if(result.status === 'ok') {
-            /* sukses simpan */
+            /* sukses */
         } else {
             showToast('Gagal simpan cloud: ' + (result.message || result.error || 'Server Error'), 'err');
         }
@@ -844,6 +854,15 @@ function deleteModalEntry(idx){
     renderCosts();
     renderFinance();
     showToast('Catatan modal dihapus','ok');
+}
+
+function clearAllModals(){
+    if(!confirm('Hapus SEMUA catatan modal? Data akan dihapus permanen dari semua perangkat.')) return;
+    modalEntries=[];
+    saveAndSync();
+    renderCosts();
+    renderFinance();
+    showToast('Semua catatan modal dihapus','ok');
 }
 
 function renderFinance(){
@@ -1046,6 +1065,9 @@ document.addEventListener('DOMContentLoaded',function(){
             preview.style.display='none';
         }
     });
+    
+    /* ===== TOMBOL HAPUS SEMUA MODAL ===== */
+    document.getElementById('btnClearAllModals').addEventListener('click',clearAllModals);
     
     document.getElementById('btnReset').addEventListener('click',function(){
         document.getElementById('mReset').classList.add('show');
