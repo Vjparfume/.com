@@ -33,9 +33,9 @@
             --danger:#ef4444; --success:#10b981; --info:#3b82f6; --riel:#f97316; --usd:#10b981; --rp:#3b82f6;
         }
         *{box-sizing:border-box;margin:0;padding:0;}
-        body{font-family:'DM Sans',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden;}
+        body{font-family:'DM Sans',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden;font-size:14px;}
         .font-display{font-family:'Playfair Display',serif;}
-        ::-webkit-scrollbar{width:6px;height:6px;}::-webkit-scrollbar-track{background:#1e293b;}::-webkit-scrollbar-thumb{background:#475569;border-radius:3px;}
+        ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:#1e293b;}::-webkit-scrollbar-thumb{background:#475569;border-radius:3px;}
         
         #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;
             background:url('https://lh3.googleusercontent.com/d/1biMn45dAjep1fot3jrZaZ5Yw33ytUh62') no-repeat center center/cover;
@@ -47,25 +47,25 @@
         .gold-shimmer{background:linear-gradient(135deg,var(--gold-dark),var(--gold-light),var(--gold),var(--gold-light),var(--gold-dark));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;filter:drop-shadow(0 0 8px rgba(201,168,76,0.4));}
         @keyframes shimmer{0%{background-position:0% center;}100%{background-position:200% center;}}
         
-        .input-field{background:rgba(15, 23, 42, 0.7);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:#ffffff;font-family:'DM Sans',sans-serif;font-size:15px;width:100%;transition:all 0.3s;outline:none;}
+        .input-field{background:rgba(15, 23, 42, 0.7);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#ffffff;font-family:'DM Sans',sans-serif;font-size:14px;width:100%;transition:all 0.3s;outline:none;}
         .input-field:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.15);background:rgba(15, 23, 42, 0.9);}
         .input-field::placeholder{color:var(--text-muted);}
         select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c9a84c' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
         
-        .btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#0a0a0a;font-weight:700;border:none;border-radius:12px;padding:14px 24px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-size:15px;width:100%;box-shadow:0 4px 15px rgba(201,168,76,0.3);}
+        .btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#0a0a0a;font-weight:700;border:none;border-radius:10px;padding:12px 20px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-size:14px;width:100%;box-shadow:0 4px 15px rgba(201,168,76,0.3);}
         .btn-gold:hover{background:linear-gradient(135deg,var(--gold),var(--gold-light));transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.5);}
-        .btn-outline{background:transparent;color:var(--gold-light);border:1px solid var(--gold-dark);border-radius:10px;padding:8px 16px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;display:inline-block;text-align:center;}
+        .btn-outline{background:transparent;color:var(--gold-light);border:1px solid var(--gold-dark);border-radius:8px;padding:7px 14px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;display:inline-block;text-align:center;}
         .btn-outline:hover{background:var(--gold);color:#000;border-color:var(--gold);}
-        .btn-danger-sm{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:5px 12px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-size:12px;}
+        .btn-danger-sm{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:6px 12px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-size:12px;}
         .btn-danger-sm:hover{background:var(--danger);color:#fff;}
-        .btn-success-sm{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:8px 16px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;}
+        .btn-success-sm{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:7px 14px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;}
         .btn-success-sm:hover{background:var(--success);color:#fff;}
         
-        .card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;transition:box-shadow 0.3s;box-shadow:0 4px 6px rgba(0,0,0,0.2);}
+        .card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;transition:box-shadow 0.3s;box-shadow:0 4px 6px rgba(0,0,0,0.2);}
         .card:hover{box-shadow:0 6px 15px rgba(0,0,0,0.3);border-color:var(--gold-dark);}
         .tab-nav{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;}
         .tab-nav::-webkit-scrollbar{display:none;}
-        .tab-btn{padding:10px 18px;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.3s;border:1px solid transparent;background:var(--bg-card);color:var(--text-secondary);font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+        .tab-btn{padding:8px 16px;border-radius:10px;font-weight:600;font-size:12px;cursor:pointer;transition:all 0.3s;border:1px solid transparent;background:var(--bg-card);color:var(--text-secondary);font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
         .tab-btn.active{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#000;border-color:var(--gold);box-shadow:0 2px 10px rgba(201,168,76,0.4);}
         
         .stat-grid{display:grid;gap:12px;}
@@ -75,23 +75,23 @@
         @media(max-width:600px){.stat-grid.g4,.stat-grid.g3{grid-template-columns:repeat(2,1fr);}}
         @media(max-width:380px){.stat-grid.g4,.stat-grid.g3{grid-template-columns:1fr;}}
         
-        .table-wrap{overflow-x:auto;border-radius:16px;-webkit-overflow-scrolling:touch;}
+        .table-wrap{overflow-x:auto;border-radius:14px;-webkit-overflow-scrolling:touch;}
         .dtable{width:100%;border-collapse:separate;border-spacing:0;min-width:600px;}
-        .dtable thead th{background:var(--bg-secondary);color:var(--gold-light);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;}
-        .dtable tbody td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;color:var(--text-primary);}
+        .dtable thead th{background:var(--bg-secondary);color:var(--gold-light);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;}
+        .dtable tbody td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle;color:var(--text-primary);}
         
         /* BADGE SISA DIPERKECIL TAPI TETAP JELAS */
-        .badge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:14px;font-weight:800;letter-spacing:0.5px;}
+        .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.5px;}
         .badge-ok{background:rgba(59,130,246,0.2);color:#93c5fd;border:1px solid rgba(59,130,246,0.4);}
         .badge-low{background:rgba(249,115,22,0.2);color:#fdba74;border:1px solid rgba(249,115,22,0.4);}
         .badge-out{background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.4);}
         
         .modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;}
         .modal-bg.show{display:flex;}
-        .modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:28px;animation:mSlide 0.25s ease;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+        .modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:24px;animation:mSlide 0.25s ease;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
         
         .toast-box{position:fixed;top:16px;right:16px;z-index:300;display:flex;flex-direction:column;gap:8px;}
-        .toast{padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;min-width:240px;box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:tIn 0.3s ease,tOut 0.3s ease 2.5s forwards;color:#fff;}
+        .toast{padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;min-width:240px;box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:tIn 0.3s ease,tOut 0.3s ease 2.5s forwards;color:#fff;}
         .toast-ok{background:var(--success);}
         .toast-err{background:var(--danger);}
         .toast-inf{background:var(--info);}
@@ -99,16 +99,16 @@
         .app-header{background:rgba(15, 23, 42, 0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);box-shadow:0 1px 5px rgba(0,0,0,0.3);}
         .tab-section{display:none;}
         .tab-section.active{display:block;}
-        .preview-box{background:var(--bg-secondary);border-radius:14px;padding:16px;border:1px solid var(--border);}
-        .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        .preview-box{background:var(--bg-secondary);border-radius:12px;padding:14px;border:1px solid var(--border);}
+        .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
         @media(max-width:768px){.chart-row{grid-template-columns:1fr;}}
-        .big-number{font-size:28px;font-weight:800;color:#ffffff;text-shadow:0 0 10px rgba(59, 130, 246, 0.3);}
-        /* SISA STOK DI OVERVIEW DIPERKECIL */
-        .big-number.sisa-highlight{font-size:28px;color:#93c5fd;text-shadow:0 0 12px rgba(59,130,246,0.5);}
-        .label-sm{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+        .big-number{font-size:22px;font-weight:800;color:#ffffff;text-shadow:0 0 10px rgba(59, 130, 246, 0.3);}
+        /* SISA STOK DIPERKECIL */
+        .big-number.sisa-highlight{font-size:22px;color:#93c5fd;text-shadow:0 0 12px rgba(59,130,246,0.5);}
+        .label-sm{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
         .sync-spin{animation:spin 1s linear infinite;}
         @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-        .sheet-sale-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);}
+        .sheet-sale-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
         .sheet-sale-row:last-child{border-bottom:none;}
         h1, h2, h3 { text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
         
@@ -127,6 +127,9 @@
         }
         #syncLoadingOverlay.show{display:flex;}
         .sync-loader{width:48px;height:48px;border:4px solid var(--border);border-top:4px solid var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+        @keyframes mSlide{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+        @keyframes tIn{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+        @keyframes tOut{from{transform:translateX(0);opacity:1;}to{transform:translateX(100%);opacity:0;}}
     </style>
 </head>
 <body>
@@ -142,105 +145,105 @@
 
 <div class="toast-box" id="toastBox"></div>
 
-<!-- ========================== LOGIN ========================== -->
+<!-- LOGIN -->
 <div id="loginScreen">
     <div class="login-card">
         <div class="login-logo">
             <img src="https://lh3.googleusercontent.com/d/1HxxcX_oSPAAWBAzeZ4qGYzFc-iXW6QIO" alt="VJ Parfum" onerror="this.style.display='none'">
         </div>
-        <h1 class="font-display gold-shimmer" style="font-size:28px;font-weight:900;text-align:center;letter-spacing:3px;margin-bottom:4px;">VJ PARFUM</h1>
-        <p style="text-align:center;color:var(--text-secondary);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;">Dashboard Penjualan</p>
-        <div style="display:flex;flex-direction:column;gap:16px;">
+        <h1 class="font-display gold-shimmer" style="font-size:26px;font-weight:900;text-align:center;letter-spacing:3px;margin-bottom:4px;">VJ PARFUM</h1>
+        <p style="text-align:center;color:var(--text-secondary);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;">Dashboard Penjualan</p>
+        <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
-                <label style="font-size:12px;color:var(--gold-light);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Username</label>
+                <label style="font-size:11px;color:var(--gold-light);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:1px;">Username</label>
                 <div style="position:relative;">
-                    <i class="fas fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-                    <input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:40px;" autocomplete="username">
+                    <i class="fas fa-user" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px;"></i>
+                    <input type="text" class="input-field" id="loginUser" placeholder="Masukkan username" style="padding-left:36px;" autocomplete="username">
                 </div>
             </div>
             <div>
-                <label style="font-size:12px;color:var(--gold-light);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Password</label>
+                <label style="font-size:11px;color:var(--gold-light);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:1px;">Password</label>
                 <div style="position:relative;">
-                    <i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-                    <input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:40px;" autocomplete="current-password">
-                    <button type="button" onclick="togglePassVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" id="passToggleBtn"><i class="fas fa-eye"></i></button>
+                    <i class="fas fa-lock" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px;"></i>
+                    <input type="password" class="input-field" id="loginPass" placeholder="Masukkan password" style="padding-left:36px;" autocomplete="current-password">
+                    <button type="button" onclick="togglePassVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;" id="passToggleBtn"><i class="fas fa-eye"></i></button>
                 </div>
             </div>
-            <div id="loginError" style="display:none;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px 14px;color:var(--danger);font-size:13px;text-align:center;"></div>
-            <button class="btn-gold" id="loginBtn" style="margin-top:8px;"><i class="fas fa-right-to-bracket" style="margin-right:8px;"></i>Masuk</button>
+            <div id="loginError" style="display:none;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:8px 12px;color:var(--danger);font-size:12px;text-align:center;"></div>
+            <button class="btn-gold" id="loginBtn" style="margin-top:4px;"><i class="fas fa-right-to-bracket" style="margin-right:6px;"></i>Masuk</button>
         </div>
     </div>
 </div>
 
-<!-- ========================== DASHBOARD ========================== -->
+<!-- DASHBOARD -->
 <div id="dashboardScreen">
     <header class="app-header">
-        <div style="max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-                <div style="width:38px;height:38px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);background:#fff;">
-                    <img src="https://lh3.googleusercontent.com/d/1HxxcX_oSPAAWBAzeZ4qGYzFc-iXW6QIO" alt="Logo" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-spray-can-sparkles\' style=\'color:var(--gold);font-size:15px;\'></i>'">
+        <div style="max-width:1400px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:34px;height:34px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);background:#fff;">
+                    <img src="https://lh3.googleusercontent.com/d/1HxxcX_oSPAAWBAzeZ4qGYzFc-iXW6QIO" alt="Logo" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-spray-can-sparkles\' style=\'color:var(--gold);font-size:14px;\'></i>'">
                 </div>
                 <div style="min-width:0;">
-                    <h1 class="font-display gold-shimmer" style="font-size:18px;font-weight:900;letter-spacing:2px;">VJ PARFUM</h1>
-                    <p style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Dashboard</p>
+                    <h1 class="font-display gold-shimmer" style="font-size:16px;font-weight:900;letter-spacing:2px;">VJ PARFUM</h1>
+                    <p style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Dashboard</p>
                 </div>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-                <button class="btn-outline" id="btnSync" style="padding:6px 12px;font-size:12px;display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                <button class="btn-outline" id="btnSync" style="padding:6px 10px;font-size:11px;display:flex;align-items:center;gap:5px;">
                     <i class="fas fa-cloud-arrow-down" id="syncIcon"></i> <span id="syncText">Sync</span>
                 </button>
-                <span style="font-size:12px;color:var(--text-secondary);" id="headerUser"></span>
+                <span style="font-size:11px;color:var(--text-secondary);" id="headerUser"></span>
                 <button class="btn-danger-sm" id="btnLogout"><i class="fas fa-sign-out-alt" style="margin-right:4px;"></i>Keluar</button>
             </div>
         </div>
     </header>
 
-    <main style="max-width:1400px;margin:0 auto;padding:16px 20px 40px;">
-        <nav class="tab-nav" style="margin-bottom:20px;" role="tablist" id="tabNav">
-            <button class="tab-btn active" data-tab="overview"><i class="fas fa-chart-pie" style="margin-right:5px;"></i>Ringkasan</button>
-            <button class="tab-btn" data-tab="products"><i class="fas fa-flask" style="margin-right:5px;"></i>Varian</button>
-            <button class="tab-btn" data-tab="costs"><i class="fas fa-calculator" style="margin-right:5px;"></i>Modal</button>
-            <button class="tab-btn" data-tab="sales"><i class="fas fa-receipt" style="margin-right:5px;"></i>Penjualan</button>
-            <button class="tab-btn" data-tab="finance"><i class="fas fa-coins" style="margin-right:5px;"></i>Keuangan</button>
+    <main style="max-width:1400px;margin:0 auto;padding:14px 16px 40px;">
+        <nav class="tab-nav" style="margin-bottom:16px;" role="tablist" id="tabNav">
+            <button class="tab-btn active" data-tab="overview"><i class="fas fa-chart-pie" style="margin-right:4px;"></i>Ringkasan</button>
+            <button class="tab-btn" data-tab="products"><i class="fas fa-flask" style="margin-right:4px;"></i>Varian</button>
+            <button class="tab-btn" data-tab="costs"><i class="fas fa-calculator" style="margin-right:4px;"></i>Modal</button>
+            <button class="tab-btn" data-tab="sales"><i class="fas fa-receipt" style="margin-right:4px;"></i>Penjualan</button>
+            <button class="tab-btn" data-tab="finance"><i class="fas fa-coins" style="margin-right:4px;"></i>Keuangan</button>
         </nav>
 
         <!-- OVERVIEW -->
         <section class="tab-section active" id="tab-overview">
-            <div class="stat-grid g4" style="margin-bottom:20px;">
-                <div class="card" style="padding:18px;"><div class="label-sm">Total Varian</div><div class="big-number" id="sVarian">0</div><div style="font-size:11px;color:var(--text-muted);">jenis parfum</div></div>
-                <div class="card" style="padding:18px;"><div class="label-sm">Total Stok Awal</div><div class="big-number" id="sTotalAwal">0</div><div style="font-size:11px;color:var(--text-muted);">botol (manual)</div></div>
-                <div class="card" style="padding:18px;"><div class="label-sm">Total Terjual</div><div class="big-number" id="sSold">0</div><div style="font-size:11px;color:var(--text-muted);">Sheet + Manual</div></div>
-                <div class="card" style="padding:18px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div class="big-number sisa-highlight" id="sStok">0</div><div style="font-size:11px;color:var(--text-muted);">otomatis</div></div>
+            <div class="stat-grid g4" style="margin-bottom:16px;">
+                <div class="card" style="padding:14px;"><div class="label-sm">Total Varian</div><div class="big-number" id="sVarian">0</div><div style="font-size:10px;color:var(--text-muted);">jenis parfum</div></div>
+                <div class="card" style="padding:14px;"><div class="label-sm">Total Stok Awal</div><div class="big-number" id="sTotalAwal">0</div><div style="font-size:10px;color:var(--text-muted);">botol (manual)</div></div>
+                <div class="card" style="padding:14px;"><div class="label-sm">Total Terjual</div><div class="big-number" id="sSold">0</div><div style="font-size:10px;color:var(--text-muted);">Sheet + Manual</div></div>
+                <div class="card" style="padding:14px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div class="big-number sisa-highlight" id="sStok">0</div><div style="font-size:10px;color:var(--text-muted);">otomatis</div></div>
             </div>
-            <div class="stat-grid g3" style="margin-bottom:20px;">
-                <div class="card" style="padding:18px;border-color:rgba(249,115,22,0.4);"><div class="label-sm"><i class="fas fa-coins" style="color:var(--riel);margin-right:4px;"></i>Total Riel</div><div style="font-size:20px;font-weight:800;color:var(--riel);text-shadow:0 0 8px rgba(249,115,22,0.3);" id="sRielTot">0 Riel</div></div>
-                <div class="card" style="padding:18px;border-color:rgba(16,185,129,0.4);"><div class="label-sm"><i class="fas fa-dollar-sign" style="color:var(--usd);margin-right:4px;"></i>Total Dollar</div><div style="font-size:20px;font-weight:800;color:var(--usd);text-shadow:0 0 8px rgba(16,185,129,0.3);" id="sUsdTot">$0</div></div>
-                <div class="card" style="padding:18px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-money-bill-wave" style="color:var(--rp);margin-right:4px;"></i>Total Rupiah</div><div style="font-size:20px;font-weight:800;color:var(--rp);text-shadow:0 0 8px rgba(59,130,246,0.3);" id="sRpTot">Rp 0</div></div>
+            <div class="stat-grid g3" style="margin-bottom:16px;">
+                <div class="card" style="padding:14px;border-color:rgba(249,115,22,0.4);"><div class="label-sm"><i class="fas fa-coins" style="color:var(--riel);margin-right:4px;"></i>Total Riel</div><div style="font-size:18px;font-weight:800;color:var(--riel);text-shadow:0 0 8px rgba(249,115,22,0.3);" id="sRielTot">0 Riel</div></div>
+                <div class="card" style="padding:14px;border-color:rgba(16,185,129,0.4);"><div class="label-sm"><i class="fas fa-dollar-sign" style="color:var(--usd);margin-right:4px;"></i>Total Dollar</div><div style="font-size:18px;font-weight:800;color:var(--usd);text-shadow:0 0 8px rgba(16,185,129,0.3);" id="sUsdTot">$0</div></div>
+                <div class="card" style="padding:14px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-money-bill-wave" style="color:var(--rp);margin-right:4px;"></i>Total Rupiah</div><div style="font-size:18px;font-weight:800;color:var(--rp);text-shadow:0 0 8px rgba(59,130,246,0.3);" id="sRpTot">Rp 0</div></div>
             </div>
-            <div class="chart-row" style="margin-bottom:20px;">
-                <div class="card" style="padding:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Sisa Stok per Varian</h3><div style="position:relative;height:260px;"><canvas id="cStock"></canvas></div></div>
-                <div class="card" style="padding:18px;"><h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Penjualan per Varian</h3><div style="position:relative;height:260px;"><canvas id="cSales"></canvas></div></div>
+            <div class="chart-row" style="margin-bottom:16px;">
+                <div class="card" style="padding:14px;"><h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Sisa Stok per Varian</h3><div style="position:relative;height:240px;"><canvas id="cStock"></canvas></div></div>
+                <div class="card" style="padding:14px;"><h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Penjualan per Varian</h3><div style="position:relative;height:240px;"><canvas id="cSales"></canvas></div></div>
             </div>
-            <div class="card" style="padding:16px;display:none;" id="lowStockCard"><h3 style="font-size:12px;color:var(--danger);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;"><i class="fas fa-triangle-exclamation" style="margin-right:6px;"></i>Stok Menipis</h3><div id="lowStockList" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
-            <div class="card" style="padding:16px;margin-top:16px;" id="recentSheetSalesCard">
-                <h3 style="font-size:12px;color:var(--gold-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan Terakhir dari Sheet</h3>
-                <div id="recentSheetSales" style="font-size:13px;color:var(--text-secondary);">Belum ada data. Klik Sync untuk mengambil dari Sheet.</div>
+            <div class="card" style="padding:14px;display:none;" id="lowStockCard"><h3 style="font-size:11px;color:var(--danger);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;"><i class="fas fa-triangle-exclamation" style="margin-right:6px;"></i>Stok Menipis</h3><div id="lowStockList" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
+            <div class="card" style="padding:14px;margin-top:12px;" id="recentSheetSalesCard">
+                <h3 style="font-size:11px;color:var(--gold-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan Terakhir dari Sheet</h3>
+                <div id="recentSheetSales" style="font-size:12px;color:var(--text-secondary);">Belum ada data. Klik Sync untuk mengambil dari Sheet.</div>
             </div>
         </section>
 
         <!-- PRODUCTS -->
         <section class="tab-section" id="tab-products">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;color:var(--text-primary);">Daftar Varian</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+                <h2 class="font-display" style="font-size:18px;font-weight:700;color:var(--text-primary);">Daftar Varian</h2>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <input type="text" class="input-field" placeholder="Cari varian..." id="srcProd" style="width:180px;">
-                    <button class="btn-success-sm" id="btnAddVar"><i class="fas fa-plus" style="margin-right:5px;"></i>Tambah Varian</button>
+                    <input type="text" class="input-field" placeholder="Cari varian..." id="srcProd" style="width:160px;">
+                    <button class="btn-success-sm" id="btnAddVar"><i class="fas fa-plus" style="margin-right:4px;"></i>Tambah Varian</button>
                 </div>
             </div>
-            <div class="stat-grid g3" style="margin-bottom:16px;">
-                <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Varian</div><div style="font-size:22px;font-weight:800;color:var(--gold-light);" id="pTotalVarian">0</div></div>
-                <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Botol Awal</div><div style="font-size:22px;font-weight:800;color:var(--info);" id="pTotalAwal">0</div></div>
-                <div class="card" style="padding:14px;text-align:center;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div style="font-size:22px;font-weight:800;color:#93c5fd;" id="pTotalSisa">0</div></div>
+            <div class="stat-grid g3" style="margin-bottom:14px;">
+                <div class="card" style="padding:12px;text-align:center;"><div class="label-sm">Total Varian</div><div style="font-size:20px;font-weight:800;color:var(--gold-light);" id="pTotalVarian">0</div></div>
+                <div class="card" style="padding:12px;text-align:center;"><div class="label-sm">Total Botol Awal</div><div style="font-size:20px;font-weight:800;color:var(--info);" id="pTotalAwal">0</div></div>
+                <div class="card" style="padding:12px;text-align:center;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div style="font-size:20px;font-weight:800;color:#93c5fd;" id="pTotalSisa">0</div></div>
             </div>
             <div class="card table-wrap">
                 <table class="dtable">
@@ -252,95 +255,95 @@
 
         <!-- COSTS -->
         <section class="tab-section" id="tab-costs">
-            <div style="margin-bottom:20px;">
-                <h2 class="font-display" style="font-size:20px;font-weight:700;color:var(--text-primary);">Pencatatan Modal & Bukti Transfer</h2>
-                <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini. Data tersimpan otomatis di semua perangkat.</p>
+            <div style="margin-bottom:16px;">
+                <h2 class="font-display" style="font-size:18px;font-weight:700;color:var(--text-primary);">Pencatatan Modal & Bukti Transfer</h2>
+                <p style="font-size:11px;color:var(--text-muted);margin-top:4px;">Catat nominal total modal keseluruhan di sini. Data tersimpan otomatis di semua perangkat.</p>
             </div>
-            <div class="stat-grid g3" style="margin-bottom:20px;">
-                <div class="card" style="padding:20px;border-color:rgba(201,168,76,0.4);"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div><div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div></div>
-                <div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div><div style="font-size:10px;color:var(--text-muted);margin-top:4px;">*(Dari Sheet & Manual)</div></div>
-                <div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-sack-dollar" style="margin-right:4px;"></i>Untung</div><div class="big-number" id="mUntung">Rp 0</div></div>
+            <div class="stat-grid g3" style="margin-bottom:16px;">
+                <div class="card" style="padding:16px;border-color:rgba(201,168,76,0.4);"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div><div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div></div>
+                <div class="card" style="padding:16px;"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div><div style="font-size:9px;color:var(--text-muted);margin-top:4px;">*(Dari Sheet & Manual)</div></div>
+                <div class="card" style="padding:16px;"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-sack-dollar" style="margin-right:4px;"></i>Untung</div><div class="big-number" id="mUntung">Rp 0</div></div>
             </div>
-            <div class="card" style="padding:24px;margin-bottom:20px;">
-                <h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold-light);"><i class="fas fa-plus-circle" style="margin-right:6px;"></i>Tambah Catatan Modal</h3>
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="text" class="input-field" id="modalInput" placeholder="Contoh: 500,000" oninput="formatNumber(this)"></div>
-                    <div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
+            <div class="card" style="padding:20px;margin-bottom:16px;">
+                <h3 style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--gold-light);"><i class="fas fa-plus-circle" style="margin-right:6px;"></i>Tambah Catatan Modal</h3>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:1px;">Nominal Modal (Rp)</label><input type="text" class="input-field" id="modalInput" placeholder="Contoh: 500,000" oninput="formatNumber(this)"></div>
+                    <div><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:1px;">Keterangan</label><input type="text" class="input-field" id="modalNote" placeholder="Contoh: Modal bulan Juli"></div>
                     <div>
-                        <label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer (Klik untuk pilih gambar)</label>
-                        <label class="btn-outline" style="display:block;padding:12px;cursor:pointer;position:relative;overflow:hidden;">
+                        <label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:1px;">Bukti Transfer (Klik untuk pilih gambar)</label>
+                        <label class="btn-outline" style="display:block;padding:10px;cursor:pointer;position:relative;overflow:hidden;">
                             <i class="fas fa-image" style="margin-right:6px;"></i> Pilih Gambar
                             <input type="file" id="modalFile" accept="image/*" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;">
                         </label>
-                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:10px;border:1px solid var(--border);margin-top:10px;cursor:pointer;" onclick="openImgPreview(this.src)">
+                        <img id="previewModalImg" src="" style="display:none;max-height:100px;border-radius:8px;border:1px solid var(--border);margin-top:8px;cursor:pointer;" onclick="openImgPreview(this.src)">
                     </div>
-                    <button class="btn-gold" id="btnSaveModal"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan Catatan Modal</button>
+                    <button class="btn-gold" id="btnSaveModal"><i class="fas fa-save" style="margin-right:6px;"></i>Simpan Catatan Modal</button>
                 </div>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-                <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Riwayat Catatan Modal</h3>
-                <button class="btn-danger-sm" id="btnClearAllModals" style="padding:8px 16px;font-size:12px;"><i class="fas fa-trash" style="margin-right:4px;"></i>Hapus Semua Modal</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <h3 style="font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Riwayat Catatan Modal</h3>
+                <button class="btn-danger-sm" id="btnClearAllModals" style="padding:6px 12px;font-size:11px;"><i class="fas fa-trash" style="margin-right:4px;"></i>Hapus Semua Modal</button>
             </div>
             <div id="modalEntriesList"></div>
         </section>
 
         <!-- SALES -->
         <section class="tab-section" id="tab-sales">
-            <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">Penjualan</h2>
-            <div class="card" style="padding:20px;margin-bottom:20px;border-color:rgba(249,115,22,0.4);">
-                <h3 style="font-size:14px;font-weight:700;margin-bottom:4px;color:var(--riel);"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan dari Google Sheet</h3>
-                <p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">Data pesanan yang masuk ke Sheet otomatis tampil di sini setelah klik Sync.</p>
-                <div id="sheetSalesList" style="max-height:600px;overflow-y:auto;border-radius:12px;border:1px solid var(--border);background:var(--bg-secondary);">
-                    <div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>
+            <h2 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:14px;color:var(--text-primary);">Penjualan</h2>
+            <div class="card" style="padding:16px;margin-bottom:16px;border-color:rgba(249,115,22,0.4);">
+                <h3 style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--riel);"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan dari Google Sheet</h3>
+                <p style="font-size:10px;color:var(--text-muted);margin-bottom:12px;">Data pesanan yang masuk ke Sheet otomatis tampil di sini setelah klik Sync.</p>
+                <div id="sheetSalesList" style="max-height:600px;overflow-y:auto;border-radius:10px;border:1px solid var(--border);background:var(--bg-secondary);">
+                    <div style="padding:16px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>
                 </div>
             </div>
         </section>
 
         <!-- FINANCE -->
         <section class="tab-section" id="tab-finance">
-            <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">Laporan Keuangan</h2>
-            <div class="stat-grid g3" style="margin-bottom:18px;">
-                <div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Modal</div><div style="font-size:20px;font-weight:800;color:var(--text-primary);" id="fModal">Rp 0</div></div>
-                <div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Penjualan</div><div style="font-size:20px;font-weight:800;color:var(--info);" id="fPenjualan">Rp 0</div></div>
-                <div class="card" style="padding:18px;"><div class="label-sm" style="margin-bottom:6px;">Total Untung</div><div style="font-size:20px;font-weight:800;color:var(--success);" id="fUntung">Rp 0</div></div>
+            <h2 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:14px;color:var(--text-primary);">Laporan Keuangan</h2>
+            <div class="stat-grid g3" style="margin-bottom:16px;">
+                <div class="card" style="padding:14px;"><div class="label-sm" style="margin-bottom:4px;">Total Modal</div><div style="font-size:18px;font-weight:800;color:var(--text-primary);" id="fModal">Rp 0</div></div>
+                <div class="card" style="padding:14px;"><div class="label-sm" style="margin-bottom:4px;">Total Penjualan</div><div style="font-size:18px;font-weight:800;color:var(--info);" id="fPenjualan">Rp 0</div></div>
+                <div class="card" style="padding:14px;"><div class="label-sm" style="margin-bottom:4px;">Total Untung</div><div style="font-size:18px;font-weight:800;color:var(--success);" id="fUntung">Rp 0</div></div>
             </div>
-            <div class="card" style="padding:16px;margin-bottom:18px;">
-                <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Pendapatan per Mata Uang</h3>
+            <div class="card" style="padding:14px;margin-bottom:14px;">
+                <h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Pendapatan per Mata Uang</h3>
                 <div class="stat-grid g3">
-                    <div style="text-align:center;padding:12px;background:rgba(249,115,22,0.1);border-radius:12px;"><div style="font-size:11px;color:var(--riel);margin-bottom:4px;font-weight:700;">RIEL</div><div style="font-size:18px;font-weight:800;color:var(--riel);" id="fRiel">0</div></div>
-                    <div style="text-align:center;padding:12px;background:rgba(16,185,129,0.1);border-radius:12px;"><div style="font-size:11px;color:var(--usd);margin-bottom:4px;font-weight:700;">USD</div><div style="font-size:18px;font-weight:800;color:var(--usd);" id="fUsd">$0</div></div>
-                    <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.1);border-radius:12px;"><div style="font-size:11px;color:var(--rp);margin-bottom:4px;font-weight:700;">RUPIAH</div><div style="font-size:18px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div></div>
+                    <div style="text-align:center;padding:10px;background:rgba(249,115,22,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--riel);margin-bottom:4px;font-weight:700;">RIEL</div><div style="font-size:16px;font-weight:800;color:var(--riel);" id="fRiel">0</div></div>
+                    <div style="text-align:center;padding:10px;background:rgba(16,185,129,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--usd);margin-bottom:4px;font-weight:700;">USD</div><div style="font-size:16px;font-weight:800;color:var(--usd);" id="fUsd">$0</div></div>
+                    <div style="text-align:center;padding:10px;background:rgba(59,130,246,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--rp);margin-bottom:4px;font-weight:700;">RUPIAH</div><div style="font-size:16px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div></div>
                 </div>
             </div>
-            <div class="card table-wrap" style="margin-bottom:18px;">
+            <div class="card table-wrap" style="margin-bottom:14px;">
                 <table class="dtable" style="min-width:650px;">
                     <thead><tr><th>Varian</th><th>Awal</th><th>Terjual</th><th>Sisa</th><th>Total Penjualan</th></tr></thead>
                     <tbody id="tFin"></tbody>
                 </table>
             </div>
-            <div class="card" style="padding:18px;margin-bottom:18px;">
-                <h3 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Penjualan per Varian</h3>
-                <div style="position:relative;height:320px;"><canvas id="cProfit"></canvas></div>
+            <div class="card" style="padding:14px;margin-bottom:14px;">
+                <h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Penjualan per Varian</h3>
+                <div style="position:relative;height:300px;"><canvas id="cProfit"></canvas></div>
             </div>
-            <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
                 <button class="btn-outline" id="btnExport"><i class="fas fa-download" style="margin-right:4px;"></i>Ekspor Data</button>
                 <button class="btn-outline" id="btnOpenImport"><i class="fas fa-upload" style="margin-right:4px;"></i>Impor Data</button>
-                <button class="btn-danger-sm" style="padding:8px 16px;font-size:13px;" id="btnReset"><i class="fas fa-rotate-left" style="margin-right:4px;"></i>Reset Semua</button>
+                <button class="btn-danger-sm" style="padding:7px 14px;font-size:12px;" id="btnReset"><i class="fas fa-rotate-left" style="margin-right:4px;"></i>Reset Semua</button>
             </div>
         </section>
     </main>
 </div>
 
 <!-- MODALS -->
-<div class="modal-bg" id="mAddVariant"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Tambah Varian Baru</h3><button class="closeModal" data-id="mAddVariant" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div><div style="display:flex;flex-direction:column;gap:14px;"><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="avName" placeholder="Contoh: CHANEL NO.5"></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Jumlah Botol Awal (Manual)</label><input type="number" class="input-field" id="avBottles" min="0" value="0" placeholder="Diisi manual"></div><button class="btn-gold" id="btnSaveAddVar"><i class="fas fa-plus" style="margin-right:6px;"></i>Tambah Varian</button></div></div></div>
+<div class="modal-bg" id="mAddVariant"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><h3 class="font-display" style="font-size:16px;font-weight:700;">Tambah Varian Baru</h3><button class="closeModal" data-id="mAddVariant" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;"><i class="fas fa-xmark"></i></button></div><div style="display:flex;flex-direction:column;gap:12px;"><div><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;">Nama Varian</label><input type="text" class="input-field" id="avName" placeholder="Contoh: CHANEL NO.5"></div><div><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;">Jumlah Botol Awal (Manual)</label><input type="number" class="input-field" id="avBottles" min="0" value="0" placeholder="Diisi manual"></div><button class="btn-gold" id="btnSaveAddVar"><i class="fas fa-plus" style="margin-right:6px;"></i>Tambah Varian</button></div></div></div>
 
-<div class="modal-bg" id="mEditProd"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Edit Stok Awal Varian</h3><button class="closeModal" data-id="mEditProd" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div><input type="hidden" id="epIdx"><div style="display:flex;flex-direction:column;gap:14px;"><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Nama Varian</label><input type="text" class="input-field" id="epName" readonly></div><div><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Stok Awal (botol) - DIISI MANUAL</label><input type="number" class="input-field" id="epStock" min="0"></div><button class="btn-gold" id="btnSaveProdEdit"><i class="fas fa-save" style="margin-right:8px;"></i>Simpan</button></div></div></div>
+<div class="modal-bg" id="mEditProd"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><h3 class="font-display" style="font-size:16px;font-weight:700;">Edit Stok Awal Varian</h3><button class="closeModal" data-id="mEditProd" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;"><i class="fas fa-xmark"></i></button></div><input type="hidden" id="epIdx"><div style="display:flex;flex-direction:column;gap:12px;"><div><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;">Nama Varian</label><input type="text" class="input-field" id="epName" readonly></div><div><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;">Stok Awal (botol) - DIISI MANUAL</label><input type="number" class="input-field" id="epStock" min="0"></div><button class="btn-gold" id="btnSaveProdEdit"><i class="fas fa-save" style="margin-right:6px;"></i>Simpan</button></div></div></div>
 
-<div class="modal-bg" id="mDelVariant"><div class="modal-box" style="text-align:center;"><div style="width:56px;height:56px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-trash" style="color:var(--danger);font-size:22px;"></i></div><h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Hapus Varian?</h3><p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;" id="delVarMsg">Varian ini akan dihapus permanen.</p><input type="hidden" id="delVarIdx"><div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline closeModal" data-id="mDelVariant">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" id="btnConfirmDelVar"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Hapus</button></div></div></div>
+<div class="modal-bg" id="mDelVariant"><div class="modal-box" style="text-align:center;"><div style="width:50px;height:50px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><i class="fas fa-trash" style="color:var(--danger);font-size:20px;"></i></div><h3 class="font-display" style="font-size:16px;font-weight:700;margin-bottom:6px;">Hapus Varian?</h3><p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px;" id="delVarMsg">Varian ini akan dihapus permanen.</p><input type="hidden" id="delVarIdx"><div style="display:flex;gap:8px;justify-content:center;"><button class="btn-outline closeModal" data-id="mDelVariant">Batal</button><button class="btn-danger-sm" style="padding:8px 18px;font-size:12px;" id="btnConfirmDelVar"><i class="fas fa-trash" style="margin-right:4px;"></i>Ya, Hapus</button></div></div></div>
 
-<div class="modal-bg" id="mReset"><div class="modal-box" style="text-align:center;"><div style="width:56px;height:56px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-triangle-exclamation" style="color:var(--danger);font-size:22px;"></i></div><h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;">Reset Semua Data?</h3><p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">Stok, penjualan, dan catatan modal akan dikembalikan ke awal.</p><div style="display:flex;gap:10px;justify-content:center;"><button class="btn-outline closeModal" data-id="mReset">Batal</button><button class="btn-danger-sm" style="padding:10px 22px;font-size:14px;" id="btnConfirmReset"><i class="fas fa-trash" style="margin-right:6px;"></i>Ya, Reset</button></div></div></div>
+<div class="modal-bg" id="mReset"><div class="modal-box" style="text-align:center;"><div style="width:50px;height:50px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><i class="fas fa-triangle-exclamation" style="color:var(--danger);font-size:20px;"></i></div><h3 class="font-display" style="font-size:16px;font-weight:700;margin-bottom:6px;">Reset Semua Data?</h3><p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px;">Stok, penjualan, dan catatan modal akan dikembalikan ke awal.</p><div style="display:flex;gap:8px;justify-content:center;"><button class="btn-outline closeModal" data-id="mReset">Batal</button><button class="btn-danger-sm" style="padding:8px 18px;font-size:12px;" id="btnConfirmReset"><i class="fas fa-trash" style="margin-right:4px;"></i>Ya, Reset</button></div></div></div>
 
-<div class="modal-bg" id="mImport"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;"><h3 class="font-display" style="font-size:18px;font-weight:700;">Impor Data</h3><button class="closeModal" data-id="mImport" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><i class="fas fa-xmark"></i></button></div><div style="margin-bottom:14px;"><label style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;">Paste JSON</label><textarea class="input-field" id="impJson" rows="6" placeholder="Paste data JSON..."></textarea></div><button class="btn-gold" id="btnDoImport"><i class="fas fa-upload" style="margin-right:6px;"></i>Impor</button></div></div>
+<div class="modal-bg" id="mImport"><div class="modal-box"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><h3 class="font-display" style="font-size:16px;font-weight:700;">Impor Data</h3><button class="closeModal" data-id="mImport" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;"><i class="fas fa-xmark"></i></button></div><div style="margin-bottom:12px;"><label style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;display:block;">Paste JSON</label><textarea class="input-field" id="impJson" rows="6" placeholder="Paste data JSON..."></textarea></div><button class="btn-gold" id="btnDoImport"><i class="fas fa-upload" style="margin-right:6px;"></i>Impor</button></div></div>
 
 <script>
 var PRICE_RIEL = 45000;
@@ -379,11 +382,7 @@ function formatCurr(amountRp,curr){
 }
 function formatNumber(input) {
     var value = input.value.replace(/[^0-9]/g, '');
-    if(value) {
-        input.value = parseInt(value, 10).toLocaleString('en-US');
-    } else {
-        input.value = '';
-    }
+    if(value) { input.value = parseInt(value, 10).toLocaleString('en-US'); } else { input.value = ''; }
 }
 function fDate(d){
     if(!d)return '-';
@@ -667,7 +666,7 @@ async function saveToCloud(){
             if (!m) return m;
             var entry = Object.assign({}, m);
             if (entry.image && entry.image.length > 45000) {
-                entry.image = entry.image.substring(0, 45000);
+                entry.image = entry.image.substring(0, 45000); 
             }
             return entry;
         });
@@ -691,7 +690,6 @@ async function saveToCloud(){
         }
     } catch(e){
         console.error('Save cloud error:',e);
-        showToast('Gagal simpan: ' + e.message, 'err');
     }
 }
 
@@ -706,417 +704,343 @@ function renderOverview(){
     document.getElementById('sTotalAwal').textContent=totalAwal;
     document.getElementById('sSold').textContent=totalSold;
     document.getElementById('sStok').textContent=totalSisa;
-    var curr=getTotalPenjualanPerCurrency();
-    document.getElementById('sRielTot').textContent=fRiel(curr.riel);
-    document.getElementById('sUsdTot').textContent=fUsd(curr.usd);
-    document.getElementById('sRpTot').textContent=fRp(curr.rp);
-    renderRecentSheetSales();
-    renderLowStock();
-    renderOverviewCharts();
-}
-
-function renderRecentSheetSales(){
-    var list=document.getElementById('recentSheetSales');
-    if(sheetSales.length===0){ list.innerHTML='Belum ada data. Klik Sync untuk mengambil dari Sheet.'; return; }
-    var html='';
-    var count=Math.min(sheetSales.length,5);
-    for(var i=sheetSales.length-1;i>=sheetSales.length-count;i--){
-        var s=sheetSales[i];
-        if(!s) continue;
-        var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
-        var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||s['Nama Customer']||'-';
-        var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
-        var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'').toLowerCase();
-        var qty=Number(s['Jumlah']||s['Qty']||s['Quantity']||1)||1;
-        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
-        var displayTotal = '';
-        if(customTotal > 0) {
-            if(bayar.indexOf('riel')>=0) displayTotal = customTotal.toLocaleString('en-US')+' Riel';
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+customTotal.toFixed(2);
-            else displayTotal = 'Rp '+customTotal.toLocaleString('en-US');
-        } else {
-            if(bayar.indexOf('riel')>=0) displayTotal = (qty*PRICE_RIEL).toLocaleString('en-US')+' Riel';
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal = '$'+(qty*PRICE_USD).toFixed(2);
-            else displayTotal = 'Rp '+(qty*PRICE_RP).toLocaleString('en-US');
-        }
-        html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">';
-        html+='<div><div style="font-weight:600;color:var(--text-primary);">'+varian+'</div>';
-        html+='<div style="font-size:11px;color:var(--text-muted);margin-top:2px;"><i class="fas fa-user" style="margin-right:3px;"></i>'+nama+' &bull; <i class="fas fa-calendar" style="margin-right:3px;"></i>'+fDate(tanggal)+'</div></div>';
-        html+='<div style="text-align:right;"><div style="font-size:12px;color:var(--gold-light);font-weight:600;">'+displayTotal+'</div></div>';
-        html+='</div>';
-    }
-    list.innerHTML=html;
-}
-
-function renderLowStock(){
-    var card=document.getElementById('lowStockCard');
-    var list=document.getElementById('lowStockList');
-    var lowItems=[];
-    for(var i=0;i<products.length;i++){
-        var sisa=getRemainingStock(products[i]);
-        if(sisa<=5){ lowItems.push({name:products[i].name,sisa:sisa}); }
-    }
-    if(lowItems.length===0){card.style.display='none';return;}
-    card.style.display='block';
-    var html='';
-    for(var j=0;j<lowItems.length;j++){
-        var cls=lowItems[j].sisa<=0?'badge-out':'badge-low';
-        html+='<span class="badge '+cls+'">'+lowItems[j].name+': '+lowItems[j].sisa+'</span>';
-    }
-    list.innerHTML=html;
-}
-
-function renderOverviewCharts(){
-    var labels=[];var sisaData=[];var soldData=[];
-    for(var i=0;i<products.length;i++){
-        labels.push(products[i].name.replace(/[^\w\s]/gi,'').trim());
-        sisaData.push(getRemainingStock(products[i]));
-        soldData.push(getTotalSold(products[i]));
-    }
-    var chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#94a3b8',font:{size:9}},grid:{color:'rgba(51,65,85,0.5)'}},y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(51,65,85,0.5)'}}}};
+    
+    var curr = getTotalPenjualanPerCurrency();
+    document.getElementById('sRielTot').textContent = fRiel(curr.riel);
+    document.getElementById('sUsdTot').textContent = fUsd(curr.usd);
+    document.getElementById('sRpTot').textContent = fRp(curr.rp);
+    
+    var ctx1 = document.getElementById('cStock').getContext('2d');
     if(chartStock) chartStock.destroy();
-    chartStock=new Chart(document.getElementById('cStock'),{type:'bar',data:{labels:labels,datasets:[{label:'Sisa Stok',data:sisaData,backgroundColor:'rgba(59,130,246,0.6)',borderColor:'#3b82f6',borderWidth:1,borderRadius:4}]},options:chartOpts});
+    chartStock = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: products.map(function(p){return p.name;}),
+            datasets: [{
+                label: 'Sisa Stok',
+                data: products.map(function(p){return getRemainingStock(p);}),
+                backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+    
+    var ctx2 = document.getElementById('cSales').getContext('2d');
     if(chartSales) chartSales.destroy();
-    chartSales=new Chart(document.getElementById('cSales'),{type:'bar',data:{labels:labels,datasets:[{label:'Terjual',data:soldData,backgroundColor:'rgba(201,168,76,0.6)',borderColor:'#c9a84c',borderWidth:1,borderRadius:4}]},options:chartOpts});
+    chartSales = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: products.map(function(p){return p.name;}),
+            datasets: [{
+                label: 'Terjual',
+                data: products.map(function(p){return getTotalSold(p);}),
+                backgroundColor: 'rgba(201, 168, 76, 0.6)',
+                borderColor: 'rgba(201, 168, 76, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+    
+    var lowList = document.getElementById('lowStockList');
+    lowList.innerHTML = '';
+    var hasLow = false;
+    for(var i=0;i<products.length;i++){
+        var sisa = getRemainingStock(products[i]);
+        if(sisa <= 5 && products[i].stockAwal > 0) {
+            hasLow = true;
+            var b = document.createElement('span');
+            b.className = sisa <= 0 ? 'badge badge-out' : 'badge badge-low';
+            b.textContent = products[i].name + ' (' + sisa + ')';
+            lowList.appendChild(b);
+        }
+    }
+    document.getElementById('lowStockCard').style.display = hasLow ? 'block' : 'none';
+    
+    var recSales = document.getElementById('recentSheetSales');
+    if(sheetSales.length === 0) {
+        recSales.innerHTML = 'Belum ada data. Klik Sync untuk mengambil dari Sheet.';
+    } else {
+        recSales.innerHTML = '';
+        var count = 0;
+        for(var i = sheetSales.length - 1; i >= 0; i--) {
+            if(count >= 5) break;
+            var s = sheetSales[i];
+            var row = document.createElement('div');
+            row.className = 'sheet-sale-row';
+            var v = String(s['Varian']||s['varian']||'Parfum');
+            var q = Number(s['Jumlah']||s['Qty']||1)||1;
+            row.innerHTML = '<div style="color:var(--gold-light);font-size:12px;">'+fDate(s['Timestamp']||s['Date'])+'</div><div style="font-size:13px;color:#fff">'+v+'</div><div class="badge badge-ok">'+q+'x</div>';
+            recSales.appendChild(row);
+            count++;
+        }
+    }
 }
 
 function renderProducts(){
-    var src=(document.getElementById('srcProd').value||'').toLowerCase();
-    var filtered=[];
+    document.getElementById('pTotalVarian').textContent = products.length;
+    var tAwal=0, tSisa=0;
+    for(var i=0;i<products.length;i++){ tAwal+=products[i].stockAwal||0; tSisa+=getRemainingStock(products[i]); }
+    document.getElementById('pTotalAwal').textContent = tAwal;
+    document.getElementById('pTotalSisa').textContent = tSisa;
+    
+    var tbody = document.getElementById('tProd');
+    tbody.innerHTML = '';
+    var src = (document.getElementById('srcProd').value||'').toLowerCase();
     for(var i=0;i<products.length;i++){
-        if(!src||products[i].name.toLowerCase().indexOf(src)>=0) filtered.push({idx:i,prod:products[i]});
+        var p = products[i];
+        if(src && p.name.toLowerCase().indexOf(src) < 0) continue;
+        var sisa = getRemainingStock(p);
+        var tr = document.createElement('tr');
+        var badge = sisa <= 0 ? 'badge-out' : (sisa <= 5 ? 'badge-low' : 'badge-ok');
+        tr.innerHTML = '<td>'+(i+1)+'</td><td style="font-weight:600;color:#fff;">'+p.name+'</td><td>'+(p.stockAwal||0)+'</td><td>'+getTotalSold(p)+'</td><td><span class="badge '+badge+'">'+sisa+'</span></td><td><button class="btn-outline" onclick="openEditProd('+i+')" style="padding:4px 10px;font-size:11px;"><i class="fas fa-edit"></i></button> <button class="btn-danger-sm" onclick="openDelVar('+i+')" style="padding:4px 10px;font-size:11px;"><i class="fas fa-trash"></i></button></td>';
+        tbody.appendChild(tr);
     }
-    var totalAwal=0,totalSisa=0;
-    for(var j=0;j<products.length;j++){totalAwal+=products[j].stockAwal||0;totalSisa+=getRemainingStock(products[j]);}
-    document.getElementById('pTotalVarian').textContent=products.length;
-    document.getElementById('pTotalAwal').textContent=totalAwal;
-    document.getElementById('pTotalSisa').textContent=totalSisa;
-    var tbody=document.getElementById('tProd');
-    var html='';
-    for(var k=0;k<filtered.length;k++){
-        var p=filtered[k].prod;var idx=filtered[k].idx;
-        var soldSheet=getSoldFromSheet(p.name);
-        var sisa=getRemainingStock(p);
-        var cls=sisa<=0?'badge-out':sisa<=5?'badge-low':'badge-ok';
-        html+='<tr>';
-        html+='<td>'+(k+1)+'</td>';
-        html+='<td style="font-weight:600;">'+p.name+'</td>';
-        html+='<td>'+(p.stockAwal||0)+'</td>';
-        html+='<td>'+soldSheet+'</td>';
-        html+='<td><span class="badge '+cls+'">'+sisa+'</span></td>';
-        html+='<td><button class="btn-outline" style="padding:4px 10px;font-size:11px;margin-right:4px;" onclick="openEditProd('+idx+')"><i class="fas fa-pen"></i></button>';
-        html+='<button class="btn-danger-sm" style="padding:4px 10px;font-size:11px;" onclick="openDelVar('+idx+')"><i class="fas fa-trash"></i></button></td>';
-        html+='</tr>';
-    }
-    tbody.innerHTML=html||'<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:30px;">Tidak ada varian</td></tr>';
 }
 
 function renderCosts(){
-    var totalModal=getTotalModal();
-    var totalPenjualan=getTotalPenjualanRp();
-    var untung=totalPenjualan-totalModal;
-    document.getElementById('mTotal').textContent=fRp(totalModal);
-    document.getElementById('mPenjualan').textContent=fRp(totalPenjualan);
-    var untungEl=document.getElementById('mUntung');
-    untungEl.textContent=fRp(untung);
-    untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
+    var tModal = getTotalModal();
+    var tPenj = getTotalPenjualanRp();
+    var tUntung = tPenj - tModal;
+    document.getElementById('mTotal').textContent = fRp(tModal);
+    document.getElementById('mPenjualan').textContent = fRp(tPenj);
+    document.getElementById('mUntung').textContent = fRp(tUntung);
     
-    var list=document.getElementById('modalEntriesList');
-    if(modalEntries.length===0){
-        list.innerHTML='<div style="text-align:center;color:var(--text-muted);padding:30px;font-size:13px;">Belum ada catatan modal.</div>';
+    var list = document.getElementById('modalEntriesList');
+    list.innerHTML = '';
+    if(modalEntries.length === 0) {
+        list.innerHTML = '<div class="card" style="padding:14px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada catatan modal.</div>';
         return;
     }
-    var html='';
-    for(var i=modalEntries.length-1;i>=0;i--){
-        var e=modalEntries[i];
-        if(!e) continue;
-        html+='<div class="card" style="padding:16px;margin-bottom:12px;">';
-        html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">';
-        html+='<div style="flex:1;min-width:200px;">';
-        html+='<div style="font-size:18px;font-weight:800;color:var(--gold-light);margin-bottom:4px;">'+fRp(e.amount||0)+'</div>';
-        html+='<div style="font-size:12px;color:var(--text-muted);margin-bottom:2px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>'+fDateTime(e.date)+'</div>';
-        if(e.note) html+='<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;"><i class="fas fa-sticky-note" style="margin-right:4px;color:var(--gold);"></i>'+e.note+'</div>';
-        html+='</div>';
-        if(e.image){
-            html+='<img src="'+e.image+'" style="max-height:80px;border-radius:10px;border:1px solid var(--border);cursor:pointer;flex-shrink:0;" onclick="openImgPreview(this.src)">';
-        }
-        html+='</div>';
-        html+='<div style="margin-top:10px;text-align:right;"><button class="btn-danger-sm" onclick="deleteModalEntry('+i+')"><i class="fas fa-trash" style="margin-right:4px;"></i>Hapus</button></div>';
-        html+='</div>';
+    for(var i=0;i<modalEntries.length;i++){
+        var m = modalEntries[i];
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.style.cssText = 'padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;';
+        var imgHtml = m.image ? '<img src="'+m.image+'" style="width:40px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;" onclick="openImgPreview(\''+m.image+'\')">' : '<div style="width:40px;height:40px;border-radius:6px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;"><i class="fas fa-receipt" style="color:var(--text-muted);"></i></div>';
+        card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">'+imgHtml+'<div><div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div></div></div><button class="btn-danger-sm" onclick="delModal('+i+')"><i class="fas fa-trash"></i></button>';
+        list.appendChild(card);
     }
-    list.innerHTML=html;
 }
 
-function deleteModalEntry(idx){
+function renderFinance(){
+    var tModal = getTotalModal();
+    var tPenj = getTotalPenjualanRp();
+    var tUntung = tPenj - tModal;
+    document.getElementById('fModal').textContent = fRp(tModal);
+    document.getElementById('fPenjualan').textContent = fRp(tPenj);
+    document.getElementById('fUntung').textContent = fRp(tUntung);
+    
+    var curr = getTotalPenjualanPerCurrency();
+    document.getElementById('fRiel').textContent = Math.round(curr.riel).toLocaleString('en-US');
+    document.getElementById('fUsd').textContent = fUsd(curr.usd);
+    document.getElementById('fRp').textContent = fRp(curr.rp);
+    
+    var tbody = document.getElementById('tFin');
+    tbody.innerHTML = '';
+    for(var i=0;i<products.length;i++){
+        var p = products[i];
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td style="color:#fff;font-weight:600;">'+p.name+'</td><td>'+(p.stockAwal||0)+'</td><td>'+getTotalSold(p)+'</td><td>'+getRemainingStock(p)+'</td><td>'+fRp(getTotalSold(p)*PRICE_RP)+'</td>';
+        tbody.appendChild(tr);
+    }
+    
+    var ctx3 = document.getElementById('cProfit').getContext('2d');
+    if(chartProfit) chartProfit.destroy();
+    chartProfit = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: products.map(function(p){return p.name;}),
+            datasets: [{
+                label: 'Penjualan (Rp)',
+                data: products.map(function(p){return getTotalSold(p)*PRICE_RP;}),
+                backgroundColor: 'rgba(16, 185, 129, 0.6)',
+                borderColor: 'rgba(16, 185, 129, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+}
+
+function renderSheetSales(){
+    var list = document.getElementById('sheetSalesList');
+    if(sheetSales.length === 0) {
+        list.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>';
+        return;
+    }
+    list.innerHTML = '';
+    for(var i=sheetSales.length-1; i>=0; i--){
+        var s = sheetSales[i];
+        var row = document.createElement('div');
+        row.className = 'sheet-sale-row';
+        var v = String(s['Varian']||s['varian']||'Parfum');
+        var q = Number(s['Jumlah']||s['Qty']||1)||1;
+        var bayar = String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
+        var tot = Number(String(s['Total']||s['Nominal']||s['Harga']||'').replace(/[^0-9]/g,''))||0;
+        var txtBayar = tot > 0 ? (bayar.indexOf('riel')>=0 ? fRiel(tot) : (bayar.indexOf('usd')>=0 ? fUsd(tot) : fRp(tot))) : fRp(q*PRICE_RP);
+        
+        row.innerHTML = '<div style="text-align:center;"><div style="font-size:11px;color:var(--text-muted);">'+fDate(s['Timestamp']||s['Date'])+'</div></div><div><div style="font-size:13px;font-weight:600;color:#fff;">'+v+'</div><div style="font-size:11px;color:var(--text-muted);">'+q+' botol &middot; '+txtBayar+'</div></div><div class="badge badge-ok">'+q+'x</div>';
+        list.appendChild(row);
+    }
+}
+
+function openEditProd(idx){
+    document.getElementById('epIdx').value = idx;
+    document.getElementById('epName').value = products[idx].name;
+    document.getElementById('epStock').value = products[idx].stockAwal || 0;
+    document.getElementById('mEditProd').classList.add('show');
+}
+function openDelVar(idx){
+    document.getElementById('delVarIdx').value = idx;
+    document.getElementById('delVarMsg').textContent = 'Varian "'+products[idx].name+'" akan dihapus permanen.';
+    document.getElementById('mDelVariant').classList.add('show');
+}
+function delModal(idx){
     if(!confirm('Hapus catatan modal ini?')) return;
     modalEntries.splice(idx,1);
     saveAndSync();
     renderCosts();
-    renderFinance();
-    showToast('Catatan modal dihapus','ok');
 }
 
-function clearAllModals(){
-    if(!confirm('Hapus SEMUA catatan modal? Data akan dihapus permanen dari semua perangkat.')) return;
-    modalEntries=[];
+// Event Listeners
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keypress', function(e){ if(e.key==='Enter') doLogin(); });
+document.getElementById('btnLogout').addEventListener('click', doLogout);
+document.getElementById('btnSync').addEventListener('click', syncSheet);
+
+document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){ switchTab(this.getAttribute('data-tab')); });
+});
+document.querySelectorAll('.closeModal').forEach(function(btn){
+    btn.addEventListener('click', function(){ closeModal(this.getAttribute('data-id')); });
+});
+
+document.getElementById('btnAddVar').addEventListener('click', function(){
+    document.getElementById('mAddVariant').classList.add('show');
+});
+document.getElementById('btnSaveAddVar').addEventListener('click', function(){
+    var name = document.getElementById('avName').value.trim();
+    var stock = parseInt(document.getElementById('avBottles').value)||0;
+    if(!name){ showToast('Nama varian wajib diisi','err'); return; }
+    products.push({name:name, stockAwal:stock});
+    saveAndSync();
+    renderAll();
+    closeModal('mAddVariant');
+    document.getElementById('avName').value='';
+    document.getElementById('avBottles').value='0';
+    showToast('Varian ditambahkan','ok');
+});
+
+document.getElementById('btnSaveProdEdit').addEventListener('click', function(){
+    var idx = document.getElementById('epIdx').value;
+    var stock = parseInt(document.getElementById('epStock').value)||0;
+    products[idx].stockAwal = stock;
+    saveAndSync();
+    renderAll();
+    closeModal('mEditProd');
+    showToast('Stok awal diperbarui','ok');
+});
+
+document.getElementById('btnConfirmDelVar').addEventListener('click', function(){
+    var idx = document.getElementById('delVarIdx').value;
+    products.splice(idx,1);
+    saveAndSync();
+    renderAll();
+    closeModal('mDelVariant');
+    showToast('Varian dihapus','ok');
+});
+
+document.getElementById('modalFile').addEventListener('change', async function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var comp = await compressImage(file, 800, 0.6);
+    document.getElementById('previewModalImg').src = comp;
+    document.getElementById('previewModalImg').style.display = 'block';
+});
+
+document.getElementById('btnSaveModal').addEventListener('click', async function(){
+    var amtStr = document.getElementById('modalInput').value;
+    var note = document.getElementById('modalNote').value.trim();
+    var imgSrc = document.getElementById('previewModalImg').src || '';
+    
+    var amt = parseInt(amtStr.replace(/[^0-9]/g,''))||0;
+    if(amt <= 0){ showToast('Nominal modal harus diisi','err'); return; }
+    
+    var entry = { id: Date.now(), date: new Date().toISOString(), amount: amt, note: note, image: imgSrc };
+    modalEntries.push(entry);
     saveAndSync();
     renderCosts();
-    renderFinance();
-    showToast('Semua catatan modal dihapus','ok');
-}
-
-function renderFinance(){
-    var totalModal=getTotalModal();
-    var totalPenjualan=getTotalPenjualanRp();
-    var untung=totalPenjualan-totalModal;
-    document.getElementById('fModal').textContent=fRp(totalModal);
-    document.getElementById('fPenjualan').textContent=fRp(totalPenjualan);
-    var untungEl=document.getElementById('fUntung');
-    untungEl.textContent=fRp(untung);
-    untungEl.style.color=untung>=0?'var(--success)':'var(--danger)';
-    var curr=getTotalPenjualanPerCurrency();
-    document.getElementById('fRiel').textContent=fRiel(curr.riel);
-    document.getElementById('fUsd').textContent=fUsd(curr.usd);
-    document.getElementById('fRp').textContent=fRp(curr.rp);
     
-    var tbody=document.getElementById('tFin');
-    var html='';
-    for(var i=0;i<products.length;i++){
-        var p=products[i];
-        var sold=getTotalSold(p);
-        var sisa=getRemainingStock(p);
-        var cls=sisa<=0?'badge-out':sisa<=5?'badge-low':'badge-ok';
-        var soldSheet=getSoldFromSheet(p.name);
-        var penjualanRp=soldSheet*PRICE_RP+getSoldManual(p.name)*PRICE_RP;
-        html+='<tr><td style="font-weight:600;">'+p.name+'</td><td>'+(p.stockAwal||0)+'</td><td>'+sold+'</td>';
-        html+='<td><span class="badge '+cls+'">'+sisa+'</span></td>';
-        html+='<td>'+fRp(penjualanRp)+'</td></tr>';
-    }
-    tbody.innerHTML=html||'<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Tidak ada data</td></tr>';
-    
-    var labels=[];var profitData=[];
-    for(var j=0;j<products.length;j++){
-        labels.push(products[j].name.replace(/[^\w\s]/gi,'').trim());
-        var s=getTotalSold(products[j]);
-        profitData.push(s*PRICE_RP);
-    }
-    if(chartProfit) chartProfit.destroy();
-    chartProfit=new Chart(document.getElementById('cProfit'),{type:'bar',data:{labels:labels,datasets:[{label:'Penjualan (Rp)',data:profitData,backgroundColor:'rgba(16,185,129,0.6)',borderColor:'#10b981',borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#94a3b8',font:{size:9}},grid:{color:'rgba(51,65,85,0.5)'}},y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(51,65,85,0.5)'}}}}});
-}
+    document.getElementById('modalInput').value='';
+    document.getElementById('modalNote').value='';
+    document.getElementById('previewModalImg').src='';
+    document.getElementById('previewModalImg').style.display='none';
+    document.getElementById('modalFile').value='';
+    showToast('Catatan modal disimpan & disinkronisasi','ok');
+});
 
-function renderSheetSales(){
-    var container=document.getElementById('sheetSalesList');
-    if(sheetSales.length===0){
-        container.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>';
-        return;
-    }
-    var html='';
-    for(var i=sheetSales.length-1;i>=0;i--){
-        var s=sheetSales[i];
-        if(!s) continue;
-        var tanggal=s['Tanggal']||s['Date']||s['Timestamp']||s['Waktu']||'-';
-        var nama=s['Nama']||s['Nama Pembeli']||s['Pembeli']||s['Customer']||'-';
-        var varian=s['Varian']||s['Parfum']||s['Produk']||s['Nama Parfum']||'-';
-        var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'').toLowerCase();
-        var qty=Number(s['Jumlah']||s['Qty']||s['Quantity']||1)||1;
-        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
-        var displayTotal='';
-        var bayarLabel=bayar.indexOf('riel')>=0?'Riel':(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0?'USD':'Rupiah');
-        if(customTotal>0){
-            if(bayar.indexOf('riel')>=0) displayTotal=customTotal.toLocaleString('en-US')+' Riel';
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal='$'+customTotal.toFixed(2);
-            else displayTotal='Rp '+customTotal.toLocaleString('en-US');
-        } else {
-            if(bayar.indexOf('riel')>=0) displayTotal=(qty*PRICE_RIEL).toLocaleString('en-US')+' Riel';
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) displayTotal='$'+(qty*PRICE_USD).toFixed(2);
-            else displayTotal='Rp '+(qty*PRICE_RP).toLocaleString('en-US');
-        }
-        var bayarColor=bayar.indexOf('riel')>=0?'var(--riel)':(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0?'var(--usd)':'var(--rp)');
-        html+='<div class="sheet-sale-row">';
-        html+='<div style="font-size:11px;color:var(--text-muted);min-width:70px;">'+fDate(tanggal)+'</div>';
-        html+='<div><div style="font-weight:600;color:var(--text-primary);">'+varian+'</div><div style="font-size:11px;color:var(--text-muted);"><i class="fas fa-user" style="margin-right:3px;"></i>'+nama+' &bull; '+qty+' botol</div></div>';
-        html+='<div style="text-align:right;"><div style="font-size:12px;font-weight:700;color:'+bayarColor+';">'+displayTotal+'</div><div style="font-size:10px;color:var(--text-muted);">'+bayarLabel+'</div></div>';
-        html+='</div>';
-    }
-    container.innerHTML=html;
-}
+document.getElementById('btnClearAllModals').addEventListener('click', function(){
+    if(modalEntries.length === 0) return showToast('Tidak ada data modal','inf');
+    if(!confirm('Hapus SEMUA catatan modal?')) return;
+    modalEntries = [];
+    saveAndSync();
+    renderCosts();
+    showToast('Semua modal dihapus','ok');
+});
 
-function openEditProd(idx){
-    document.getElementById('epIdx').value=idx;
-    document.getElementById('epName').value=products[idx].name;
-    document.getElementById('epStock').value=products[idx].stockAwal||0;
-    document.getElementById('mEditProd').classList.add('show');
-}
-function openDelVar(idx){
-    document.getElementById('delVarIdx').value=idx;
-    document.getElementById('delVarMsg').textContent='Varian "'+products[idx].name+'" akan dihapus permanen.';
-    document.getElementById('mDelVariant').classList.add('show');
-}
+document.getElementById('btnReset').addEventListener('click', function(){
+    document.getElementById('mReset').classList.add('show');
+});
+document.getElementById('btnConfirmReset').addEventListener('click', function(){
+    localStorage.removeItem('vj_products_v3');
+    localStorage.removeItem('vj_history_v3');
+    localStorage.removeItem('vj_modals_v3');
+    localStorage.removeItem('vj_sheetsales_v3');
+    products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+    history = []; modalEntries = []; sheetSales = [];
+    saveToCloud();
+    renderAll();
+    closeModal('mReset');
+    showToast('Data direset','ok');
+});
 
-document.addEventListener('DOMContentLoaded',function(){
-    var tabBtns=document.querySelectorAll('.tab-btn');
-    for(var t=0;t<tabBtns.length;t++){
-        tabBtns[t].addEventListener('click',function(){
-            switchTab(this.getAttribute('data-tab'));
-        });
-    }
-    var closeBtns=document.querySelectorAll('.closeModal');
-    for(var c=0;c<closeBtns.length;c++){
-        closeBtns[c].addEventListener('click',function(){
-            closeModal(this.getAttribute('data-id'));
-        });
-    }
-    var modalBgs=document.querySelectorAll('.modal-bg');
-    for(var m=0;m<modalBgs.length;m++){
-        modalBgs[m].addEventListener('click',function(e){
-            if(e.target===this) this.classList.remove('show');
-        });
-    }
-    document.getElementById('loginBtn').addEventListener('click',doLogin);
-    document.getElementById('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-    document.getElementById('loginUser').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-    document.getElementById('btnLogout').addEventListener('click',doLogout);
-    document.getElementById('btnSync').addEventListener('click',function(){syncSheet();});
-    document.getElementById('srcProd').addEventListener('input',renderProducts);
-    
-    document.getElementById('btnAddVar').addEventListener('click',function(){
-        document.getElementById('avName').value='';
-        document.getElementById('avBottles').value='0';
-        document.getElementById('mAddVariant').classList.add('show');
-    });
-    document.getElementById('btnSaveAddVar').addEventListener('click',function(){
-        var name=document.getElementById('avName').value.trim();
-        var stock=parseInt(document.getElementById('avBottles').value)||0;
-        if(!name){showToast('Nama varian harus diisi!','err');return;}
-        products.push({name:name,stockAwal:stock});
+document.getElementById('btnExport').addEventListener('click', function(){
+    var data = { products: products, history: history, modalEntries: modalEntries };
+    var json = JSON.stringify(data);
+    var blob = new Blob([json], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'vj_parfum_data.json';
+    a.click();
+});
+
+document.getElementById('btnOpenImport').addEventListener('click', function(){
+    document.getElementById('mImport').classList.add('show');
+});
+document.getElementById('btnDoImport').addEventListener('click', function(){
+    try {
+        var data = JSON.parse(document.getElementById('impJson').value);
+        if(data.products) products = data.products;
+        if(data.history) history = data.history;
+        if(data.modalEntries) modalEntries = validateModalEntries(data.modalEntries);
         saveAndSync();
         renderAll();
-        closeModal('mAddVariant');
-        showToast('Varian "'+name+'" berhasil ditambahkan!','ok');
-    });
-    document.getElementById('btnSaveProdEdit').addEventListener('click',function(){
-        var idx=parseInt(document.getElementById('epIdx').value);
-        var stock=parseInt(document.getElementById('epStock').value)||0;
-        products[idx].stockAwal=stock;
-        saveAndSync();
-        renderAll();
-        closeModal('mEditProd');
-        showToast('Stok awal berhasil diperbarui!','ok');
-    });
-    document.getElementById('btnConfirmDelVar').addEventListener('click',function(){
-        var idx=parseInt(document.getElementById('delVarIdx').value);
-        var name=products[idx].name;
-        products.splice(idx,1);
-        saveAndSync();
-        renderAll();
-        closeModal('mDelVariant');
-        showToast('Varian "'+name+'" dihapus.','ok');
-    });
-    
-    document.getElementById('btnSaveModal').addEventListener('click',async function(){
-        var amountStr=document.getElementById('modalInput').value.replace(/[^0-9]/g,'');
-        var amount=parseInt(amountStr,10)||0;
-        var note=document.getElementById('modalNote').value.trim();
-        var fileInput=document.getElementById('modalFile');
-        
-        if(amount<=0){
-            showToast('Nominal modal harus diisi!','err');
-            return;
-        }
-        
-        var imgData='';
-        if(fileInput.files&&fileInput.files[0]){
-            showToast('Mengompres gambar...','inf');
-            imgData=await compressImage(fileInput.files[0],600,0.5);
-        }
-        
-        var entry={
-            id:Date.now(),
-            amount:amount,
-            note:note,
-            image:imgData,
-            date:new Date().toISOString()
-        };
-        
-        modalEntries.push(entry);
-        saveAndSync();
-        renderCosts();
-        renderFinance();
-        
-        document.getElementById('modalInput').value='';
-        document.getElementById('modalNote').value='';
-        fileInput.value='';
-        document.getElementById('previewModalImg').style.display='none';
-        
-        showToast('Catatan modal berhasil disimpan!','ok');
-    });
-    
-    document.getElementById('modalFile').addEventListener('change',function(){
-        var preview=document.getElementById('previewModalImg');
-        if(this.files&&this.files[0]){
-            var reader=new FileReader();
-            reader.onload=function(e){
-                preview.src=e.target.result;
-                preview.style.display='block';
-            };
-            reader.readAsDataURL(this.files[0]);
-        }else{
-            preview.style.display='none';
-        }
-    });
-    
-    document.getElementById('btnClearAllModals').addEventListener('click',clearAllModals);
-    
-    document.getElementById('btnReset').addEventListener('click',function(){
-        document.getElementById('mReset').classList.add('show');
-    });
-    document.getElementById('btnConfirmReset').addEventListener('click',function(){
-        products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
-        history=[];
-        modalEntries=[];
-        sheetSales=[];
-        saveAndSync();
-        renderAll();
-        closeModal('mReset');
-        showToast('Semua data berhasil direset!','ok');
-    });
-    
-    document.getElementById('btnExport').addEventListener('click',function(){
-        var data={products:products,history:history,modalEntries:modalEntries,sheetSales:sheetSales,exportedAt:new Date().toISOString()};
-        var json=JSON.stringify(data,null,2);
-        var blob=new Blob([json],{type:'application/json'});
-        var url=URL.createObjectURL(blob);
-        var a=document.createElement('a');
-        a.href=url;a.download='vj_parfum_backup_'+new Date().toISOString().slice(0,10)+'.json';
-        a.click();URL.revokeObjectURL(url);
-        showToast('Data berhasil diekspor!','ok');
-    });
-    
-    document.getElementById('btnOpenImport').addEventListener('click',function(){
-        document.getElementById('impJson').value='';
-        document.getElementById('mImport').classList.add('show');
-    });
-    document.getElementById('btnDoImport').addEventListener('click',function(){
-        try{
-            var data=JSON.parse(document.getElementById('impJson').value);
-            if(data.products){products=data.products;}
-            if(data.history){history=data.history;}
-            if(data.modalEntries){modalEntries=data.modalEntries;}
-            if(data.modals){modalEntries=data.modals;}
-            if(data.sheetSales){sheetSales=data.sheetSales;}
-            saveAndSync();
-            renderAll();
-            closeModal('mImport');
-            showToast('Data berhasil diimpor!','ok');
-        }catch(e){
-            showToast('JSON tidak valid: '+e.message,'err');
-        }
-    });
-    
-    if(localStorage.getItem('vj_session_v3')){
-        initDashboard();
+        closeModal('mImport');
+        showToast('Data berhasil diimpor','ok');
+    } catch(e) {
+        showToast('Format JSON salah','err');
     }
 });
+
+document.getElementById('srcProd').addEventListener('input', renderProducts);
+
+// Init if logged in
+if(document.documentElement.classList.contains('logged-in')) {
+    initDashboard();
+}
 </script>
 </body>
 </html>
