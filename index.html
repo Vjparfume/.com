@@ -80,10 +80,11 @@
         .dtable thead th{background:var(--bg-secondary);color:var(--gold-light);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;}
         .dtable tbody td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;color:var(--text-primary);}
         
-        .badge{display:inline-flex;align-items:center;padding:8px 20px;border-radius:10px;font-size:22px;font-weight:900;letter-spacing:0.5px;}
-        .badge-ok{background:rgba(59,130,246,0.25);color:#93c5fd;border:1px solid rgba(59,130,246,0.5);text-shadow:0 0 14px rgba(59,130,246,0.7),0 0 4px rgba(59,130,246,0.4);}
-        .badge-low{background:rgba(249,115,22,0.3);color:#fdba74;border:1px solid rgba(249,115,22,0.5);text-shadow:0 0 14px rgba(249,115,22,0.7),0 0 4px rgba(249,115,22,0.4);}
-        .badge-out{background:rgba(239,68,68,0.3);color:#fca5a5;border:1px solid rgba(239,68,68,0.5);text-shadow:0 0 14px rgba(239,68,68,0.7),0 0 4px rgba(239,68,68,0.4);}
+        /* BADGE SISA DIPERKECIL TAPI TETAP JELAS */
+        .badge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:14px;font-weight:800;letter-spacing:0.5px;}
+        .badge-ok{background:rgba(59,130,246,0.2);color:#93c5fd;border:1px solid rgba(59,130,246,0.4);}
+        .badge-low{background:rgba(249,115,22,0.2);color:#fdba74;border:1px solid rgba(249,115,22,0.4);}
+        .badge-out{background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.4);}
         
         .modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;}
         .modal-bg.show{display:flex;}
@@ -102,7 +103,8 @@
         .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
         @media(max-width:768px){.chart-row{grid-template-columns:1fr;}}
         .big-number{font-size:28px;font-weight:800;color:#ffffff;text-shadow:0 0 10px rgba(59, 130, 246, 0.3);}
-        .big-number.sisa-highlight{font-size:34px;color:#93c5fd;text-shadow:0 0 18px rgba(59,130,246,0.6),0 0 6px rgba(59,130,246,0.3);}
+        /* SISA STOK DI OVERVIEW DIPERKECIL */
+        .big-number.sisa-highlight{font-size:28px;color:#93c5fd;text-shadow:0 0 12px rgba(59,130,246,0.5);}
         .label-sm{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
         .sync-spin{animation:spin 1s linear infinite;}
         @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
@@ -238,7 +240,7 @@
             <div class="stat-grid g3" style="margin-bottom:16px;">
                 <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Varian</div><div style="font-size:22px;font-weight:800;color:var(--gold-light);" id="pTotalVarian">0</div></div>
                 <div class="card" style="padding:14px;text-align:center;"><div class="label-sm">Total Botol Awal</div><div style="font-size:22px;font-weight:800;color:var(--info);" id="pTotalAwal">0</div></div>
-                <div class="card" style="padding:14px;text-align:center;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div style="font-size:26px;font-weight:900;color:#93c5fd;text-shadow:0 0 12px rgba(59,130,246,0.5);" id="pTotalSisa">0</div></div>
+                <div class="card" style="padding:14px;text-align:center;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div style="font-size:22px;font-weight:800;color:#93c5fd;" id="pTotalSisa">0</div></div>
             </div>
             <div class="card table-wrap">
                 <table class="dtable">
@@ -256,7 +258,7 @@
             </div>
             <div class="stat-grid g3" style="margin-bottom:20px;">
                 <div class="card" style="padding:20px;border-color:rgba(201,168,76,0.4);"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div><div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div></div>
-                <div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div></div>
+                <div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div><div style="font-size:10px;color:var(--text-muted);margin-top:4px;">*(Dari Sheet & Manual)</div></div>
                 <div class="card" style="padding:20px;"><div class="label-sm" style="margin-bottom:8px;"><i class="fas fa-sack-dollar" style="margin-right:4px;"></i>Untung</div><div class="big-number" id="mUntung">Rp 0</div></div>
             </div>
             <div class="card" style="padding:24px;margin-bottom:20px;">
@@ -276,7 +278,7 @@
                 </div>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-                <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Riwayat Catatan Modal (Klik gambar untuk perbesar)</h3>
+                <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Riwayat Catatan Modal</h3>
                 <button class="btn-danger-sm" id="btnClearAllModals" style="padding:8px 16px;font-size:12px;"><i class="fas fa-trash" style="margin-right:4px;"></i>Hapus Semua Modal</button>
             </div>
             <div id="modalEntriesList"></div>
@@ -287,7 +289,7 @@
             <h2 class="font-display" style="font-size:20px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">Penjualan</h2>
             <div class="card" style="padding:20px;margin-bottom:20px;border-color:rgba(249,115,22,0.4);">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:4px;color:var(--riel);"><i class="fas fa-cloud" style="margin-right:6px;"></i>Penjualan dari Google Sheet</h3>
-                <p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">Data pesanan yang masuk ke Sheet otomatis tampil di sini setelah klik Sync. Tercatat: Tanggal, Nama, Varian, Pembayaran.</p>
+                <p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">Data pesanan yang masuk ke Sheet otomatis tampil di sini setelah klik Sync.</p>
                 <div id="sheetSalesList" style="max-height:600px;overflow-y:auto;border-radius:12px;border:1px solid var(--border);background:var(--bg-secondary);">
                     <div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Belum ada data. Klik <b>Sync</b> di header untuk mengambil data dari Sheet.</div>
                 </div>
@@ -450,14 +452,12 @@ function compressImage(file, maxWidth, quality) {
     });
 }
 
-/* ===== VALIDASI DATA MODAL DARI CLOUD ===== */
 function validateModalEntries(arr) {
     if (!Array.isArray(arr)) return [];
     var valid = [];
     for (var i = 0; i < arr.length; i++) {
         var m = arr[i];
         if (!m) continue;
-        /* Hanya terima entry yang punya amount valid (angka > 0) dan punya id/date */
         var amt = Number(String(m.amount).replace(/[^0-9]/g, '')) || 0;
         if (amt > 0 && (m.id || m.date)) {
             m.amount = amt;
@@ -953,7 +953,6 @@ function openDelVar(idx){
     document.getElementById('mDelVariant').classList.add('show');
 }
 
-/* ===== EVENT LISTENERS ===== */
 document.addEventListener('DOMContentLoaded',function(){
     var tabBtns=document.querySelectorAll('.tab-btn');
     for(var t=0;t<tabBtns.length;t++){
@@ -1066,7 +1065,6 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     });
     
-    /* ===== TOMBOL HAPUS SEMUA MODAL ===== */
     document.getElementById('btnClearAllModals').addEventListener('click',clearAllModals);
     
     document.getElementById('btnReset').addEventListener('click',function(){
