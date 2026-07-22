@@ -215,11 +215,14 @@
                 <div class="card" style="padding:14px;"><div class="label-sm">Total Terjual</div><div class="big-number" id="sSold">0</div><div style="font-size:10px;color:var(--text-muted);">Sheet + Manual</div></div>
                 <div class="card" style="padding:14px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-boxes-stacked" style="color:#60a5fa;margin-right:4px;"></i>Sisa Stok Semua</div><div class="big-number sisa-highlight" id="sStok">0</div><div style="font-size:10px;color:var(--text-muted);">otomatis</div></div>
             </div>
+            
+            <!-- DIPISAH JADI 3: RIEL, DOLLAR, RUPIAH -->
             <div class="stat-grid g3" style="margin-bottom:16px;">
-                <div class="card" style="padding:14px;border-color:rgba(249,115,22,0.4);"><div class="label-sm"><i class="fas fa-coins" style="color:var(--riel);margin-right:4px;"></i>Total Riel</div><div style="font-size:18px;font-weight:800;color:var(--riel);text-shadow:0 0 8px rgba(249,115,22,0.3);" id="sRielTot">0 Riel</div></div>
-                <div class="card" style="padding:14px;border-color:rgba(16,185,129,0.4);"><div class="label-sm"><i class="fas fa-dollar-sign" style="color:var(--usd);margin-right:4px;"></i>Total Dollar</div><div style="font-size:18px;font-weight:800;color:var(--usd);text-shadow:0 0 8px rgba(16,185,129,0.3);" id="sUsdTot">$0</div></div>
-                <div class="card" style="padding:14px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-money-bill-wave" style="color:var(--rp);margin-right:4px;"></i>Total Rupiah</div><div style="font-size:18px;font-weight:800;color:var(--rp);text-shadow:0 0 8px rgba(59,130,246,0.3);" id="sRpTot">Rp 0</div></div>
+                <div class="card" style="padding:14px;border-color:rgba(249,115,22,0.4);"><div class="label-sm"><i class="fas fa-coins" style="color:var(--riel);margin-right:4px;"></i>Total Penjualan Riel</div><div style="font-size:18px;font-weight:800;color:var(--riel);text-shadow:0 0 8px rgba(249,115,22,0.3);" id="sRielTot">0 Riel</div></div>
+                <div class="card" style="padding:14px;border-color:rgba(16,185,129,0.4);"><div class="label-sm"><i class="fas fa-dollar-sign" style="color:var(--usd);margin-right:4px;"></i>Total Penjualan Dollar</div><div style="font-size:18px;font-weight:800;color:var(--usd);text-shadow:0 0 8px rgba(16,185,129,0.3);" id="sUsdTot">$0.00</div></div>
+                <div class="card" style="padding:14px;border-color:rgba(59,130,246,0.4);"><div class="label-sm"><i class="fas fa-money-bill-wave" style="color:var(--rp);margin-right:4px;"></i>Total Penjualan Rupiah</div><div style="font-size:18px;font-weight:800;color:var(--rp);text-shadow:0 0 8px rgba(59,130,246,0.3);" id="sRpTot">Rp 0</div></div>
             </div>
+
             <div class="chart-row" style="margin-bottom:16px;">
                 <div class="card" style="padding:14px;"><h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Sisa Stok per Varian</h3><div style="position:relative;height:240px;"><canvas id="cStock"></canvas></div></div>
                 <div class="card" style="padding:14px;"><h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Penjualan per Varian</h3><div style="position:relative;height:240px;"><canvas id="cSales"></canvas></div></div>
@@ -261,7 +264,7 @@
             </div>
             <div class="stat-grid g3" style="margin-bottom:16px;">
                 <div class="card" style="padding:16px;border-color:rgba(201,168,76,0.4);"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-wallet" style="margin-right:4px;"></i>Total Modal</div><div class="big-number" style="color:var(--gold-light);" id="mTotal">Rp 0</div></div>
-                <div class="card" style="padding:16px;"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div><div style="font-size:9px;color:var(--text-muted);margin-top:4px;">*(Dari Sheet & Manual)</div></div>
+                <div class="card" style="padding:16px;"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-money-bill-trend-up" style="margin-right:4px;"></i>Total Penjualan (Konversi Rp)</div><div class="big-number" style="color:var(--info);" id="mPenjualan">Rp 0</div><div style="font-size:9px;color:var(--text-muted);margin-top:4px;">*(Dari Sheet & Manual)</div></div>
                 <div class="card" style="padding:16px;"><div class="label-sm" style="margin-bottom:6px;"><i class="fas fa-sack-dollar" style="margin-right:4px;"></i>Untung</div><div class="big-number" id="mUntung">Rp 0</div></div>
             </div>
             <div class="card" style="padding:20px;margin-bottom:16px;">
@@ -311,7 +314,7 @@
                 <h3 style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Pendapatan per Mata Uang</h3>
                 <div class="stat-grid g3">
                     <div style="text-align:center;padding:10px;background:rgba(249,115,22,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--riel);margin-bottom:4px;font-weight:700;">RIEL</div><div style="font-size:16px;font-weight:800;color:var(--riel);" id="fRiel">0</div></div>
-                    <div style="text-align:center;padding:10px;background:rgba(16,185,129,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--usd);margin-bottom:4px;font-weight:700;">USD</div><div style="font-size:16px;font-weight:800;color:var(--usd);" id="fUsd">$0</div></div>
+                    <div style="text-align:center;padding:10px;background:rgba(16,185,129,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--usd);margin-bottom:4px;font-weight:700;">USD</div><div style="font-size:16px;font-weight:800;color:var(--usd);" id="fUsd">$0.00</div></div>
                     <div style="text-align:center;padding:10px;background:rgba(59,130,246,0.1);border-radius:10px;"><div style="font-size:10px;color:var(--rp);margin-bottom:4px;font-weight:700;">RUPIAH</div><div style="font-size:16px;font-weight:800;color:var(--rp);" id="fRp">Rp 0</div></div>
                 </div>
             </div>
@@ -374,7 +377,7 @@ var isSyncing = false;
 
 function fRp(n){return 'Rp '+Math.round(n).toLocaleString('en-US');}
 function fRiel(n){return Math.round(n).toLocaleString('en-US')+' Riel';}
-function fUsd(n){return '$'+n.toFixed(2);}
+function fUsd(n){return '$'+Number(n).toFixed(2);}
 function formatCurr(amountRp,curr){
     if(curr==='riel')return fRiel(amountRp/PRICE_RP*PRICE_RIEL);
     if(curr==='usd')return fUsd(amountRp/PRICE_RP*PRICE_USD);
@@ -497,6 +500,15 @@ function getTotalSold(product){
     return getSoldFromSheet(product.name)+getSoldManual(product.name);
 }
 
+// PERBAIKAN PARSING DOLLAR: Tidak menghapus titik decimal agar 11.25 tidak jadi 1125
+function parseTotal(totalStr, isUsd) {
+    if (isUsd) {
+        return parseFloat(totalStr.replace(/[^0-9.]/g, '')) || 0;
+    } else {
+        return parseInt(totalStr.replace(/[^0-9]/g, '')) || 0;
+    }
+}
+
 function getTotalPenjualanRp(){
     var total=0;
     for(var i=0;i<sheetSales.length;i++){
@@ -504,14 +516,16 @@ function getTotalPenjualanRp(){
         if(!s) continue;
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
-        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
+        var totalStr = String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'');
+        var isUsd = bayar.indexOf('usd')>=0 || bayar.indexOf('$')>=0 || totalStr.indexOf('$')>=0;
+        var customTotal = parseTotal(totalStr, isUsd);
+        
         if(customTotal > 0) {
-            // PERBAIKAN: Langsung ambil angka asli dari Sheet tanpa dikali konversi lagi.
-            // Karena angka di sheet kamu sudah final, jadi tidak boleh dikali lagi.
-            total += customTotal;
+            if(bayar.indexOf('riel')>=0) total += customTotal * (PRICE_RP/PRICE_RIEL);
+            else if(isUsd) total += customTotal * (PRICE_RP/PRICE_USD);
+            else total += customTotal;
         } else { 
-            // Fallback hanya jika tidak ada angka sama sekali di kolom Total
-            total += qty * PRICE_RP; 
+            total += qty*PRICE_RP; 
         }
     }
     for(var i=0;i<history.length;i++){
@@ -519,6 +533,7 @@ function getTotalPenjualanRp(){
     }
     return total;
 }
+
 function getTotalPenjualanPerCurrency(){
     var riel=0,usd=0,rp=0;
     for(var i=0;i<sheetSales.length;i++){
@@ -526,14 +541,17 @@ function getTotalPenjualanPerCurrency(){
         if(!s) continue;
         var qty=Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
-        var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
+        var totalStr = String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'');
+        var isUsd = bayar.indexOf('usd')>=0 || bayar.indexOf('$')>=0 || totalStr.indexOf('$')>=0;
+        var customTotal = parseTotal(totalStr, isUsd);
+        
         if(customTotal > 0) {
             if(bayar.indexOf('riel')>=0)riel+=customTotal;
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0)usd+=customTotal;
+            else if(isUsd)usd+=customTotal;
             else rp+=customTotal;
         } else {
             if(bayar.indexOf('riel')>=0)riel+=qty*PRICE_RIEL;
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0)usd+=qty*PRICE_USD;
+            else if(isUsd)usd+=qty*PRICE_USD;
             else rp+=qty*PRICE_RP;
         }
     }
@@ -586,13 +604,9 @@ function initDashboard(){
     document.getElementById('headerUser').textContent=session.user||'';
     loadDataLocal();
     renderAll();
-    var overlay = document.getElementById('syncLoadingOverlay');
-    overlay.classList.add('show');
-    syncSheet().then(function(){
-        overlay.classList.remove('show');
-    }).catch(function(){
-        overlay.classList.remove('show');
-    });
+    
+    // PERBAIKAN LOADING: Tidak memblokir layar, sync diam-diam di background
+    syncSheet();
 }
 function loadDataLocal(){
     products=JSON.parse(localStorage.getItem('vj_products_v3')||'null')||JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
@@ -882,8 +896,11 @@ function renderSheetSales(){
         var v = String(s['Varian']||s['varian']||'Parfum');
         var q = Number(s['Jumlah']||s['Qty']||1)||1;
         var bayar = String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
-        var tot = Number(String(s['Total']||s['Nominal']||s['Harga']||'').replace(/[^0-9]/g,''))||0;
-        var txtBayar = tot > 0 ? (bayar.indexOf('riel')>=0 ? fRiel(tot) : (bayar.indexOf('usd')>=0 ? fUsd(tot) : fRp(tot))) : fRp(q*PRICE_RP);
+        var totalStr = String(s['Total']||s['Nominal']||s['Harga']||'');
+        var isUsd = bayar.indexOf('usd')>=0 || bayar.indexOf('$')>=0 || totalStr.indexOf('$')>=0;
+        var tot = parseTotal(totalStr, isUsd);
+        
+        var txtBayar = tot > 0 ? (bayar.indexOf('riel')>=0 ? fRiel(tot) : (isUsd ? fUsd(tot) : fRp(tot))) : fRp(q*PRICE_RP);
         
         row.innerHTML = '<div style="text-align:center;"><div style="font-size:11px;color:var(--text-muted);">'+fDate(s['Timestamp']||s['Date'])+'</div></div><div><div style="font-size:13px;font-weight:600;color:#fff;">'+v+'</div><div style="font-size:11px;color:var(--text-muted);">'+q+' botol &middot; '+txtBayar+'</div></div><div class="badge badge-ok">'+q+'x</div>';
         list.appendChild(row);
