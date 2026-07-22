@@ -506,10 +506,13 @@ function getTotalPenjualanRp(){
         var bayar=String(s['Pembayaran']||s['Bayar']||s['Payment']||'rp').toLowerCase();
         var customTotal = Number(String(s['Total']||s['Nominal']||s['Harga']||s['Total Harga']||s['Jumlah Bayar']||'').replace(/[^0-9]/g, '')) || 0;
         if(customTotal > 0) {
-            if(bayar.indexOf('riel')>=0) total += customTotal * (PRICE_RP/PRICE_RIEL);
-            else if(bayar.indexOf('usd')>=0||bayar.indexOf('$')>=0) total += customTotal * (PRICE_RP/PRICE_USD);
-            else total += customTotal;
-        } else { total += qty*PRICE_RP; }
+            // PERBAIKAN: Langsung ambil angka asli dari Sheet tanpa dikali konversi lagi.
+            // Karena angka di sheet kamu sudah final, jadi tidak boleh dikali lagi.
+            total += customTotal;
+        } else { 
+            // Fallback hanya jika tidak ada angka sama sekali di kolom Total
+            total += qty * PRICE_RP; 
+        }
     }
     for(var i=0;i<history.length;i++){
         if(history[i]) total+=history[i].totalRp||0;
