@@ -418,7 +418,6 @@ function switchTab(tab){
 }
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 
-// PERBAIKAN: Klik gambar pakai Index agar HTML tidak rusak oleh teks base64 yang terlalu panjang
 function openImgPreview(srcOrIdx) {
     var src = '';
     if (typeof srcOrIdx === 'number') {
@@ -429,7 +428,7 @@ function openImgPreview(srcOrIdx) {
         src = srcOrIdx;
     }
     
-    if (src && String(src).length > 100) {
+    if (src && String(src).startsWith('data:image')) {
         var overlay = document.getElementById('imgPreviewOverlay');
         var largeImg = document.getElementById('imgPreviewLarge');
         largeImg.src = src;
@@ -477,7 +476,6 @@ function validateModalEntries(arr) {
         var amt = Number(String(m.amount).replace(/[^0-9]/g, '')) || 0;
         if (amt > 0 && (m.id || m.date)) {
             m.amount = amt;
-            // PERBAIKAN: Pastikan format gambar selalu valid, jika rusak/terpotong maka dikosongkan
             if (m.image && String(m.image).length > 100) {
                 var imgStr = String(m.image);
                 if (imgStr.startsWith('data:image')) {
@@ -839,12 +837,40 @@ function renderCosts(){
         card.className = 'card';
         card.style.cssText = 'padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;';
         
-        // PERBAIKAN: Gunakan index (i) untuk onclick agar teks panjang base64 tidak merusak HTML
-        var imgHtml = (m.image && String(m.image).length > 100) 
-            ? '<img src="'+m.image+'" style="width:50px;height:50px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--gold-dark);" onclick="openImgPreview('+i+')">' 
-            : '<div style="width:50px;height:50px;border-radius:8px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);"><i class="fas fa-receipt" style="color:var(--text-muted);font-size:18px;"></i></div>';
+        var leftDiv = document.createElement('div');
+        leftDiv.style.cssText = 'display:flex;align-items:center;gap:10px;min-width:0;';
         
-        card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;min-width:0;">'+imgHtml+'<div style="min-width:0;"><div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div></div></div><button class="btn-danger-sm" onclick="delModal('+i+')" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>';
+        var imgContainer = document.createElement('div');
+        imgContainer.style.cssText = 'width:50px;height:50px;border-radius:8px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);cursor:pointer;flex-shrink:0;';
+        imgContainer.innerHTML = '<i class="fas fa-receipt" style="color:var(--text-muted);font-size:18px;"></i>';
+        
+        // PERBAIKAN TOTAL: Masukkan gambar via DOM (appendChild) agar base64 yang panjang tidak crash HTML nya
+        if (m.image && String(m.image).startsWith('data:image')) {
+            var imgEl = document.createElement('img');
+            imgEl.src = m.image;
+            imgEl.style.cssText = 'width:50px;height:50px;border-radius:8px;object-fit:cover;border:1px solid var(--gold-dark);cursor:pointer;';
+            imgEl.onclick = (function(idx) { return function() { openImgPreview(idx); }; })(i);
+            imgContainer.innerHTML = '';
+            imgContainer.appendChild(imgEl);
+        } else {
+            imgContainer.onclick = (function(idx) { return function() { openImgPreview(idx); }; })(i);
+        }
+        
+        var textDiv = document.createElement('div');
+        textDiv.style.cssText = 'min-width:0;';
+        textDiv.innerHTML = '<div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div>';
+        
+        leftDiv.appendChild(imgContainer);
+        leftDiv.appendChild(textDiv);
+        
+        var delBtn = document.createElement('button');
+        delBtn.className = 'btn-danger-sm';
+        delBtn.style.flexShrink = '0';
+        delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        delBtn.onclick = (function(idx) { return function() { delModal(idx); }; })(i);
+        
+        card.appendChild(leftDiv);
+        card.appendChild(delBtn);
         list.appendChild(card);
     }
 }
@@ -993,7 +1019,6 @@ document.getElementById('btnSaveModal').addEventListener('click', async function
     var note = document.getElementById('modalNote').value.trim();
     var previewImg = document.getElementById('previewModalImg');
     
-    // PERBAIKAN: Pastikan hanya mengambil URL gambar asli (data:image), bukan URL halaman kosong
     var imgSrc = (previewImg.src && previewImg.src.startsWith('data:image')) ? previewImg.src : '';
     
     var amt = parseInt(amtStr.replace(/[^0-9]/g,''))||0;
