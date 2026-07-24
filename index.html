@@ -418,12 +418,25 @@ function switchTab(tab){
 }
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 
-function openImgPreview(src) {
-    if (!src || !src.startsWith('data:image')) return; // HANYA BUKA JIKA GAMBAR ASLI (DATA URI)
-    var overlay = document.getElementById('imgPreviewOverlay');
-    var largeImg = document.getElementById('imgPreviewLarge');
-    largeImg.src = src;
-    overlay.style.display = 'flex';
+// PERBAIKAN: Klik gambar pakai Index agar HTML tidak rusak oleh teks base64 yang terlalu panjang
+function openImgPreview(srcOrIdx) {
+    var src = '';
+    if (typeof srcOrIdx === 'number') {
+        if (modalEntries[srcOrIdx] && modalEntries[srcOrIdx].image) {
+            src = modalEntries[srcOrIdx].image;
+        }
+    } else if (typeof srcOrIdx === 'string') {
+        src = srcOrIdx;
+    }
+    
+    if (src && String(src).length > 100) {
+        var overlay = document.getElementById('imgPreviewOverlay');
+        var largeImg = document.getElementById('imgPreviewLarge');
+        largeImg.src = src;
+        overlay.style.display = 'flex';
+    } else {
+        showToast('Bukti transfer tidak tersedia', 'err');
+    }
 }
 
 function compressImage(file, maxWidth, quality) {
@@ -464,8 +477,17 @@ function validateModalEntries(arr) {
         var amt = Number(String(m.amount).replace(/[^0-9]/g, '')) || 0;
         if (amt > 0 && (m.id || m.date)) {
             m.amount = amt;
-            // Hanya simpan gambar jika benar-benar berupa data URI gambar
-            if (m.image && !String(m.image).startsWith('data:image')) {
+            // PERBAIKAN: Pastikan format gambar selalu valid, jika rusak/terpotong maka dikosongkan
+            if (m.image && String(m.image).length > 100) {
+                var imgStr = String(m.image);
+                if (imgStr.startsWith('data:image')) {
+                    // Format sudah benar
+                } else if (imgStr.startsWith('image/')) {
+                    m.image = 'data:' + imgStr;
+                } else if (imgStr.indexOf('base64,') > -1) {
+                    m.image = 'data:image/jpeg;base64,' + imgStr.split('base64,')[1];
+                }
+            } else {
                 m.image = '';
             }
             valid.push(m);
@@ -817,9 +839,9 @@ function renderCosts(){
         card.className = 'card';
         card.style.cssText = 'padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;';
         
-        // PERBAIKAN TOTAL: Hanya tampilkan gambar jika itu valid (data:image), kalau bukan pakai placeholder
-        var imgHtml = (m.image && String(m.image).startsWith('data:image')) 
-            ? '<img src="'+m.image+'" style="width:50px;height:50px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--gold-dark);" onclick="openImgPreview(this.src)">' 
+        // PERBAIKAN: Gunakan index (i) untuk onclick agar teks panjang base64 tidak merusak HTML
+        var imgHtml = (m.image && String(m.image).length > 100) 
+            ? '<img src="'+m.image+'" style="width:50px;height:50px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--gold-dark);" onclick="openImgPreview('+i+')">' 
             : '<div style="width:50px;height:50px;border-radius:8px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);"><i class="fas fa-receipt" style="color:var(--text-muted);font-size:18px;"></i></div>';
         
         card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;min-width:0;">'+imgHtml+'<div style="min-width:0;"><div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div></div></div><button class="btn-danger-sm" onclick="delModal('+i+')" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>';
