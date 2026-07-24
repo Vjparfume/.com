@@ -419,6 +419,7 @@ function switchTab(tab){
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 
 function openImgPreview(src) {
+    if (!src || !src.startsWith('data:image')) return; // HANYA BUKA JIKA GAMBAR ASLI (DATA URI)
     var overlay = document.getElementById('imgPreviewOverlay');
     var largeImg = document.getElementById('imgPreviewLarge');
     largeImg.src = src;
@@ -463,6 +464,10 @@ function validateModalEntries(arr) {
         var amt = Number(String(m.amount).replace(/[^0-9]/g, '')) || 0;
         if (amt > 0 && (m.id || m.date)) {
             m.amount = amt;
+            // Hanya simpan gambar jika benar-benar berupa data URI gambar
+            if (m.image && !String(m.image).startsWith('data:image')) {
+                m.image = '';
+            }
             valid.push(m);
         }
     }
@@ -658,7 +663,6 @@ function syncSheet(){
 async function saveToCloud(){
     try {
         var safeModals = Array.isArray(modalEntries) ? modalEntries : [];
-        // HAPUS SUBSTRING YANG BIKIN CORRUPT, KITA KOMPRES DARI AWAL BIAR AMAN
         var modalsToSave = safeModals.map(function(m) {
             if (!m) return m;
             return Object.assign({}, m);
@@ -813,8 +817,10 @@ function renderCosts(){
         card.className = 'card';
         card.style.cssText = 'padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;';
         
-        // PERBAIKAN: Gambar diperbesar sedikit (45x45) & klik menggunakan this.src biar ngga rusak HTML
-        var imgHtml = m.image ? '<img src="'+m.image+'" style="width:45px;height:45px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--gold-dark);" onclick="openImgPreview(this.src)">' : '<div style="width:45px;height:45px;border-radius:8px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);"><i class="fas fa-receipt" style="color:var(--text-muted);font-size:16px;"></i></div>';
+        // PERBAIKAN TOTAL: Hanya tampilkan gambar jika itu valid (data:image), kalau bukan pakai placeholder
+        var imgHtml = (m.image && String(m.image).startsWith('data:image')) 
+            ? '<img src="'+m.image+'" style="width:50px;height:50px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--gold-dark);" onclick="openImgPreview(this.src)">' 
+            : '<div style="width:50px;height:50px;border-radius:8px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);"><i class="fas fa-receipt" style="color:var(--text-muted);font-size:18px;"></i></div>';
         
         card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;min-width:0;">'+imgHtml+'<div style="min-width:0;"><div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div></div></div><button class="btn-danger-sm" onclick="delModal('+i+')" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>';
         list.appendChild(card);
@@ -955,7 +961,6 @@ document.getElementById('btnConfirmDelVar').addEventListener('click', function()
 document.getElementById('modalFile').addEventListener('change', async function(e){
     var file = e.target.files[0];
     if(!file) return;
-    // KOMPRES LEBIH KECIL (600px, 0.4) AGAR PASTI AMAN TERSIMPAN DI SERVER TANPA DIKURANGIN
     var comp = await compressImage(file, 600, 0.4);
     document.getElementById('previewModalImg').src = comp;
     document.getElementById('previewModalImg').style.display = 'block';
@@ -964,7 +969,10 @@ document.getElementById('modalFile').addEventListener('change', async function(e
 document.getElementById('btnSaveModal').addEventListener('click', async function(){
     var amtStr = document.getElementById('modalInput').value;
     var note = document.getElementById('modalNote').value.trim();
-    var imgSrc = document.getElementById('previewModalImg').src || '';
+    var previewImg = document.getElementById('previewModalImg');
+    
+    // PERBAIKAN: Pastikan hanya mengambil URL gambar asli (data:image), bukan URL halaman kosong
+    var imgSrc = (previewImg.src && previewImg.src.startsWith('data:image')) ? previewImg.src : '';
     
     var amt = parseInt(amtStr.replace(/[^0-9]/g,''))||0;
     if(amt <= 0){ showToast('Nominal modal harus diisi','err'); return; }
