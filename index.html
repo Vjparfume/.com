@@ -658,13 +658,10 @@ function syncSheet(){
 async function saveToCloud(){
     try {
         var safeModals = Array.isArray(modalEntries) ? modalEntries : [];
+        // HAPUS SUBSTRING YANG BIKIN CORRUPT, KITA KOMPRES DARI AWAL BIAR AMAN
         var modalsToSave = safeModals.map(function(m) {
             if (!m) return m;
-            var entry = Object.assign({}, m);
-            if (entry.image && entry.image.length > 45000) {
-                entry.image = entry.image.substring(0, 45000); 
-            }
-            return entry;
+            return Object.assign({}, m);
         });
         var safeProducts = Array.isArray(products) ? products : [];
         var safeHistory = Array.isArray(history) ? history : [];
@@ -815,8 +812,11 @@ function renderCosts(){
         var card = document.createElement('div');
         card.className = 'card';
         card.style.cssText = 'padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;';
-        var imgHtml = m.image ? '<img src="'+m.image+'" style="width:40px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;" onclick="openImgPreview(\''+m.image+'\')">' : '<div style="width:40px;height:40px;border-radius:6px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;"><i class="fas fa-receipt" style="color:var(--text-muted);"></i></div>';
-        card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">'+imgHtml+'<div><div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div></div></div><button class="btn-danger-sm" onclick="delModal('+i+')"><i class="fas fa-trash"></i></button>';
+        
+        // PERBAIKAN: Gambar diperbesar sedikit (45x45) & klik menggunakan this.src biar ngga rusak HTML
+        var imgHtml = m.image ? '<img src="'+m.image+'" style="width:45px;height:45px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--gold-dark);" onclick="openImgPreview(this.src)">' : '<div style="width:45px;height:45px;border-radius:8px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);"><i class="fas fa-receipt" style="color:var(--text-muted);font-size:16px;"></i></div>';
+        
+        card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;min-width:0;">'+imgHtml+'<div style="min-width:0;"><div style="font-size:13px;font-weight:700;color:#fff;">'+fRp(m.amount)+'</div><div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(m.note||'Tanpa keterangan')+' &middot; '+fDate(m.date)+'</div></div></div><button class="btn-danger-sm" onclick="delModal('+i+')" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>';
         list.appendChild(card);
     }
 }
@@ -955,7 +955,8 @@ document.getElementById('btnConfirmDelVar').addEventListener('click', function()
 document.getElementById('modalFile').addEventListener('change', async function(e){
     var file = e.target.files[0];
     if(!file) return;
-    var comp = await compressImage(file, 800, 0.6);
+    // KOMPRES LEBIH KECIL (600px, 0.4) AGAR PASTI AMAN TERSIMPAN DI SERVER TANPA DIKURANGIN
+    var comp = await compressImage(file, 600, 0.4);
     document.getElementById('previewModalImg').src = comp;
     document.getElementById('previewModalImg').style.display = 'block';
 });
