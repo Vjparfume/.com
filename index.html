@@ -355,7 +355,7 @@ var PRICE_RP = 200000;
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3qQHJ8Vqv13goaL2XvWrx8gljCF3m3JA6yn6hZlhijM5PCUboYwL66eQBXXuj8tA2ng/exec';
 
 var DEFAULT_PRODUCTS = [
-    {name:"🌹 Scandalous",stockAwal:0},
+    {name:"🌹 Scandalous",stockAwal:0},{name:"🌸 Black Opium",stockAwal:0},
     {name:"💖 Avril Lavigne",stockAwal:0},{name:"🤍 Soft",stockAwal:0},
     {name:"🌷 Pink Chiffon",stockAwal:0},{name:"💐 Romantic Wish",stockAwal:0},
     {name:"✨ Olla Ramlan",stockAwal:0},{name:"🖤 Dior Sauvage",stockAwal:0},
@@ -502,9 +502,7 @@ function getSoldFromSheet(varianName){
         if(!s) continue; 
         var sVarian=String(s['Varian']||s['varian']||s['Parfum']||s['parfum']||s['Produk']||s['produk']||'');
         var sVarianClean=sVarian.replace(/[^\w\s]/gi,'').trim().toLowerCase();
-        
-        // PERBAIKAN: Hanya mengurangi jika PERSIS SAMA (Exact Match)
-        if(sVarianClean && searchName && sVarianClean === searchName){
+        if(sVarianClean&&searchName&&(sVarianClean.indexOf(searchName)>=0||searchName.indexOf(sVarianClean)>=0)){
             var qty=Number(s['Jumlah']||s['jumlah']||s['Qty']||s['qty']||s['Quantity']||1)||1;
             total+=qty;
         }
