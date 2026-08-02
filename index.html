@@ -494,7 +494,6 @@ function validateModalEntries(arr) {
     return valid;
 }
 
-// PERBAIKAN: Pencocokan varian harus PERSIS SAMA (Exact Match) menggunakan trim dan toLowerCase
 function getSoldFromSheet(varianName){
     var total=0;
     var searchName=varianName.replace(/[^\w\s]/gi,'').trim().toLowerCase();
@@ -503,9 +502,7 @@ function getSoldFromSheet(varianName){
         if(!s) continue; 
         var sVarian=String(s['Varian']||s['varian']||s['Parfum']||s['parfum']||s['Produk']||s['produk']||'');
         var sVarianClean=sVarian.replace(/[^\w\s]/gi,'').trim().toLowerCase();
-        
-        // HANYA AKAN MENGURANGI STOK JIKA NAMA PERSIS SAMA (===), BUKAN MENGANDUNG (indexOf)
-        if(sVarianClean && searchName && sVarianClean === searchName){
+        if(sVarianClean&&searchName&&(sVarianClean.indexOf(searchName)>=0||searchName.indexOf(sVarianClean)>=0)){
             var qty=Number(s['Jumlah']||s['jumlah']||s['Qty']||s['qty']||s['Quantity']||1)||1;
             total+=qty;
         }
